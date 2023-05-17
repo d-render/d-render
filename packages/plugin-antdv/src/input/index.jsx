@@ -3,31 +3,24 @@ import TransformModel from '../transform-model'
 import { CipFormInputTransform } from 'd-render'
 
 export default {
-  inheritAttrs: false,
-  model: {
-    prop: 'value',
-    event: 'input'
-  },
   name: 'AntDVInput',
-  setup (props, { attrs }) {
+  setup () {
     const aInputProps = [
-      'size',
-      'maxlength',
-      'minlength',
-      'showWordLimit',
-      'placeholder',
-      'clearable',
-      'formatter',
-      'parser',
+      'addonAfter',
+      'addonBefore',
+      'allowClear',
+      'bordered',
       'disabled',
+      'id',
+      'maxlength',
+      'prefix',
+      'showCount',
       'size',
-      'prefixIcon',
-      'suffixIcon',
-      'name',
+      'suffix',
+      ['inputType', 'type'],
       'readonly'
     ]
     return () => <CipFormInputTransform
-      {...attrs}
       inputPropsConfig={aInputProps}
       comp={<TransformModel
         comp={Input}
