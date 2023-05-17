@@ -1,0 +1,46 @@
+.cip-search-form/*.cip-search-form--grid*/{
+  position: relative;
+  display: grid;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  .cip-form-item-container{
+    flex: 1;
+  }
+  .cip-search-button{
+    display: flex;
+  }
+  .cip-search-button--right{
+    align-items: flex-end;
+    .@{elNamespace}-form-item__content{ // 此属性在cip-form-item中被赋值为display: flex将导致text-align:right 失效
+      width: 100%;
+      text-align: right;
+      justify-content: flex-end;
+    }
+  }
+  .cip-search-button--absolute{
+    position: absolute;
+    bottom: -16px;
+    right: 0;
+    transform: translateY(100%);
+  }
+  .@{elNamespace}-form-item{
+    margin-bottom: 0;
+    // 覆盖掉ele默认的*
+    &.is-required{
+      .@{elNamespace}-form-item__label:before{
+        content: "";
+        margin-right: 0px;
+      }
+    }
+  }
+  &.@{elNamespace}-form--label-top{
+    .@{elNamespace}-form-item{
+      flex-wrap: wrap;
+      .@{elNamespace}-form-item__content{
+        width: 100% !important;
+        min-width: 100% !important;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,163 @@
+.@{elNamespace}-form--label-top{
+  .@{elNamespace}-form-item{
+    flex-wrap: wrap;
+  }
+  .@{elNamespace}-form-item__label{
+    width: 100%;
+  }
+}
+.@{elNamespace}-form-item.is-danger{
+  .error-info{
+    display: inline !important;
+  }
+}
+.@{elNamespace}-form-item{
+  .@{elNamespace}-form-item__label{
+    height: unset; // 覆盖默认的height:32px, 防止label折行后叠加到下一个item
+  }
+  &.label-pos{
+    &--left{
+      .@{elNamespace}-form-item__label{
+        text-align: left; // fix label 居左
+      }
+    }
+    &--right{
+      .@{elNamespace}-form-item__label{
+        text-align: right; // fix label 居右
+      }
+    }
+  }
+  &.pos-top{
+    flex-wrap: wrap;
+    &--padding{
+      >.@{elNamespace}-form-item__content{
+        padding-left: 12px;
+      }
+    }
+    .@{elNamespace}-form-item__label{
+      width: 100% !important;
+      text-align: left;
+      justify-content: flex-start; // el-form-item__label默认开启flex导致text-align无效
+    }
+    >.@{elNamespace}-form-item__content{
+      width: 100% !important;
+      box-sizing: border-box;
+      flex: unset;
+      //padding-left: 12px;
+      .basic-table{
+        width: 100%; // 修复pos-top下 basic宽度为0的问题
+      }
+    }
+  }
+}
+.cip-form-item--pc.cip-form-item{ // pc模式下的el-form-item--in-table特殊化处理
+  &.cip-form-item--in-table{
+    //display: inline !important;
+    > .@{elNamespace}-form-item{
+      margin: 0;
+      display: inline !important;
+      .@{elNamespace}-form-item__content{
+        display: flex;
+        flex-wrap: nowrap;
+        flex-grow: 2;
+        width:auto;
+        font-size: 12px;
+      }
+    }
+  }
+}
+.cip-form-item.@{elNamespace}-form-item__wrapper{
+  display: flex;
+  width: 100%;
+  &.cip-form-item--hidden{ // 隐藏
+    height: 0;
+    overflow: hidden;
+  }
+  &.cip-form-item--label-position-top{
+    > .@{elNamespace}-form-item{
+      display: block;
+    }
+  }
+
+  > .@{elNamespace}-form-item{
+    flex-grow: 2;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    .@{elNamespace}-form-item__label{
+      flex-shrink: 0;
+    }
+    .is-readonly{
+      //color: #333;
+
+    }
+    .@{elNamespace}-form-item__content{
+      //color: #666;
+      //max-width: 100%;
+      margin-left:0 !important;
+      flex-grow: 2;
+      flex-shrink: 1;
+      width: 0;
+      display: flex;
+      //align-items: center;  // 此处center将当值 input组件垂直居中破坏样式
+    }
+  }
+  .content--end{
+    .@{elNamespace}-form-item__content{
+      align-self: flex-end;
+    }
+  }
+  // input框在inline-block下出现空隙
+  .@{elNamespace}-input__inner, .@{elNamespace}-input__count{
+    vertical-align: top;
+  }
+  .@{elNamespace}-input-group{
+    vertical-align: middle;
+  }
+  // label为空的时候，移除label的padding
+  .hide-label{
+    > .@{elNamespace}-form-item__label{
+      padding: 0;
+      display: none;
+    }
+  }
+}
+
+// 居右功能【注，cell使用flex布局所以text-align将无效】
+.@{elNamespace}-table {
+  .is-right {
+    .cell{
+      justify-content: flex-end;
+      text-align: right;
+    }
+  }
+  .is-center{
+    .cell{
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
+// 溢出省略号功能
+.cell.@{elNamespace}-tooltip{
+  .cip-form-item__input{
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.cip-form{
+  .@{elNamespace}-form-item__label{
+
+  }
+  .cip-form-item__label{
+    color: var(--cip-form-label-color, inherit);
+    font-weight: var(--cip-form-label-font-weight, normal);
+  }
+  // 没办法入侵el-form-item__content
+  .@{elNamespace}-form-item__content{
+    color: var(--cip-form-content-color, inherit);
+    font-weight: var(--cip-form-content-font-weight, normal);
+  }
+}
+

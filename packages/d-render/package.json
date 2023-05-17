@@ -1,12 +1,29 @@
 {
   "name": "d-render",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.6",
+  "description": "数据渲染库 - form、table、search-form",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "keywords": [
+    "data",
+    "render",
+    "form",
+    "table",
+    "searchForm"
+  ],
+  "files": ["esm", "types", "dist", "src"],
+  "module": "./esm/main.js",
+  "types": "./types/main.d.ts",
+  "author": "xmf",
+  "license": "ISC",
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": ">= 1.0.1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "peerDependencies": {
+    "@d-render/shared": "workspace:>= 1.0.2",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": ">= 1.0.1",
+    "element-plus": "2.2.22",
+    "vue": "^3.2.47"
+  }
 }

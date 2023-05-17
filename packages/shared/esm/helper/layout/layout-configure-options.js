@@ -1,0 +1,3 @@
+const layoutComponentFormConfigMap = {};
+
+export { layoutComponentFormConfigMap };
