@@ -1,4 +1,5 @@
 import { Input } from 'ant-design-vue'
+import TransformModel from '../transform-model'
 import { CipFormInputTransform } from 'd-render'
 
 export default {
@@ -25,13 +26,12 @@ export default {
       'name',
       'readonly'
     ]
-    const AInput = (props) => {
-      return <Input {...props} value={props.modelValue} onInput={(e) => props['onUpdate:modelValue'](e.target.value)}/>
-    }
     return () => <CipFormInputTransform
       {...attrs}
       inputPropsConfig={aInputProps}
-      comp={AInput}
+      comp={<TransformModel
+        comp={Input}
+      />}
     />
   }
 }

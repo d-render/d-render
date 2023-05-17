@@ -12,10 +12,12 @@
     "dev:styles": "pnpm run build:styles -- --watch=true",
     "gen:version": "changeset version",
     "build": "rollup -c ./build/tasks/components.js",
+    "dev": "rollup -c ./build/tasks/components.js --watch",
     "types": "node --require @esbuild-kit/cjs-loader ./build/tasks/types.js",
-    "dev:d-render": "cross-env ENTRY_MODULE=d-render pnpm run build --watch",
+    "dev:d-render": "cross-env ENTRY_MODULE=d-render pnpm run dev",
     "build:d-render": "cross-env ENTRY_MODULE=d-render pnpm run build && cross-env ENTRY_MODULE=d-render pnpm run types && cross-env ENTRY_MODULE=d-render pnpm run styles",
     "build:shared": "cross-env ENTRY_MODULE=shared pnpm run build",
+    "dev:plugin-standard": "cross-env ENTRY_MODULE=plugin-standard pnpm run dev",
     "build:plugin-standard": "cross-env ENTRY_MODULE=plugin-standard pnpm run build && cross-env ENTRY_MODULE=plugin-standard pnpm run styles",
     "build:plugin-antdv": "cross-env ENTRY_MODULE=plugin-antdv pnpm run build && cross-env ENTRY_MODULE=plugin-antdv pnpm run styles",
     "lint": "eslint --fix build/**"

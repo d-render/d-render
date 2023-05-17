@@ -4,6 +4,9 @@ import '@d-render/plugin-antdv/dist/index.css'
 export default {
   plugins: [
     PluginStandard,
-    PluginAntDV
+    Object.keys(PluginAntDV).reduce((acc, key) => {
+      acc[`a-${key}`] = PluginAntDV[key]
+      return acc
+    }, {})
   ]
 }
