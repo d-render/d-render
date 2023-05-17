@@ -66,9 +66,9 @@ export const useSteamUpdateValues = (fieldKey, otherKey, model, updateModel, cha
     keys.value.forEach((key, index) => {
       const value = values[index]
       if (value === emptySign) {
-        setFieldValue(innerModel, key, undefined)
+        setFieldValue(innerModel, key, undefined, true)
       } else if (!isEmpty(value)) {
-        setFieldValue(innerModel, key, values[index])
+        setFieldValue(innerModel, key, values[index], true)
       }
     })
     updateModel(innerModel)
@@ -76,7 +76,7 @@ export const useSteamUpdateValues = (fieldKey, otherKey, model, updateModel, cha
   const clearValues = () => {
     const innerModel = model.value // 不能结构，结构将导致监听到整个model数据的变化
     keys.value.forEach((key) => {
-      setFieldValue(innerModel, key, undefined)
+      setFieldValue(innerModel, key, undefined, true)
     })
   }
   return {

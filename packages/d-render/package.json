@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "1.0.6",
+  "version": "1.1.10",
   "description": "数据渲染库 - form、table、search-form",
   "main": "index.js",
   "keywords": [

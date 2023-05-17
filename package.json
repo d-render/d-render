@@ -20,7 +20,8 @@
     "dev:plugin-standard": "cross-env ENTRY_MODULE=plugin-standard pnpm run dev",
     "build:plugin-standard": "cross-env ENTRY_MODULE=plugin-standard pnpm run build && cross-env ENTRY_MODULE=plugin-standard pnpm run styles",
     "build:plugin-antdv": "cross-env ENTRY_MODULE=plugin-antdv pnpm run build && cross-env ENTRY_MODULE=plugin-antdv pnpm run styles",
-    "lint": "eslint --fix build/**"
+    "lint": "eslint --fix build/**",
+    "build-all": "run-s build:*"
   },
   "keywords": [],
   "author": "",

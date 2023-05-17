@@ -58,7 +58,7 @@ export default defineComponent({
       // 当存在tree是index与实际的不符合需要使用key进行唯一定位 或者遍历计数
       const propertyKey = getPropertyKeyByPath(path, props.treeProps)
       const data = props.data
-      setFieldValue(data, propertyKey, val)
+      setFieldValue(data, propertyKey, val, true)
       // data[index] = val
       context.emit('update:data', data)
     }

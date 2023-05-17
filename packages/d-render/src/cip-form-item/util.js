@@ -6,9 +6,9 @@ export const getValuesByKeys = (data = {}, keys = []) => {
   keys.forEach((key) => {
     if (typeof key === 'object') {
       const object = key
-      setFieldValue(result, object.key, getFieldValue(data, object.key))
+      setFieldValue(result, object.key, getFieldValue(data, object.key), true)
     } else {
-      setFieldValue(result, key, getFieldValue(data, key))
+      setFieldValue(result, key, getFieldValue(data, key), true)
     }
   })
   return result
@@ -18,9 +18,9 @@ export const setValuesByKeys = (target = {}, keys = [], values = {}) => {
   keys.forEach((key) => {
     if (typeof key === 'object') {
       const object = key
-      setFieldValue(target, object.key, getFieldValue(values, object.key))
+      setFieldValue(target, object.key, getFieldValue(values, object.key), true)
     } else {
-      setFieldValue(target, key, getFieldValue(values, key))
+      setFieldValue(target, key, getFieldValue(values, key), true)
     }
   })
 }
@@ -123,7 +123,7 @@ export class UpdateModelQueue {
     // eslint-disable-next-line no-unused-vars
     for (const key of this.data.keys()) {
       const value = this.data.get(key)
-      setFieldValue(model, key, value)
+      setFieldValue(model, key, value, true)
     }
     this.isCollect = false
     this.updateModel(model)
