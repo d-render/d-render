@@ -23,7 +23,7 @@
     "build:plugin-antdv": "cross-env ENTRY_MODULE=plugin-antdv pnpm run build && cross-env ENTRY_MODULE=plugin-antdv pnpm run styles",
     "lint": "eslint --fix build/**",
     "build-all": "run-s build:*",
-    "deploy:docs": "pnpm -C play build && scp -r play/dist/* x-develop.cn:~/web_html"
+    "deploy:docs": "pnpm -C play build && scp -r play/dist/* x-develop.cn:~/web_html/docs/"
   },
   "keywords": [],
   "author": "",
