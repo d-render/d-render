@@ -29,9 +29,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@d-render/shared": "workspace:*",
-    "@d-render/plugin-standard": "workspace:*",
     "@d-render/plugin-antdv": "workspace:*",
+    "@d-render/plugin-standard": "workspace:*",
+    "@d-render/shared": "workspace:*",
     "d-render": "workspace:*",
     "play": "workspace:*"
   },
@@ -61,6 +61,7 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-less": "^5.0.0",
     "gulp-rename": "^2.0.0",
+    "npm-run-all": "^4.1.5",
     "rimraf": "^5.0.0",
     "rollup": "^3.21.7",
     "rollup-plugin-esbuild": "^5.0.0",
