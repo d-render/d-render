@@ -1,28 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  {
-    path: '/cip-form',
-    name: 'CipForm',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "cip-form" */ '../views/form')
+    component: () => import('@/views/framework/index'),
+    children: [
+      {
+        path: '/cip-form/base',
+        name: 'cipFormBase',
+        // route level code-splitting
+        // this generates a separate chunk (cip-form.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "cip-form" */ '../views/form/base/index')
+      },
+      {
+        path: '/cip-form/ganged',
+        name: 'cipFormGanged',
+        component: () => import('../views/form/ganged')
+      },
+      {
+        path: '/changelog/d-render',
+        name: 'dRenderChangelog',
+        component: () => import('../views/change-log/d-render')
+      }
+    ]
   }
+
 ]
 
 const router = createRouter({
