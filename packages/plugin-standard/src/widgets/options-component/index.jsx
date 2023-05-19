@@ -23,24 +23,7 @@ const OptionComponent = {
     const disabledBridge = computed(() => {
       return getFieldValue(props.option, props.optionProps.disabled)
     })
-    // const slots = computed(() => {
-    //   let itemSlots = props.optionProps.slots
-    //   console.log(itemSlots)
-    //   if (itemSlots) {
-    //     itemSlots = Object.keys(itemSlots).reduce((acc, key) => {
-    //       acc[key] = () => itemSlots[key]({ option: props.option, $index: props.index })
-    //       return acc
-    //     }, {})
-    //   } else {
-    //     itemSlots = {
-    //       default: () => !props.isObjectOption
-    //         ? props.option
-    //         : labelBridge.value
-    //     }
-    //   }
-    //   console.log(itemSlots)
-    //   return itemSlots
-    // })
+
     const defaultSlot = computed(() => {
       const slot = props.optionProps.slots?.default
       if (slot) {
