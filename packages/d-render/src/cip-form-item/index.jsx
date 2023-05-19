@@ -210,7 +210,6 @@ export default {
           // 'onUpdate:modelValue': updateModelValue,
           // 'onUpdate:otherValue': updateOtherValue,
           'onStreamUpdate:model': (...args) => {
-            console.log('onStreamUpdate:model', args)
             streamUpdateModel(...args)
           }
         }

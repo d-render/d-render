@@ -51,7 +51,6 @@ export const useSteamUpdateValues = (fieldKey, otherKey, model, updateModel, cha
     return keys.value.map(key => getFieldValue(model.value, key))
   })
   const streamUpdateModel = async (values) => {
-    console.log('streamUpdateModel', values)
     if (changeEffect?.value && isNotEmpty(values[0])) {
       let value = values[0]
       if (values[0] === emptySign) value = undefined

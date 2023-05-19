@@ -48,26 +48,24 @@ export const useFieldChange = (props, securityConfig, dependOnWatchCb) => {
     outDependOnValues.value = outValues
   }
   if (depend.length > 0) {
-    let unwatch
-    watch(model, () => {
+    let firstChange
+    watch(() => props.model, () => {
       changeCount.value++ // 增加一个model变化计数器
-      // 重新开启监听
-      if (unwatch) unwatch() // model变化时重新开启监听
-      let firstChange = true
-      // 监听时需要排除掉自己
-      unwatch = watch(generateWatchValue(dependOn, outDependOn), (values, oldValues) => {
-        // 如果不过滤自己的话获取到的changeKeys可能存在错位的问题
-        const change = getChange(values, oldValues, filterSelf(depend))
-        // 相同的对象 判断存在数据变化才触发依赖值更新
-        collectDependInfo() // 此处需要获取所有的数据
-        dependOnWatchCb(change, {
-          executeChangeValueEffect: securityConfig.value.immediateChangeValue || !firstChange,
-          values: dependOnValues.value,
-          outValues: outDependOnValues.value
-        })
-        firstChange = false
-      }, { deep: true, immediate: true })
-    }, { immediate: true })
+      firstChange = true
+    }, { deep: false, immediate: true })
+    // 监听时需要排除掉自己
+    watch(generateWatchValue(dependOn, outDependOn), (values, oldValues) => {
+      // 如果不过滤自己的话获取到的changeKeys可能存在错位的问题
+      const change = getChange(values, oldValues, filterSelf(depend))
+      // 相同的对象 判断存在数据变化才触发依赖值更新
+      collectDependInfo() // 此处需要获取所有的数据
+      dependOnWatchCb(change, {
+        executeChangeValueEffect: securityConfig.value.immediateChangeValue || !firstChange,
+        values: dependOnValues.value,
+        outValues: outDependOnValues.value
+      })
+      firstChange = false
+    }, { deep: true, immediate: true, flush: 'post' })
   }
   return {
     changeCount, dependOnValues, outDependOnValues

@@ -92,19 +92,22 @@ export class EffectExecutor {
     this.effectsConfig = this.getExecuteEffect(effectParams, config, globalParam)
   }
 
-  execute (type, ...args) {
+  execute (type, logKey, ...args) {
     const condition = this.config[type].condition
-    if (!condition || (condition && condition(...args))) {
-      this.config[type].executor(this.values, this.outValues, ...args)
-    } else {
-      console.log(`不符合${type}执行条件`)
+    if (args[0].length > 0) {
+      if (!condition || (condition && condition(...args))) {
+        this.config[type].executor(this.values, this.outValues, ...args)
+        console.log(`%c[d-render]%c执行%c${logKey}.${type}`, 'color: #e6a23c', 'color: normal', 'color: #67c23a')
+      } else {
+        console.log(`%c[d-render]%c不符合%c${logKey}.${type}%c执行条件`, 'color: #e6a23c', 'color: normal', 'color: red', 'color: normal', args[0])
+      }
     }
   }
 
-  executeAll () {
+  executeAll (logKey) {
     // 是否让xx按顺序执行
     Object.keys(this.effectsConfig).forEach((type) => {
-      this.execute(type, this.effectsConfig[type], this.executeChangeValueEffect)
+      this.execute(type, logKey, this.effectsConfig[type], this.executeChangeValueEffect)
     })
   }
 }

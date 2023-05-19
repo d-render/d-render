@@ -61,7 +61,7 @@ export default {
     useFormProvide(props, uploadQueue)
 
     const directoryConfig = ref([])
-    const { model, fieldList } = toRefs(props)
+    const { fieldList } = toRefs(props)
     const cipFormRef = ref()
     // 修改model的值
     const updateModel = (val) => {
@@ -85,8 +85,8 @@ export default {
       const componentKey = generateComponentKey(key)
       const componentProps = {
         key: componentKey,
-        componentKey: componentKey,
-        model,
+        componentKey,
+        model: props.model,
         fieldKey: key,
         config,
         readonly: props.showOnly,
@@ -193,7 +193,7 @@ export default {
     const validate = async (cb = () => {}) => {
       const isUpload = await validateUpload()
       if (!isUpload) {
-        // eslint-disable-next-line standard/no-callback-literal
+        // eslint-disable-next-line n/no-callback-literal
         cb(false)
         throw new Error('请等待文件上传')
       } else {
@@ -221,7 +221,7 @@ export default {
       ...context.attrs,
       ref: cipFormRef,
       hideRequiredAsterisk: true,
-      model: model, // 待进行测试 使用model.value后数据是否正常
+      model: props.model,
       class: [
         'cip-form',
         `cip-form--${props.equipment}`,

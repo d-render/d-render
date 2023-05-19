@@ -129,7 +129,7 @@ export const useWatchFieldDepend = (props, context, { updateModelValue, updateOt
       oldValues: changeOldValues,
       executeChangeValueEffect
     })
-    effectExecutor.executeAll()
+    effectExecutor.executeAll(props.fieldKey)
   }
   // 收集变化的依赖
   const { changeCount, dependOnValues, outDependOnValues } = useFieldChange(props, securityConfig, dependOnWatchCb)

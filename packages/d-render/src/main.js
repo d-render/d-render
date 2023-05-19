@@ -1,3 +1,4 @@
+export { version } from '../package.json'
 export { default as CipForm } from './cip-form'
 export { default as CipFormItem } from './cip-form-item'
 export { default as CipFormLayout } from './cip-form-layout'
