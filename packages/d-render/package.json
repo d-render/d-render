@@ -20,6 +20,10 @@
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https: //register.npmjs.org/"
+  },
   "peerDependencies": {
     "@d-render/shared": "workspace:>= 1.0.2",
     "@element-plus/icons-vue": "^2.1.0",

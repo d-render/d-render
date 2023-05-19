@@ -1,4 +1,5 @@
-export { version } from '../package.json'
+import pkg from '../package.json'
+export const version = pkg.version
 export { default as CipForm } from './cip-form'
 export { default as CipFormItem } from './cip-form-item'
 export { default as CipFormLayout } from './cip-form-layout'
