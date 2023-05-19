@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "数据渲染库 - form、table、search-form",
   "main": "index.js",
   "keywords": [
@@ -16,6 +16,7 @@
   "author": "xmf",
   "license": "ISC",
   "dependencies": {
+    "@d-render/shared": "workspace:>= 1.0.2",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1"
   },
