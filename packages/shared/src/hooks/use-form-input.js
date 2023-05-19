@@ -12,7 +12,6 @@ import { getFormValueByTemplate, UpdateFormStream } from '../helper'
 
 const useUpdateStream = (props, context) => {
   const updateStream = new UpdateFormStream(props, (val) => {
-    console.log('streamUpdate:model', val)
     context.emit('streamUpdate:model', val)
   })
   return updateStream
@@ -65,7 +64,6 @@ export const useFormInput = (props, context, { fromModelValue, toModelValue, max
     emitModelValue(val)
   }
   const emitModelValue = (val) => {
-    console.log('emitModelValue', val)
     val = isNotEmpty(toModelValue) ? toModelValue(val) : val
     // 同时支持2中修改方式，在formItem中不在接受update:modelValue
     context.emit('update:modelValue', val)
@@ -132,20 +130,16 @@ export const useFormView = (props, { maxOtherKey } = {}) => {
 export const useElementFormEvent = () => {
   const elFormItem = useElFormItemInject()
   const handleChange = (val) => {
-    console.log('change', elFormItem)
     // 2.2.17 修改为 elFormItem.validate
     // 2.2.x 使用 elFormItem.formItemMitt
     // console.log(elFormItem.validate())
-    elFormItem.validate?.('change', (...args) => {
-      console.log(args)
+    elFormItem.validate?.('change', () => {
+      // console.log(args)
     })
     // elFormItem.formItemMitt?.emit('el.form.change', [val])
   }
   const handleBlur = (val) => {
-    console.log('blur', elFormItem)
-    elFormItem.validate?.('blur', (...args) => {
-      console.log(args)
-    })
+    elFormItem.validate?.('blur', () => { })
     // elFormItem.formItemMitt?.emit('el.form.blur', [val])
   }
   return {
