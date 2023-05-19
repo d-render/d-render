@@ -16,6 +16,7 @@
     "types": "node --require @esbuild-kit/cjs-loader ./build/tasks/types.js",
     "dev:d-render": "cross-env ENTRY_MODULE=d-render pnpm run dev",
     "build:d-render": "cross-env ENTRY_MODULE=d-render pnpm run build && cross-env ENTRY_MODULE=d-render pnpm run types && cross-env ENTRY_MODULE=d-render pnpm run styles",
+    "dev:shared": "cross-env ENTRY_MODULE=shared pnpm run dev",
     "build:shared": "cross-env ENTRY_MODULE=shared pnpm run build",
     "dev:plugin-standard": "cross-env ENTRY_MODULE=plugin-standard pnpm run dev",
     "build:plugin-standard": "cross-env ENTRY_MODULE=plugin-standard pnpm run build && cross-env ENTRY_MODULE=plugin-standard pnpm run styles",
