@@ -15,9 +15,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "cip-form" */ '../views/form/base/index')
       },
       {
-        path: '/cip-form/ganged',
-        name: 'cipFormGanged',
-        component: () => import('../views/form/ganged')
+        path: '/cip-form/changeValue',
+        name: 'cipFormChangeValue',
+        component: () => import('../views/form/change-value')
       },
       {
         path: '/changelog/d-render',

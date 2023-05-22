@@ -1,3 +1,4 @@
+// config.js
 import { generateFieldList, defineFormFieldConfig } from 'd-render'
 export const formFieldList = generateFieldList(defineFormFieldConfig({
   a: {

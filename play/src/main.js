@@ -4,7 +4,7 @@ import router from './router'
 import 'element-plus/dist/index.css'
 import 'ant-design-vue/dist/antd.min.css'
 import { DRender, version } from 'd-render'
-import 'd-render/dist/index.css'
+import 'd-render/style'
 import dRenderConfig from '../d-render.config'
 
 console.log('d-render', version)

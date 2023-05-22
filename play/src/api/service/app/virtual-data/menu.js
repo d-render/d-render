@@ -13,8 +13,8 @@ export const menu = [
             title: 'CipFormBase'
           },
           {
-            name: 'cipFormGanged',
-            title: 'CipFormGanged'
+            name: 'cipFormChangeValue',
+            title: 'changeValue'
           }
         ]
       }

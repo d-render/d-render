@@ -1,4 +1,10 @@
 # d-render
+
+## 1.1.12 (2023-05-22)
+
+- fix(packages): 修复升级11版本后无法通过 `import 'd-redner/style'`的方式引入d-render的样式
+    - 此为兼容性修复，11版本可以通过 `import 'd-render/dist/index.css'`的方式i引入
+
 ## 1.1.11 (2023-05-19)
 
 - fix(components): [cip-form-item]修复了changeValue在特殊情况下不能如设计的运行方式运行
