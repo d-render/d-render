@@ -14,9 +14,24 @@
   "module": "./esm/main.js",
   "types": "./types/main.d.ts",
   "exports": {
-    ".": "./esm/main.js",
+    ".": {
+      "import": "./esm/main.js",
+      "types": "./types/main.d.ts"
+    },
     "./style": "./dist/index.css",
-    "./*": "./*"
+    "./*.js": {
+      "import": "./esm/*.js",
+      "types": "./types/*.d.ts"
+    },
+    "./*":  {
+      "import": [
+        "./esm/*.js",
+        "./esm/*/index.js",
+        "./esm/*"
+      ],
+      "types": "./types/*.d.ts"
+    },
+    "./dist/*": "./dist/*"
   },
   "author": "xmf",
   "license": "ISC",
@@ -27,7 +42,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https: //register.npmjs.org/"
+    "registry": "https://register.npmjs.org/"
   },
   "peerDependencies": {
     "@d-render/shared": "workspace:>= 1.0.2",
