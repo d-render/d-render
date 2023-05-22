@@ -34,7 +34,15 @@ export default defineComponent({
       cipConfig.searchForm?.labelPosition
     ))
     // 值更新
-    const updateModel = (val) => { emit('update:model', val) }
+    const updateModel = (val) => {
+      // FIX[2023-05-22]: 修复model更新且未更新defaultModel的值，model对象写入defaultModel的数据导致defaultModel失效
+      Object.keys((props.defaultModel || {})).forEach(key => {
+        if (val[key] === props.defaultModel[key]) {
+          Reflect.deleteProperty(val, key)
+        }
+      })
+      emit('update:model', val)
+    }
     // 触发搜索
     const emitSearch = debounce((type) => { emit('search', type) }, 200, false)
 
@@ -80,7 +88,7 @@ export default defineComponent({
         key,
         model: formModel.value,
         fieldKey: key,
-        config: config,
+        config,
         grid: true,
         labelPosition: _labelPosition.value,
         onKeyup: (e) => {

@@ -1,5 +1,10 @@
 # d-render
 
+## 1.1.13 (2023-05-22)
+
+- fix(d-render): 修复`CipSearchForm`在传入defaultModel后，如果修改model的值，defaultModel的信息将会写入到model中
+    - ps: 此处其实不算bug,但是为了少改项目已有左右结构的页面代码给予支持  
+
 ## 1.1.12 (2023-05-22)
 
 - fix(packages): 修复升级11版本后无法通过 `import 'd-redner/style'`的方式引入d-render的样式
