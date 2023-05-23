@@ -2,5 +2,13 @@
 .vscode
 
 node_modules
-
+# d.ts
+**/*.d.ts
+# dist
+**/dist/*
+**/esm/*
+**/types/*
+!**/types/.gitkeep
+!**/shared/types/*
+!**/shared/types/**/*
 pnpm-lock.yaml

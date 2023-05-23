@@ -1,15 +1,47 @@
 {
   "name": "@d-render/shared",
-  "version": "1.0.0",
-  "description": "",
-  "publishConfig": {
-    "access": "public"
-  },
-  "main": "index.js",
+  "version": "1.0.4",
+  "description": "d-render部分共享utils hooks helper",
+  "module": "./esm/main.js",
+  "types": "./types/main.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "d-render",
+    "shared",
+    "utils",
+    "hooks",
+    "helper"
+  ],
+  "files": ["esm", "types", "src"],
+  "exports": {
+    ".": {
+      "import": "./esm/main.js",
+      "types": "./types/main.d.ts"
+    },
+    "./*.js": {
+      "import": "./esm/*.js",
+      "types": "./types/*.d.ts"
+    },
+    "./*": {
+      "import": "./esm/*.js",
+      "types": "./types/*.d.ts"
+    }
+  },
+  "author": "xmf",
+  "license": "MIT",
+  "peerDependencies": {
+    "lodash-es": "4.17.x",
+    "element-plus": "2.2.22",
+    "uuid": "8.3.x",
+    "vue": "^3.2.47"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
+
+
+

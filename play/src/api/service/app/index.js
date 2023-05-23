@@ -1,0 +1,1 @@
+export { menuService } from './menu'

@@ -1,0 +1,35 @@
+.cip-table{
+  .@{elNamespace}-table__expanded-cell[class*=cell]{
+    padding: 10px 12px
+  }
+  .@{elNamespace}-table__row{
+    .cell{
+      display: flex;
+      .cip-form-item{
+        flex-grow: 2;
+      }
+    }
+  }
+  .@{elNamespace}-table__empty-text {
+    line-height: normal;
+  }
+  &__empty {
+    height: 142px;
+    padding: 32px 0;
+    box-sizing: border-box;
+    &__svg {
+      font-size: 56px;
+    }
+    &__text {
+      height: 22px;
+      line-height: 22px;
+      font-size: 14px;
+      color: #c0c0c0;
+    }
+  }
+  .cip-table-column-selection{
+    display: inline-flex;
+    align-items: center;
+    column-gap: 8px;
+  }
+}

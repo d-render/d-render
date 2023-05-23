@@ -2,11 +2,23 @@
   "name": "@d-render/plugin-standard",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "module": "./esm/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": ">= 1.0.1"
+  },
+  "peerDependencies": {
+    "@d-render/shared": "workspace:>= 1.0.2",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": ">= 1.0.1",
+    "d-render": "workspace: *",
+    "element-plus": "2.2.22",
+    "vue": "^3.2.47"
+  }
 }

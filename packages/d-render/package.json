@@ -1,12 +1,63 @@
 {
   "name": "d-render",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "1.1.15",
+  "description": "数据渲染库 - form、table、search-form",
+  "main": "./esm/main.js",
+  "module": "./esm/main.js",
+  "types": "./types/main.d.ts",
+  "sideEffects": [
+    "dist/*"
+  ],
+  "keywords": [
+    "data",
+    "render",
+    "form",
+    "table",
+    "searchForm"
+  ],
+  "homepage": "https://docs.d-render.x-develop.cn/",
+  "files": ["esm", "types", "dist", "src"],
+  "exports": {
+    ".": {
+      "import": "./esm/main.js",
+      "types": "./types/main.d.ts"
+    },
+    "./style": "./dist/index.css",
+    "./*.js": {
+      "import": "./esm/*.js",
+      "types": "./types/*.d.ts"
+    },
+    "./*":  {
+      "import": [
+        "./esm/*.js",
+        "./esm/*/index.js",
+        "./esm/*"
+      ],
+      "types": "./types/*.d.ts"
+    },
+    "./dist/*": "./dist/*"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "xmf",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "directory": "packages/d-render",
+    "url": "git+https://github.com/d-render/d-render",
+    "type": "git"
+  },
+  "dependencies": {
+    "@d-render/shared": "workspace:>= 1.0.2",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": ">= 1.0.1"
+  },
+  "peerDependencies": {
+    "@d-render/shared": "workspace:>= 1.0.2",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": ">= 1.0.1",
+    "element-plus": "2.2.22",
+    "vue": "^3.2.47"
+  }
 }
