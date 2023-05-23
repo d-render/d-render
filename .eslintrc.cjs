@@ -10,6 +10,9 @@ module.exports = {
     'plugin:vue/vue3-essential',
     '@vue/eslint-config-standard'
   ],
+  rules: {
+    'vue/multi-word-component-names': 0
+  },
   parserOptions: {
     ecmaVersion: 'latest'
   }
