@@ -12,9 +12,10 @@ export default {
     }
     return () => {
       const Comp = props.comp
-      return <div>
+      const {...compAttrs, style} = attrs
+      return <div style={style}>
         <Comp
-          {...attrs}
+          {...compAttrs}
           value={props.modelValue}
           onUpdate:value={emitValue}
         />
