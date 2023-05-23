@@ -10,4 +10,5 @@ node_modules
 **/types/*
 !**/types/.gitkeep
 !**/shared/types/*
+!**/shared/types/**/*
 pnpm-lock.yaml
