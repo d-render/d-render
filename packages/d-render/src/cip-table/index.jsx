@@ -1,5 +1,6 @@
 import { h, ref, defineComponent, computed, reactive, provide } from 'vue'
-import { ElTable, ElTableColumn, ElRadio, ElTooltip } from 'element-plus'
+import { ElTable, ElTableColumn, ElRadio, ElTooltip, ElIcon } from 'element-plus'
+import { InfoFilled } from '@element-plus/icons-vue'
 import TableSelectionColumn from './table-column-selection'
 import {
   isNotEmpty,
@@ -98,7 +99,9 @@ export default defineComponent({
             <ElTooltip effect={config.descriptionEffect || 'light'} placement={'top'}>
               {{
                 content: () => config.description,
-                default: () => <i class={'el-icon-question'} style={'margin-left:2px'}/>
+                default: () => <ElIcon style={'margin-left:2px'}>
+                  <InfoFilled />
+                </ElIcon>
               }}
             </ElTooltip>
           )
@@ -162,7 +165,7 @@ export default defineComponent({
               model: row,
               key,
               tableRuleKey: props.ruleKey,
-              propertyKey: propertyKey,
+              propertyKey,
               columnKey: key,
               tableDependOnValues: props.dependOnValues,
               tableData: props.data,

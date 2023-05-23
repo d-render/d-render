@@ -1,5 +1,6 @@
 import { computed, h, ref } from 'vue'
-import { ElDrawer } from 'element-plus'
+import { ElDrawer, ElIcon } from 'element-plus'
+import { List } from '@element-plus/icons-vue'
 export default {
   props: {
     directory: Object
@@ -23,7 +24,9 @@ export default {
     }
     return () => <>
       <div class={'form-directory__switch'} onClick={() => openDrawer()}>
-        <i class={'el-icon-s-order'} style={'font-size: 24px'}/>
+        <ElIcon style={'font-size: 24px'}>
+          <List />
+        </ElIcon>
       </div>
       <ElDrawer custom-class={'form-directory__drawer'} v-model={drawerSwitch.value} title={'表单目录'}>
         <div class={'form-directory'}>

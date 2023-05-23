@@ -1,4 +1,5 @@
-import { ElFormItem, ElTooltip } from 'element-plus'
+import { ElFormItem, ElTooltip, ElIcon } from 'element-plus'
+import { InfoFilled, WarningFilled } from '@element-plus/icons-vue'
 import { h, toRef, computed, ref, unref, onErrorCaptured } from 'vue'
 import { isEmpty, isEmptyObject, isInputEmpty, useFormInject, useElFormInject, useCipConfig } from '@d-render/shared'
 import { useWatchFieldDepend } from './hooks/use-field-depend'
@@ -123,7 +124,7 @@ export default {
           <ElTooltip effect={formItemConfig.value.descriptionEffect || 'light'} placement={'top'}>
             {{
               content: () => formItemConfig.value.description,
-              default: () => <i class={'el-icon-question'} style={'margin-left:2px;line-height: inherit;'} />
+              default: () => <ElIcon style={'margin-left:2px;line-height: inherit;'}><InfoFilled/></ElIcon>
             }}
           </ElTooltip>
         )
@@ -154,7 +155,9 @@ export default {
       if (!inlineErrorMessage.value) return null
       return (
         <ElTooltip content={error}>
-          <i class={'el-icon-warning cip-danger-color '} style={{ outline: 'none', border: 'none' }} />
+          <ElIcon class={'cip-danger-color '} style={{ outline: 'none', border: 'none' }}>
+            <WarningFilled />
+          </ElIcon>
         </ElTooltip>
       )
     }
