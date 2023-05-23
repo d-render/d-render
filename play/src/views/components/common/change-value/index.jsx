@@ -1,4 +1,4 @@
-import CipPageLayoutHandle from '@cip/components/page-layout/handle'
+import CipPageLayoutInfo from '@cip/components/page-layout/info'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import RawCode from '!!raw-loader!../example/change-value/base'
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -8,11 +8,10 @@ import ExampleBlock from '@/components/example-block'
 export default {
   name: 'CipFormGanged',
   setup () {
-    console.log(RawCode)
-    return () => <CipPageLayoutHandle >
+    return () => <CipPageLayoutInfo >
       <ExampleBlock code={[RawConfig, RawCode]}>
         <ExampleCode />
       </ExampleBlock>
-    </CipPageLayoutHandle>
+    </CipPageLayoutInfo>
   }
 }

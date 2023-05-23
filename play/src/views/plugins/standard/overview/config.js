@@ -63,7 +63,7 @@ const base = defineFormFieldConfig({
   color: { type: 'color', label: 'color picker', required: true },
   date: { type: 'date', label: 'date picker', required: true },
   datetime: { type: 'date', inputType: 'datetime', label: 'datetime picker', required: true },
-  input: { type: 'input', label: '输入框', required: true },
+  input: { type: 'input', label: 'input', required: true },
   number: { type: 'number', label: 'input number', required: true },
   radio: {
     type: 'radio',
@@ -107,22 +107,11 @@ const base = defineFormFieldConfig({
   transfer: { type: 'transfer', label: 'transfer', required: true },
   tree: { type: 'tree', label: 'tree', required: true },
   treeSelect: { type: 'treeSelect', label: 'tree select', required: true },
-  upload: { type: 'upload', label: 'upload', required: true },
-  mentions: { type: 'mentions', label: 'mentions', required: true } // antdv特有
-  // rate: { type: 'rate', label: '评分' }
+  upload: { type: 'upload', label: 'upload', required: true }
 })
 export const elFormFieldConfig = generateFieldList(cloneDeep(base)).map(fieldConfig => {
   if (!fieldConfig.config.span) {
     fieldConfig.config.span = 24
   }
-  return fieldConfig
-})
-
-export const aFormFieldConfig = generateFieldList(cloneDeep(base)).map(fieldConfig => {
-  if (!fieldConfig.config.span) {
-    fieldConfig.config.span = 24
-  }
-  fieldConfig.config.type = 'a-input' // ${fieldConfig.config.type}
-  fieldConfig.config.label = `antdv ${fieldConfig.config.label}`
   return fieldConfig
 })

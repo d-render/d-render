@@ -1,4 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
+// import { prependRoutes, getBaseName, getDefaultBaseRoute } from '@cip/utils/route-util.js'
+const ctx = require.context('@/views', true, /(\w+\/)*(routes\/index|routes)\.js$/i)
+
+const getChildren = (ctx) => {
+  const result = []
+  const paths = ctx.keys()
+  paths.forEach(path => {
+    const routes = ctx(path).routes || []
+    result.push(...routes)
+  })
+  return result
+}
 
 const routes = [
   {
@@ -6,29 +18,17 @@ const routes = [
     name: 'home',
     component: () => import('@/views/framework/index'),
     children: [
-      {
-        path: '/cip-form/base',
-        name: 'cipFormBase',
-        // route level code-splitting
-        // this generates a separate chunk (cip-form.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "cip-form" */ '../views/form/base/index')
-      },
-      {
-        path: '/cip-form/changeValue',
-        name: 'cipFormChangeValue',
-        component: () => import('../views/form/change-value')
-      },
+
       {
         path: '/changelog/d-render',
         name: 'dRenderChangelog',
         component: () => import('../views/change-log/d-render')
       }
-    ]
+    ].concat(getChildren(ctx))
   }
 
 ]
-
+console.log(routes)
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
