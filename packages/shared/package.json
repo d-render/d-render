@@ -4,28 +4,44 @@
   "description": "d-render部分共享utils hooks helper",
   "module": "./esm/main.js",
   "types": "./types/main.d.ts",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "xmf",
-  "license": "ISC",
+  "keywords": [
+    "d-render",
+    "shared",
+    "utils",
+    "hooks",
+    "helper"
+  ],
   "files": ["esm", "types", "src"],
-  "dependencies": {
-    "lodash-es": "~4.17.21",
-    "dayjs": "^1.11.5",
-    "uuid": "~8.3.2"
+  "exports": {
+    ".": {
+      "import": "./esm/main.js",
+      "types": "./types/main.d.ts"
+    },
+    "./*.js": {
+      "import": "./esm/*.js",
+      "types": "./types/*.d.ts"
+    },
+    "./*": {
+      "import": "./esm/*.js",
+      "types": "./types/*.d.ts"
+    }
   },
+  "author": "xmf",
+  "license": "MIT",
   "peerDependencies": {
-    "lodash-es": "~4.17.21",
-    "dayjs": "^1.11.5",
+    "lodash-es": "4.17.x",
     "element-plus": "2.2.22",
-    "uuid": "~8.3.2",
+    "uuid": "8.3.x",
     "vue": "^3.2.47"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
+
+
+
