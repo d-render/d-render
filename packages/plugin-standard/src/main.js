@@ -11,6 +11,7 @@ export default {
   rate: (mode) => () => import(`./rate${mode}`),
   select: (mode) => () => import(`./select${mode}`),
   slider: (mode) => () => import(`./slider${mode}`),
+  staticInfo: (mode) => () => import(`./static-info${mode}`),
   switch: (mode) => () => import(`./switch${mode}`),
   time: (mode) => () => import(`./time${mode}`),
   timeSelect: (mode) => () => import(`./time-select${mode}`),
