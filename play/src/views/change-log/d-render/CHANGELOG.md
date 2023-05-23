@@ -1,5 +1,8 @@
 # d-render
 
+## 1.1.14 (2023-05-23)
+- perf(d-render): 替换所有使用`.el-icon-xx`的图标,采用`@element-plus/icons-vue`中导出的图标
+
 ## 1.1.13 (2023-05-22)
 
 - fix(d-render): 修复`CipSearchForm`在传入defaultModel后，如果修改model的值，defaultModel的信息将会写入到model中
