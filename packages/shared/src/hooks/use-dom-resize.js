@@ -9,6 +9,7 @@ class OResizeObserver extends _ResizeObserver {
     })
   }
 }
+window.ResizeObserver = OResizeObserver
 export const useObserveDomResize = (container, cb) => {
   onMounted(() => {
     const domList = [].concat(container()) // 同时支持数组及单个容器
