@@ -1,5 +1,6 @@
 import { onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
-class OResizeObserver extends window.ResizeObserver {
+const _ResizeObserver = window.ResizeObserver
+class OResizeObserver extends _ResizeObserver {
   constructor (cb) {
     super((entries, observe) => {
       window.requestAnimationFrame(() => {
