@@ -3,6 +3,7 @@
     "target": "es5",
     "module": "esnext",
     "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "NodeNext",
     "paths": {
       "@/*": [

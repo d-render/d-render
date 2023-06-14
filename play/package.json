@@ -10,7 +10,7 @@
   "dependencies": {
     "@cip/cci-standard-theme": "^0.0.5",
     "@cip/code-mirror": "^1.0.4",
-    "@cip/components": "^6.0.12",
+    "@cip/components": "6.0.18",
     "@cip/d-render-plugin-cci": "1.0.5",
     "@cip/hooks": "^5.0.1",
     "@cip/request": "^5.0.4",
