@@ -36,7 +36,8 @@ export default {
     },
     border: { type: Boolean, default: undefined }, // showOnly + border 将出现边框
     enterHandler: Function, // 回车触发回调
-    options: Object
+    options: Object,
+    dataBus: Function
   },
   emits: ['update:model', 'submit', 'cancel'],
   setup (props, context) {
@@ -89,6 +90,7 @@ export default {
         model: props.model,
         fieldKey: key,
         config,
+        dataBus: props.dataBus,
         readonly: props.showOnly,
         grid: props.grid,
         formLabelPosition: _labelPosition.value,

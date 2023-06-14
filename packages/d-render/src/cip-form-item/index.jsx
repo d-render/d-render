@@ -15,6 +15,7 @@ export default {
       type: Object,
       default: () => ({})
     },
+    dataBus: Function,
     readonly: Boolean, // 是否只读-即查看模式
     customSlots: Function,
     showTemplate: { // 是否展示模版值[注：表单设计中使用]
@@ -196,6 +197,7 @@ export default {
         rules: rules.value,
         dependOnValues: dependOnValues.value,
         outDependOnValues: outDependOnValues.value,
+        dataBus: props.dataBus,
         disabled: formItemConfig.value.importantDisabled !== undefined
           ? formItemConfig.value.importantDisabled
           : formItemConfig.value.disabled,
