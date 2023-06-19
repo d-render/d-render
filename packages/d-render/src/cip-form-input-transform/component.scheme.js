@@ -16,7 +16,8 @@ export const propsScheme = {
   // }`
   },
   comp: {
-    type: Object
+    type: Object,
+    required: true
   }
 }
 export const eventsScheme = {

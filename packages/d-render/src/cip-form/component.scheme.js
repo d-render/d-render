@@ -1,10 +1,12 @@
 export const propsScheme = {
   model: {
-    type: Object
+    type: Object,
+    required: true
   },
   fieldList: {
     type: Array,
-    tsType: 'import(\'@d-render/shared\').IFormConfig'
+    tsType: 'import(\'@d-render/shared\').IFormConfig',
+    required: true
   },
   showOnly: {
     type: Boolean

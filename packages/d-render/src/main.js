@@ -11,6 +11,8 @@ export {
   DRender,
   settingValueTransformState,
   generateFieldList,
+  insertFieldConfigToList,
+  keysToConfigMap,
   defineSearchFieldConfig,
   defineFormFieldConfig,
   defineTableFieldConfig

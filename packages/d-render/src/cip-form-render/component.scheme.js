@@ -1,10 +1,12 @@
 export const propsScheme = {
   model: {
     type: Object,
-    default: () => ({})
+    default: () => ({}),
+    required: true
   },
   scheme: {
-    type: Object
+    type: Object,
+    required: true
   },
   equipment: {
     type: String,
