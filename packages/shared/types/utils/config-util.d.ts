@@ -145,3 +145,5 @@ import {IAnyObject} from './util'
   export function mergeFieldConfig (configMap: IFieldConfig, ...source: Array<Record<string,IEntityConfig>|IFieldConfig>): IFieldConfig
   export function generateFieldList (configMap: IFieldConfig, ...source: Array<Record<string,IEntityConfig>|IFieldConfig>): IFormConfig[]
   export function insertFieldConfigToList (target: IFormConfig[], source: IFormConfig[]): IFormConfig[]
+
+  export function keysToConfigMap(keys: Array<'string' | (IRenderConfig & {key: string})>): IFormConfig[]
