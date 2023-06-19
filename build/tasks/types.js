@@ -36,7 +36,8 @@ const genComponentsDTs = () => {
         const propsString = Object.keys(propsScheme).reduce((acc, key, i) => {
           const config = propsScheme[key]
           const type = config.tsType || getTsTypeByType(config.type)
-          acc.push(`  ${key}: ${type}`)
+          const isRequired = config.required === true
+          acc.push(`  ${key}${isRequired ? '' : '?'}: ${type}`)
           return acc
         }, []).join('\n')
         const emitsScheme = componentScheme.eventsScheme
@@ -77,7 +78,16 @@ export default ${componentScheme.name}
 
 // 生成main.d.ts类型
 genComponentsDTs().then(res => {
-  const mainContent = `export * from '@d-render/shared'
+  const mainContent = `export {
+  DRender,
+  settingValueTransformState,
+  generateFieldList,
+  insertFieldConfigToList,
+  keysToConfigMap,
+  defineSearchFieldConfig,
+  defineFormFieldConfig,
+  defineTableFieldConfig
+} from '@d-render/shared'
 ${Object.keys(componentDTs).reduce((acc, key) => {
     acc.push(`export { ${key} } from './${componentDTs[key]}'`)
     return acc
