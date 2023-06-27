@@ -2,9 +2,9 @@ import { computed } from 'vue'
 import { getNextItem, isEmptyObject } from '../utils'
 import { getCopyItem } from '../helper'
 
-export const useFormLayoutOptions = ({ props, emit }) => {
+export const useFormLayoutOptions = ({ props, emit, optionsKey = 'options' }) => {
   const options = computed(() => {
-    return props.config.options || []
+    return props.config[optionsKey] || []
   })
 
   const updateConfig = (config) => {
@@ -13,36 +13,36 @@ export const useFormLayoutOptions = ({ props, emit }) => {
 
   const updateOptionChildren = (optionIndex, children) => {
     const config = props.config
-    config.options[optionIndex].children = children
+    config[optionsKey][optionIndex].children = children
     updateConfig(config)
   }
 
   const updateOptionChild = (optionIndex, childIndex, childConfig) => {
     const config = props.config
-    config.options[optionIndex].children[childIndex].config = childConfig
+    config[optionsKey][optionIndex].children[childIndex].config = childConfig
     updateConfig(config)
   }
   const deleteOptionChild = (optionIndex, childIndex) => {
     const config = props.config
-    const nextItem = getNextItem(config.options[optionIndex].children, childIndex)
+    const nextItem = getNextItem(config[optionsKey][optionIndex].children, childIndex)
     if (!isEmptyObject(nextItem)) {
       emitSelectItem(nextItem)
     } else {
       emitSelectItem(props.config)
     }
-    config.options[optionIndex].children.splice(childIndex, 1)
+    config[optionsKey][optionIndex].children.splice(childIndex, 1)
     updateConfig(config)
   }
   const copyOptionChild = (optionIndex, childIndex) => {
     const config = props.config
-    const newItem = getCopyItem(config.options[optionIndex].children[childIndex])
-    config.options[optionIndex].children.splice(childIndex + 1, 0, newItem)
+    const newItem = getCopyItem(config[optionsKey][optionIndex].children[childIndex])
+    config[optionsKey][optionIndex].children.splice(childIndex + 1, 0, newItem)
     updateConfig(config)
     emitSelectItem(newItem)
   }
   const addOptionChild = (optionIndex, { newIndex: childIndex }) => {
     const config = props.config
-    const newItem = config.options[optionIndex].children[childIndex]
+    const newItem = config[optionsKey][optionIndex].children[childIndex]
     updateConfig(config)
     emitSelectItem(newItem)
   }
