@@ -32,6 +32,14 @@
         justify-content: flex-end; // 修复文字位置
       }
     }
+    &--top{
+      .@{elNamespace}-form-item__label{
+        text-align: left; // fix label 居左
+      }
+      .cip-form-item__label{
+        justify-content: flex-start; // 修复文字位置
+      }
+    }
   }
   &.pos-top{
     flex-wrap: wrap;
@@ -56,7 +64,8 @@
     }
   }
 }
-.cip-form-item--pc.cip-form-item{ // pc模式下的el-form-item--in-table特殊化处理
+// pc模式下的el-form-item--in-table特殊化处理
+.cip-form-item--pc.cip-form-item{
   &.cip-form-item--in-table{
     //display: inline !important;
     > .@{elNamespace}-form-item{
@@ -72,6 +81,7 @@
     }
   }
 }
+// 公共部分的功能
 .cip-form-item.@{elNamespace}-form-item__wrapper{
   display: flex;
   width: 100%;
@@ -79,27 +89,24 @@
     height: 0;
     overflow: hidden;
   }
+  // 手动实现label-position top [注释：原el-form不支持对单个item进行label-position的配置]
   &.cip-form-item--label-position-top{
     > .@{elNamespace}-form-item{
       display: block;
     }
   }
-
+  // 修改el-form-item采用flex布局
   > .@{elNamespace}-form-item{
     flex-grow: 2;
     display: flex;
     align-items: flex-start;
     width: 100%;
+
     .@{elNamespace}-form-item__label{
       flex-shrink: 0;
     }
-    .is-readonly{
-      //color: #333;
 
-    }
     .@{elNamespace}-form-item__content{
-      //color: #666;
-      //max-width: 100%;
       margin-left:0 !important;
       flex-grow: 2;
       flex-shrink: 1;
@@ -129,8 +136,9 @@
   }
 }
 
-// 居右功能【注，cell使用flex布局所以text-align将无效】
+// form-item 位于tabel下时的样式处理 ?:比较将此样式放在cip-table下还是cip-form-item中
 .@{elNamespace}-table {
+  // table时的居右功能【注，cell使用flex布局所以text-align将无效】
   .is-right {
     .cell{
       justify-content: flex-end;
@@ -143,15 +151,16 @@
       text-align: center;
     }
   }
-}
-// 溢出省略号功能
-.cell.@{elNamespace}-tooltip{
-  .cip-form-item__input{
-    overflow: hidden;
-    text-overflow: ellipsis;
+  // 在table内部时的溢出省略号功能
+  .cell.@{elNamespace}-tooltip{
+    .cip-form-item__input{
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
 
+// cci标准部分针对cip-form的样式， 后期需要迁移到@cip/cci-standard-theme项目中
 .cip-form{
   .@{elNamespace}-form-item__label{
 
@@ -162,7 +171,7 @@
     display: flex;
     align-items: center;
   }
-  // 没办法入侵el-form-item__content
+  // 入侵el-form-item__content
   .@{elNamespace}-form-item__content{
     color: var(--cip-form-content-color, inherit);
     font-weight: var(--cip-form-content-font-weight, normal);
