@@ -34,7 +34,9 @@ export default {
       type: String,
       validate: (val) => ['top', 'right', 'left'].includes(val)
     },
-    onSearch: Function // 供CipSearchForm使用
+    onSearch: Function, // 供CipSearchForm使用
+    isDesign: Boolean, // 是否设计模式
+    drawType: String // 需要开启设计模式后优先级高于config.type 一般仅用于拖拽设计时使用， 平时无效果
   },
   emits: ['update:model'],
   setup (props, context) {
@@ -182,7 +184,9 @@ export default {
           updateModelValue
         })
       }
-      const type = formItemConfig.value.type || 'default'
+      const type = props.isDesign
+        ? props.drawType || formItemConfig.value.type || 'default'
+        : formItemConfig.value.type || 'default'
       const componentProps = {
         key: props.componentKey,
         id: props.fieldKey,

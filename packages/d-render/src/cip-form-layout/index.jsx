@@ -12,6 +12,8 @@ export default {
     },
     grid: {}, // Number | Boolean
     componentKey: {},
+    isDesign: Boolean, // 是否设计模式
+    drawType: String, // 需要开启设计模式后优先级高于config.type 一般仅用于拖拽设计时使用， 平时无效果
     readonly: Boolean // 是否只读-即查看模式
   },
   emits: ['update:model', 'validate', 'submit', 'cancel', 'selectItem', 'update:config'],
@@ -34,7 +36,8 @@ export default {
         fieldKey: props.fieldKey,
         style: cipFormStyle.value
       }
-      const componentType = props.config.type
+      // FEAT: [2.0.0]设计模式优先使用drawType
+      const componentType = props.isDesign ? (props.drawType || props.config.type) : props.config.type
       if (props.readonly) {
         return h(getLayoutViewComponent(componentType), componentProps, {
           item: ({ children, index }) => {
