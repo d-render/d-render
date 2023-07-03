@@ -1,13 +1,13 @@
 
 import { ComponentPublicInstance} from "vue";
-
-type TFetchAsyncComponent = (mode?: '/index'| '/mobile' | '/view') => () => Promise<any>
+type TFetchAsyncComponent = () => Promise<any>
+type TFetchAsyncComponents = (mode?: '/index'| '/mobile' | '/view' | '/configure') => () => Promise<any>
 
 interface ISampleRenderComponent {
-  component: TFetchAsyncComponent
+  component: TFetchAsyncComponents
   isLayout?: boolean
 }
-type TDRenderComponentConfig = TFetchAsyncComponent | ISampleRenderComponent
+type TDRenderComponentConfig = TFetchAsyncComponents | ISampleRenderComponent
 
 type TDRenderComponentsConfig = Record<string, TDRenderComponentConfig>
 
@@ -20,8 +20,7 @@ type IDRenderConfig = {
 
 export function defineDRenderConfig (renderConfig: IDRenderConfig | {}): IDRenderConfig
 
-
-
+export function insertConfig (plugin: TDRenderComponentsConfig, componentPlugin: TFetchAsyncComponent, mode: 'index' | 'view' | 'configure' | 'mobile' )
 
 
 export class DRender{

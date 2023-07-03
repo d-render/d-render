@@ -4,7 +4,7 @@ import { defineAsyncComponent } from 'vue'
 // #! Broken change!!!
 // import defaultInputComponentConfig from '../cip-form-input/component-config'
 // import defaultLayoutComponentConfig from '../cip-form-layout/component-config'
-const defaultInputComponentConfig = {}, defaultLayoutComponentConfig = {}
+const defaultInputComponentConfig = {}; const defaultLayoutComponentConfig = {}
 const generateAppendKey = (append) => {
   return append ? `-${append}` : ''
 }
@@ -68,9 +68,9 @@ export class DRender {
     return DRender.instance
   }
 
-  defaultComponentConfig={}
+  defaultComponentConfig = {}
   componentDictionary = {}
-  layoutTypeList=[]
+  layoutTypeList = []
   // 初始化
   init () {
     const defaultComponentConfig = { ...defaultInputComponentConfig, ...defaultLayoutComponentConfig }
@@ -101,8 +101,8 @@ export class DRender {
       // 如果是没有缓存过的组件组 分析一次
       this[`${append}Components`] = analyseComponents(this.componentDictionary, append)
     }
-    const components =  this[`${append}Components`][`${type}${generateAppendKey(append)}`]
-    if(components) return components
+    const components = this[`${append}Components`][`${type}${generateAppendKey(append)}`]
+    if (components) return components
     // 若没有找到则加载default, 注必须要有default渲染模式
     return this[`${append}Components`][`default${generateAppendKey(append)}`]
   }
@@ -115,8 +115,8 @@ export class DRender {
     return this.pageTypeList.includes(type)
   }
 }
-//### Broken Change
-//### d-render.config.js 需要从外部自行注册
+// ### Broken Change
+// ### d-render.config.js 需要从外部自行注册
 // // 必须直接实例化以防止数据为初始化导致的错误
 // const dRender = new DRender()
 // // 根据d-renderConfig
@@ -129,5 +129,35 @@ export class DRender {
 //   process.env.NODE_ENV === 'development' && console.log(e)
 // }
 
-
 export const defineDRenderConfig = val => val
+
+export const insertConfig = (plugin, componentPlugin, mode) => {
+  return Object.keys(componentPlugin).reduce((acc, key) => {
+    const originConfig = plugin[key]
+    let newConfig = {}
+    if (originConfig) {
+      // 生成新的组件配置
+      if (typeof originConfig === 'function') {
+        newConfig = (mode) => {
+          if (mode === `/${mode}`) {
+            return componentPlugin[key]
+          } else {
+            return originConfig(mode)
+          }
+        }
+      } else {
+        const { component, ...otherConfig } = originConfig
+        newConfig = { ...otherConfig }
+        newConfig.component = (mode) => {
+          if (mode === `/${mode}`) {
+            return componentPlugin[key]
+          } else {
+            return component(mode)
+          }
+        }
+      }
+      acc[key] = newConfig
+    }
+    return acc
+  }, plugin)
+}
