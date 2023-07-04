@@ -1,6 +1,6 @@
-import { h, toRefs, computed } from 'vue'
+import { h, toRefs, computed, unref } from 'vue'
 import { getH5LayoutComponent, getLayoutComponent, getLayoutViewComponent } from './util'
-import { useFormInject } from '@d-render/shared'
+import { getFieldValue, setFieldValue, useFormInject } from '@d-render/shared'
 export default {
   name: 'CipFormLayout',
   props: {
@@ -27,14 +27,22 @@ export default {
         return 'width: 100%'
       }
     })
-
+    const equipment = computed(() => {
+      return unref(cipForm.equipment) || 'pc'
+    })
     const formLayout = () => {
       const componentProps = {
         class: ['cip-form-layout', { 'cip-form-layout--hidden': props.config.hideItem }],
         model: model.value,
         config: props.config,
         fieldKey: props.fieldKey,
-        style: cipFormStyle.value
+        style: cipFormStyle.value,
+        modeValue: getFieldValue(model.value, props.fieldKey),
+        'onUpdate:modelValue': (val) => {
+          const result = model.value
+          setFieldValue(result, props.fieldKey, val, true)
+          context.emit('update:model', result)
+        }
       }
       // FEAT: [2.0.0]设计模式优先使用drawType
       const componentType = props.isDesign ? (props.drawType || props.config.type) : props.config.type
@@ -45,7 +53,7 @@ export default {
           }
         })
       } else {
-        const method = cipForm.equipment === 'pc' ? getLayoutComponent : getH5LayoutComponent
+        const method = equipment.value === 'pc' ? getLayoutComponent : getH5LayoutComponent
         return h(method(componentType),
           {
             ...componentProps,
