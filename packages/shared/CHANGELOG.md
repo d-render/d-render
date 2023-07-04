@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.1.4
+
+### Patch Changes
+
+- fix(shared): 修复`insertConfig`方法的逻辑错误
+
 ## 1.1.3
 
 ### Patch Changes
