@@ -1,6 +1,6 @@
 {
   "name": "@d-render/shared",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "d-render部分共享utils hooks helper",
   "module": "./esm/main.js",
   "types": "./types/main.d.ts",
@@ -14,7 +14,11 @@
     "hooks",
     "helper"
   ],
-  "files": ["esm", "types", "src"],
+  "files": [
+    "esm",
+    "types",
+    "src"
+  ],
   "exports": {
     ".": {
       "import": "./esm/main.js",
@@ -42,6 +46,3 @@
     "registry": "https://registry.npmjs.org/"
   }
 }
-
-
-
