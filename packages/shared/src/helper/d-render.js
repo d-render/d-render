@@ -131,7 +131,7 @@ export class DRender {
 
 export const defineDRenderConfig = val => val
 
-export const insertConfig = (plugin, componentPlugin, mode) => {
+export const insertConfig = (plugin, componentPlugin, componentMode) => {
   return Object.keys(componentPlugin).reduce((acc, key) => {
     const originConfig = plugin[key]
     let newConfig = {}
@@ -139,7 +139,7 @@ export const insertConfig = (plugin, componentPlugin, mode) => {
       // 生成新的组件配置
       if (typeof originConfig === 'function') {
         newConfig = (mode) => {
-          if (mode === `/${mode}`) {
+          if (mode === `/${componentMode}`) {
             return componentPlugin[key]
           } else {
             return originConfig(mode)
@@ -149,7 +149,7 @@ export const insertConfig = (plugin, componentPlugin, mode) => {
         const { component, ...otherConfig } = originConfig
         newConfig = { ...otherConfig }
         newConfig.component = (mode) => {
-          if (mode === `/${mode}`) {
+          if (mode === `/${componentMode}`) {
             return componentPlugin[key]
           } else {
             return component(mode)
