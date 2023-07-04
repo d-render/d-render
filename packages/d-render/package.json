@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "2.0.0-beta.8",
+  "version": "2.0.0",
   "description": "数据渲染库 - form、table、search-form",
   "main": "./esm/main.js",
   "module": "./esm/main.js",
@@ -16,7 +16,12 @@
     "searchForm"
   ],
   "homepage": "https://docs.d-render.x-develop.cn/",
-  "files": ["esm", "types", "dist", "src"],
+  "files": [
+    "esm",
+    "types",
+    "dist",
+    "src"
+  ],
   "exports": {
     ".": {
       "import": "./esm/main.js",
@@ -27,7 +32,7 @@
       "import": "./esm/*.js",
       "types": "./types/*.d.ts"
     },
-    "./*":  {
+    "./*": {
       "import": [
         "./esm/*.js",
         "./esm/*/index.js",
@@ -49,12 +54,12 @@
     "type": "git"
   },
   "dependencies": {
-    "@d-render/shared": "workspace:>= 1.0.2",
+    "@d-render/shared": "workspace:>=1.1.3",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1"
   },
   "peerDependencies": {
-    "@d-render/shared": "workspace:>= 1.0.2",
+    "@d-render/shared": "workspace:>=1.1.3",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1",
     "element-plus": "2.2.22",
