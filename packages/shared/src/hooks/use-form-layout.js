@@ -6,7 +6,10 @@ export const useFormLayoutOptions = ({ props, emit, optionsKey = 'options' }) =>
   const options = computed(() => {
     return props.config[optionsKey] || []
   })
-
+  const proxyValue = computed({
+    get () { return props.modelValue },
+    set (val) { emit('update:modelValue', val) }
+  })
   const updateConfig = (config) => {
     emit('update:config', config)
   }
@@ -57,6 +60,7 @@ export const useFormLayoutOptions = ({ props, emit, optionsKey = 'options' }) =>
     copyOptionChild,
     addOptionChild,
     emitSelectItem,
+    proxyValue,
     options
   }
 }
