@@ -37,7 +37,7 @@ export default {
         config: props.config,
         fieldKey: props.fieldKey,
         style: cipFormStyle.value,
-        modeValue: getFieldValue(model.value, props.fieldKey),
+        modelValue: getFieldValue(model.value, props.fieldKey),
         'onUpdate:modelValue': (val) => {
           const result = model.value
           setFieldValue(result, props.fieldKey, val, true)
