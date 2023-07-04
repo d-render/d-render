@@ -1,5 +1,11 @@
 # d-render
 
+## 2.0.2
+
+### Patch Changes
+
+- fix(d-render): 修复`form-layout`中的 modelValue 拼写错误的问题
+
 ## 2.0.1
 
 ### Patch Changes
