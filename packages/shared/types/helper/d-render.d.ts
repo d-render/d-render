@@ -20,7 +20,7 @@ type IDRenderConfig = {
 
 export function defineDRenderConfig (renderConfig: IDRenderConfig | {}): IDRenderConfig
 
-export function insertConfig (plugin: TDRenderComponentsConfig, componentPlugin: TFetchAsyncComponent, mode: 'index' | 'view' | 'configure' | 'mobile' )
+export function insertConfig (plugin: TDRenderComponentsConfig, componentPlugin: Record<string,TFetchAsyncComponent>, mode: 'index' | 'view' | 'configure' | 'mobile' )
 
 
 export class DRender{
