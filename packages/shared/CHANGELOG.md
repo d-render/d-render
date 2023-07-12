@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.2.0
+
+### Minor Changes
+
+- feat(@d-render/shared): 新增`use-deep-computed`hook
+
 ## 1.1.4
 
 ### Patch Changes
