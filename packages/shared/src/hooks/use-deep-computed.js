@@ -1,5 +1,5 @@
 import { customRef } from 'vue'
-const useDeepComputed = ({ get, set }) => {
+export const useDeepComputed = ({ get, set }) => {
   return customRef((track, trigger) => {
     return {
       get () {

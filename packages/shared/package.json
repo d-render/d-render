@@ -1,6 +1,6 @@
 {
   "name": "@d-render/shared",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "d-render部分共享utils hooks helper",
   "module": "./esm/main.js",
   "types": "./types/main.d.ts",

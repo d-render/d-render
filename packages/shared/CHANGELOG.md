@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.2.1
+
+### Patch Changes
+
+- fix(share): export useDeepComputed
+
 ## 1.2.0
 
 ### Minor Changes
