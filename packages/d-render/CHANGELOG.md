@@ -1,5 +1,11 @@
 # d-render
 
+## 2.0.4
+
+### Patch Changes
+
+- feat(d-render): [cip-form-item]`tooltip`支持 cipConfig 配置 effect
+
 ## 2.0.2
 
 ### Patch Changes
