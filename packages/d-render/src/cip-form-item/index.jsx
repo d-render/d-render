@@ -1,7 +1,15 @@
 import { ElFormItem, ElTooltip, ElIcon } from 'element-plus'
 import { InfoFilled, WarningFilled } from '@element-plus/icons-vue'
 import { h, toRef, computed, ref, unref, onErrorCaptured } from 'vue'
-import { isEmpty, isEmptyObject, isInputEmpty, useFormInject, useElFormInject, useCipConfig } from '@d-render/shared'
+import {
+  isEmpty,
+  isEmptyObject,
+  isInputEmpty,
+  useFormInject,
+  useElFormInject,
+  useCipConfig,
+  getUsingConfig, getFieldValue
+} from '@d-render/shared'
 import { useWatchFieldDepend } from './hooks/use-field-depend'
 import { useFieldValue, useSteamUpdateValues } from './hooks/use-model-change'
 import { useRules } from './hooks/use-field-rules'
@@ -123,8 +131,9 @@ export default {
       const result = [h('span', { class: { 'is-readonly': props.readonly }, id: labelId }, [formItemConfig.value.label])]
       // 存在说明
       if (formItemConfig.value.description) {
+        const effect = getUsingConfig(formItemConfig.value.descriptionEffect, getFieldValue(cipConfig, 'tooltip.effect'), 'light')
         const descriptionComp = (
-          <ElTooltip effect={formItemConfig.value.descriptionEffect || 'light'} placement={'top'}>
+          <ElTooltip effect={effect} placement={'top'}>
             {{
               content: () => formItemConfig.value.description,
               default: () => <ElIcon style={'margin-left:2px;line-height: inherit;'}><InfoFilled/></ElIcon>
