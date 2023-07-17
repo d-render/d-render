@@ -1,5 +1,11 @@
 # d-render
 
+## 2.0.6
+
+### Patch Changes
+
+- fix(d-render): [cip-search-form]修复配置的--cip-form-label-color 不生效的问题
+
 ## 2.0.5
 
 ### Patch Changes
