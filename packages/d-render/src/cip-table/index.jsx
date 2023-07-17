@@ -7,6 +7,7 @@ import {
   isEmpty,
   isArray,
   getUsingConfig,
+  getFieldValue,
   setFieldValue,
   cipTableKey,
   useCipConfig,
@@ -27,13 +28,27 @@ export default defineComponent({
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
     const cipTableRef = ref()
+
+    const tableUsingConfig = (key, defaultValue) => {
+      const configKey = `table.${key}`
+      return getUsingConfig(
+        getFieldValue(props, key),
+        getFieldValue(cipPageConfig, configKey),
+        getFieldValue(cipConfig, configKey),
+        defaultValue
+      )
+    }
+
     const _size = computed(() => {
-      // 考虑历史因素使用default作为默认值, 当前主要项目使用medium, 在修改表格size注意定宽项的折叠
-      return getUsingConfig(props.size, cipConfig.table.size, 'default')
+      return tableUsingConfig('size', 'default')
     })
 
     const _broder = computed(() => {
-      return getUsingConfig(props.border, cipPageConfig.table?.border, cipConfig.table.border)
+      return tableUsingConfig('border')
+    })
+
+    const showDisabledButtonBridge = computed(() => {
+      return tableUsingConfig('showDisabledButton')
     })
 
     const calculateCurrentWidthFn = computed(() => {
@@ -43,10 +58,13 @@ export default defineComponent({
     })
 
     const cipTable = reactive({
-      size: _size
+      size: _size,
+      showDisabledButton: showDisabledButtonBridge
     })
 
+    // 当前主要提供给cip-button-text使用
     provide(cipTableKey, cipTable)
+
     context.expose({
       cipTableRef
     })
