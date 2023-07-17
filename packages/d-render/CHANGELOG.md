@@ -1,5 +1,11 @@
 # d-render
 
+## 2.0.5
+
+### Patch Changes
+
+- feat(d-render): [cip-table] 支持通过`showDisabledButton`控制 table 中 disabled 的按钮是否展示。 需要@xdp/button >= 1.0.6
+
 ## 2.0.4
 
 ### Patch Changes
