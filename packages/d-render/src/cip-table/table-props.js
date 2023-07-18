@@ -6,6 +6,7 @@ export const tableProps = {
   size: { type: String, validate: (val) => ['large', 'default', 'small'].includes(val) },
   border: { type: Boolean, default: undefined },
   showDisabledButton: { type: Boolean, default: undefined }, // 是否展示在table中disabled的按钮
+  dangerButton: { type: Boolean, default: undefined }, // 是否不讲danger按钮转换为primary按钮
   columns: { type: Array, default: () => [] }, // table 数据列的配置
   offset: Number, // table第一行数据的偏移量, 设置该值将在左侧添加一个序号列
   hideIndex: Boolean, // 补充控制序号列，优先级高于offset,即当offset存在但hideIndex为true时依然不渲染序号列

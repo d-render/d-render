@@ -51,6 +51,10 @@ export default defineComponent({
       return tableUsingConfig('showDisabledButton')
     })
 
+    const dangerButtonBridge = computed(() => {
+      return tableUsingConfig('dangerButton', false)
+    })
+
     const calculateCurrentWidthFn = computed(() => {
       if (props.size) return (width) => width
       const { sizeStandard = 'default', size = 'default' } = cipConfig.table || {}
@@ -59,7 +63,8 @@ export default defineComponent({
 
     const cipTable = reactive({
       size: _size,
-      showDisabledButton: showDisabledButtonBridge
+      showDisabledButton: showDisabledButtonBridge,
+      dangerButton: dangerButtonBridge
     })
 
     // 当前主要提供给cip-button-text使用

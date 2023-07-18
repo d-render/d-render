@@ -1,5 +1,11 @@
 # d-render
 
+## 2.0.7
+
+### Patch Changes
+
+- feat(cip-table): 增加对 dangerButton 的控制,默认为不实用 danger 按钮
+
 ## 2.0.6
 
 ### Patch Changes
