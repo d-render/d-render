@@ -9,8 +9,9 @@ import {
   useFormProvide,
   useObserveDomResize,
   useCipConfig,
-  useCipPageConfig
+  useCipPageConfig, getFieldValue
 } from '@d-render/shared'
+import { useComponentProps } from '@xdp/config'
 import CipFormItem from '../cip-form-item'
 import { useExpand } from './use-expand'
 import { cipSearchFormProps } from './props'
@@ -25,14 +26,43 @@ export default defineComponent({
     const cipPageConfig = useCipPageConfig()
     const cipSearchForm = ref()
     const contentWidth = ref(1000)
-    useObserveDomResize(() => cipSearchForm.value.$el, (e) => {
-      contentWidth.value = e.contentRect.width
+
+    const searchFormPropsKey = [
+      ['collapse', true],
+      'labelPosition',
+      // 'grid',
+      'searchButtonText'
+      // 'searchReset'
+    ]
+
+    const searchFormProps = useComponentProps(props, 'searchForm', searchFormPropsKey, [cipPageConfig])
+    // 保留原始兼容性
+    const gridBridge = computed(() => {
+      return getUsingConfig(
+        props.grid,
+        getFieldValue(cipPageConfig, 'searchForm.grid'),
+        getFieldValue(cipConfig, 'searchForm.grid'),
+        getFieldValue(cipConfig, 'searchGrid')
+      )
     })
-    const _labelPosition = computed(() => getUsingConfig(
-      props.labelPosition,
-      cipPageConfig.searchForm?.labelPosition,
-      cipConfig.searchForm?.labelPosition
-    ))
+    const searchResetBridge = computed(() => {
+      return getUsingConfig(
+        props.searchReset,
+        getFieldValue(cipPageConfig, 'searchForm.searchReset'),
+        getFieldValue(cipConfig, 'searchForm.searchReset'),
+        getFieldValue(cipConfig, 'searchReset')
+      )
+    })
+    const needWatchDom = computed(() => {
+      return searchFormProps.value.collapse && (isNumber(gridBridge.value) && gridBridge.value <= 0)
+    })
+
+    if (needWatchDom.value) {
+      useObserveDomResize(() => cipSearchForm.value.$el, (e) => {
+        contentWidth.value = e.contentRect.width
+      })
+    }
+
     // 值更新
     const updateModel = (val) => {
       // FIX[2023-05-22]: 修复model更新且未更新defaultModel的值，model对象写入defaultModel的数据导致defaultModel失效
@@ -54,9 +84,9 @@ export default defineComponent({
 
     // 1366使用3列，1920使用5列，默认4列
     const gridCount = computed(() => { // 单列值
-      const grid = getUsingConfig(props.grid, cipConfig.searchGrid)
+      const grid = gridBridge.value // = getUsingConfig(props.grid, cipConfig.searchGrid)
       if (isNumber(grid) && grid > 0) return grid // 过滤grid为数字且grid>0 则使用固定的列
-      const cellWidth = _labelPosition.value === 'top' ? 268 : 335
+      const cellWidth = searchFormProps.value.labelPosition === 'top' ? 268 : 335
       return Math.max(2, Math.floor(contentWidth.value / cellWidth)) // contentWidth.value < 1300 ? 3 : (contentWidth.value > 1900 ? 5 : 4)
     })
 
@@ -74,7 +104,7 @@ export default defineComponent({
     }
 
     const showResetButton = computed(() => {
-      return getUsingConfig(props.searchReset, cipConfig.searchReset)
+      return searchResetBridge.value // getUsingConfig(props.searchReset, cipConfig.searchReset)
     })
 
     const arrowIcon = computed(() => {
@@ -90,7 +120,7 @@ export default defineComponent({
         fieldKey: key,
         config,
         grid: true,
-        labelPosition: _labelPosition.value,
+        labelPosition: searchFormProps.value.labelPosition,
         onKeyup: (e) => {
           const { keyCode } = e
           if (keyCode === 13) {
@@ -128,7 +158,7 @@ export default defineComponent({
             ]
           }
           style={{
-            alignItems: _labelPosition.value === 'top' ? 'flex-end' : 'flex-start',
+            alignItems: searchFormProps.value.labelPosition === 'top' ? 'flex-end' : 'flex-start',
             gridColumn: !isOne ? `${gridCount.value} / span 1` : undefined
           }}
         >

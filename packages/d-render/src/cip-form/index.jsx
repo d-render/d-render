@@ -3,12 +3,11 @@ import { ElForm, ElMessage } from 'element-plus'
 import {
   toUpperFirstCase,
   getFieldValue,
-  getUsingConfig,
   useFormProvide,
   DRender,
-  useCipConfig,
   useCipPageConfig
 } from '@d-render/shared'
+import { useConfig, useComponentProps } from '@xdp/config'
 import CipFormItem from '../cip-form-item'
 import CipFormDirectory from './form-directory'
 import CipFormLayout from '../cip-form-layout'
@@ -43,20 +42,26 @@ export default {
   setup (props, context) {
     // 下发属性
     const uploadQueue = ref({})
-    const cipConfig = useCipConfig()
-    const Message = computed(() => cipConfig.message ?? ElMessage)
+    // const cipConfig = useCipConfig()
+    const xdpConfig = useConfig()
+    const Message = computed(() => xdpConfig.message ?? ElMessage)
     const cipPageConfig = useCipPageConfig()
+    const formPropsKey = [
+      'border',
+      'labelPosition',
+      'useDirectory',
+      'grid',
+      'scrollToError'
+    ]
+    const formProps = useComponentProps(props, 'form', formPropsKey, [cipPageConfig])
 
-    const _border = computed(() => {
-      return getUsingConfig(props.border, cipPageConfig.form?.border, cipConfig.form?.border)
-    })
-
-    const _labelPosition = computed(() => {
+    const labelPositionBridge = computed(() => {
       // [Broken]: 当表单出现border时强制修改labelPosition为right
-      if (_border.value && props.showOnly) {
+      if (formProps.value.border && props.showOnly) {
         return 'right'
       }
-      return getUsingConfig(props.labelPosition, cipPageConfig.form?.labelPosition, cipConfig.form?.labelPosition)
+      return formProps.value.labelPosition
+      // return getUsingConfig(props.labelPosition, cipPageConfig.form?.labelPosition, cipConfig.form?.labelPosition)
     })
 
     useFormProvide(props, uploadQueue)
@@ -92,9 +97,9 @@ export default {
         config,
         dataBus: props.dataBus,
         readonly: props.showOnly,
-        grid: props.grid,
-        formLabelPosition: _labelPosition.value,
-        labelPosition: _labelPosition.value,
+        grid: formProps.value.grid,
+        formLabelPosition: labelPositionBridge.value,
+        labelPosition: labelPositionBridge.value,
         'onUpdate:model': (val) => {
           if (componentKey === generateComponentKey(key)) {
             updateModel(val)
@@ -137,7 +142,7 @@ export default {
     // 渲染单个字段
     const getFormDefaultSlot = ({ key, config } = {}, isShow) => {
       // 若存在字段key值的插槽覆盖则配置整个ElFormItem
-      config._isGrid = props.grid
+      config._isGrid = formProps.value.grid
       config._isShow = isShow
       if (context.slots[key]) {
         return context.slots[key]({ key, config })
@@ -165,7 +170,7 @@ export default {
     }
     // 渲染表单
     const getFormDefaultSlots = () => {
-      if (props.useDirectory) {
+      if (formProps.value.useDirectory) {
         return fieldList.value.map((v) => getFormDefaultSlot(v)).concat(
           [h(CipFormDirectory, { directory: directoryConfig.value })]
         )
@@ -228,15 +233,15 @@ export default {
         'cip-form',
         `cip-form--${props.equipment}`,
         {
-          'cip-form--grid': props.grid,
-          'cip-form--border': _border.value && props.showOnly,
+          'cip-form--grid': formProps.value.grid,
+          'cip-form--border': formProps.value.border && props.showOnly,
           'cip-form--readonly': props.showOnly
         }
       ],
-      style: { gridTemplateColumns: `repeat(${typeof props.grid === 'number' ? props.grid : 3},1fr)` },
+      style: { gridTemplateColumns: `repeat(${typeof formProps.value.grid === 'number' ? formProps.value.grid : 3},1fr)` },
       size: 'default',
       // labelPosition: _labelPosition.value,
-      scrollToError: props.scrollToError,
+      scrollToError: formProps.value.scrollToError,
       onSubmit: ev => { ev.preventDefault() }
     }, { default: () => [getFormDefaultSlots(), context.slots.default?.()] })
   }

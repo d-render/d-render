@@ -14,6 +14,7 @@ import { useWatchFieldDepend } from './hooks/use-field-depend'
 import { useFieldValue, useSteamUpdateValues } from './hooks/use-model-change'
 import { useRules } from './hooks/use-field-rules'
 import { isHideLabel, getLabelWidth, UpdateModelQueue, getInputComponent, getViewComponent, getH5InputComponent } from './util'
+
 export default {
   name: 'CipFormItem',
   props: {
@@ -239,8 +240,9 @@ export default {
       } else {
         // 根据cip-config配置给view的modelValue添加默认值
         if (isInputEmpty(componentProps.modelValue)) {
-          if (props.inTable && cipConfig.table.defaultViewValue) {
-            componentProps.modelValue = cipConfig.table.defaultViewValue
+          const tableDefaultViewValue = getFieldValue(cipConfig, 'table.defaultViewValue')
+          if (props.inTable && tableDefaultViewValue) {
+            componentProps.modelValue = tableDefaultViewValue
           }
           if (cipConfig.defaultViewValue) {
             componentProps.modelValue = cipConfig.defaultViewValue

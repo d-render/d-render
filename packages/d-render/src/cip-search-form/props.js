@@ -3,7 +3,7 @@ export const cipSearchFormProps = {
   fieldList: Array,
   hideSearch: Boolean, // 是否隐藏search按钮
   handleAbsolute: Boolean, // 在pageCurd下的特殊行为
-  collapse: { type: Boolean, default: true }, // 是否开启展开/收缩
+  collapse: { type: Boolean, default: undefined }, // 是否开启展开/收缩
   searchButtonText: String,
   searchReset: { // 是否开启重置
     type: Boolean,
