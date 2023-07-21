@@ -6,7 +6,6 @@ export default {
     scheme: Object,
     model: Object,
     equipment: { type: String, default: 'pc' },
-    dataBus: Function,
     service: Object
   },
   emits: ['update:model'],

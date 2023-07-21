@@ -28,7 +28,7 @@ export default defineComponent({
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
     const cipTableRef = ref()
-
+   // TODO: xdp 配置可控制更多的属性
     const tableUsingConfig = (key, defaultValue) => {
       const configKey = `table.${key}`
       return getUsingConfig(

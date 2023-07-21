@@ -34,9 +34,7 @@ export default {
       validate: (val) => ['pc', 'mobile'].includes(val)
     },
     border: { type: Boolean, default: undefined }, // showOnly + border 将出现边框
-    enterHandler: Function, // 回车触发回调
-    options: Object,
-    dataBus: Function
+    enterHandler: Function // 回车触发回调
   },
   emits: ['update:model', 'submit', 'cancel'],
   setup (props, context) {
