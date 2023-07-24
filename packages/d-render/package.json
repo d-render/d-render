@@ -20,7 +20,8 @@
     "esm",
     "types",
     "dist",
-    "src"
+    "src",
+    "CHANGELOG.md"
   ],
   "exports": {
     ".": {
