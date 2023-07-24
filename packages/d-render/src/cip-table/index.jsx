@@ -28,7 +28,7 @@ export default defineComponent({
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
     const cipTableRef = ref()
-   // TODO: xdp 配置可控制更多的属性
+    // TODO: xdp 配置可控制更多的属性
     const tableUsingConfig = (key, defaultValue) => {
       const configKey = `table.${key}`
       return getUsingConfig(
@@ -43,7 +43,7 @@ export default defineComponent({
       return tableUsingConfig('size', 'default')
     })
 
-    const _broder = computed(() => {
+    const _border = computed(() => {
       return tableUsingConfig('border')
     })
 
@@ -58,7 +58,8 @@ export default defineComponent({
     const calculateCurrentWidthFn = computed(() => {
       if (props.size) return (width) => width
       const { sizeStandard = 'default', size = 'default' } = cipConfig.table || {}
-      return (width) => calculateCurrentWidth(size, sizeStandard, width)
+      // FEAT(2.0.3): 当border为true是会比默认的多+1
+      return (width) => calculateCurrentWidth(size, sizeStandard, width) + (_border.value ? 1 : 0)
     })
 
     const cipTable = reactive({
@@ -304,7 +305,7 @@ export default defineComponent({
       size={_size.value}
       {...context.attrs}
       class={'cip-table'}
-      border={_broder.value}
+      border={_border.value}
       data={props.data}
       height={props.height}
       rowKey={props.rowKey}
