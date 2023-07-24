@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.2
+
+### Patch Changes
+
+- refactor(d-render): [cip-table]: 调整 config 的值为数字,调整 transformWidth
+
 ## 2.1.1
 
 ### Patch Changes
