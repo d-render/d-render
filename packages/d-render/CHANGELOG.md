@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.3
+
+### Patch Changes
+
+- chore(cip-table): 修复一个小错误
+
 ## 2.1.2
 
 ### Patch Changes
