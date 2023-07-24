@@ -97,7 +97,7 @@ export default defineComponent({
       showFieldList,
       lastRowSpan,
       spanSum
-    } = useExpand(props, gridCount)
+    } = useExpand(props, gridCount, searchFormProps)
 
     const isImmediateSearch = (config) => {
       return config.immediateSearch === true || config.autoSelect === true

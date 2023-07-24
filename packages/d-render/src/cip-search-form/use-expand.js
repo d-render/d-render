@@ -2,7 +2,7 @@ import { computed, ref, watch } from 'vue'
 
 const DEFAULT_SPAN = 1
 
-export const useExpand = (props, gridCount) => {
+export const useExpand = (props, gridCount, searchFormProps) => {
   const isExpand = ref(false)
   const toggleExpand = () => {
     isExpand.value = !isExpand.value
@@ -25,7 +25,7 @@ export const useExpand = (props, gridCount) => {
 
   // 支持2中模式。
   const haveExpand = computed(() => {
-    if (props.collapse) {
+    if (searchFormProps.value.collapse) {
       if (props.completeRow) return spanSum.value > gridCount.value
       return spanSum.value >= gridCount.value
     }
