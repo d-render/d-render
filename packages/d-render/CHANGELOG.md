@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.1
+
+### Patch Changes
+
+- feat(cip-table): 当 border 为 true 是 columns 的 width 会比默认的多 1
+
 ## 2.1.0
 
 ### Minor Changes
