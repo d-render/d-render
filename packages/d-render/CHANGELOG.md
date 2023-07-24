@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.5
+
+### Patch Changes
+
+- fix(d-render): [cip-search-form]修复直接使用 collapse 导致的问题
+
 ## 2.1.4
 
 ### Patch Changes
