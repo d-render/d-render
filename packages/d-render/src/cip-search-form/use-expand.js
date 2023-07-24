@@ -60,7 +60,7 @@ export const useExpand = (props, gridCount, searchFormProps) => {
   })
   // 当前展示的字段
   const showFieldList = computed(() => {
-    if (!props.collapse) {
+    if (!searchFormProps.value.collapse) {
       return props.fieldList
     } else {
       return isExpand.value
