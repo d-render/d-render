@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.4
+
+### Patch Changes
+
+- fix(d-render): [cip-search-form]修复 collapse 的判断不争气的问题
+
 ## 2.1.3
 
 ### Patch Changes
