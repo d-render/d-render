@@ -12,15 +12,15 @@
 // small cell 的padding 为 0 8px
 
 export const dateColumnWidthMap = {
-  large: '168px',
-  default: '168px',
-  small: '144px'
+  large: 168,
+  default: 168,
+  small: 144
 }
 
 export const handleColumnWidthMap = {
-  large: '140px',
-  default: '140px',
-  small: '124px'
+  large: 140,
+  default: 140,
+  small: 124
 }
 
 // 因历史问题，所以padding修改为10

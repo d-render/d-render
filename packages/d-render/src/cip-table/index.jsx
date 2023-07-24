@@ -56,10 +56,10 @@ export default defineComponent({
     })
 
     const calculateCurrentWidthFn = computed(() => {
-      if (props.size) return (width) => width
+      if (props.size) return (width) => width + addBorderWidth.value
       const { sizeStandard = 'default', size = 'default' } = cipConfig.table || {}
       // FEAT(2.0.3): 当border为true是会比默认的多+1
-      return (width) => calculateCurrentWidth(size, sizeStandard, width) + (_border.value ? 1 : 0)
+      return (width) => calculateCurrentWidth(size, sizeStandard, width) + addBorderWidth.value
     })
 
     const cipTable = reactive({
@@ -95,6 +95,10 @@ export default defineComponent({
     const onSelectionChange = (val) => {
       context.emit('update:selectColumns', val)
     }
+    // 如果带上了border则所有列宽需要+1
+    const addBorderWidth = computed(() => {
+      return _border.value ? 1 : 0
+    })
     // 原始的width 转换系数
     const transformWidth = (widthStr) => {
       if (typeof widthStr === 'number') return Math.ceil(calculateCurrentWidthFn.value(widthStr))
@@ -256,7 +260,9 @@ export default defineComponent({
         const handlerColumn = h(ElTableColumn, {
           label: '操作',
           fixed: 'right',
-          width: props.handlerWidth ? transformWidth(props.handlerWidth) : handleColumnWidthMap[_size.value]
+          width: props.handlerWidth
+            ? transformWidth(props.handlerWidth)
+            : handleColumnWidthMap[_size.value] + addBorderWidth.value
         }, {
           default: ({ row, $index }) => h(CipButtonCollapse, { limit: props.handlerLimit, row }, {
             default: () => handlerSlot({ row, $index })
