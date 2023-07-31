@@ -26,7 +26,7 @@ export function useOptions(
   props: IAnyObject,
   multiple: Ref<boolean>|boolean,
   updateStream: UpdateFormStream,
-  context:SetupContext
+  context?:SetupContext
 ): {
   optionProps: ComputedRef<{label: string, value: string, children?: string} & IAnyObject>
   options: Ref<Array<string|number|IAnyObject>>
@@ -38,7 +38,7 @@ export function useOptions(
   splitKey: ComputedRef<string>
   proxyOptionsValue: ComputedRef<any>
 }
-export type TKeyMap = 'string'| ['string', 'string'] | ['string', {key: string, default?: any}|{key?:string, default: any}]
+export type TKeyMap = string | [string, string] | [string, {key: string, default?: any}|{key?:string, default: any}]
 export function useInputProps(
   props: IAnyObject,
   propKeys: Array<TKeyMap>
