@@ -1,7 +1,12 @@
 import { IAnyObject } from '../utils'
 import { ComputedRef, Ref, VNode, CSSProperties, SetupContext } from "vue";
 import { UpdateFormStream } from '../helper/update-form-stream'
-export function useFormInput(props: IAnyObject, context: SetupContext): {
+interface IOption {
+  fromModelValue?: (modelValue: any) => any // 将modelValue的值转换为input的值
+  toModelValue?: (value: any) => any // 将input的值转换为modelValue
+  maxOtherKey?: number // 最大的otherKey的值
+}
+export function useFormInput(props: IAnyObject, context: SetupContext, options?: IOption): {
   inputRef: Ref<Element | VNode>
   inputStyle: ComputedRef<CSSProperties>
   proxyValue: ComputedRef<any>
