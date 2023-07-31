@@ -9,7 +9,7 @@ export function useFormInput(props: IAnyObject, context: SetupContext): {
   emitInput: (val:any) => void
   emitModelValue: (val: any) => void
   emitOtherValue: (val: any) => void
-  updateStream: (val: any) => void
+  updateStream: InstanceType<typeof UpdateFormStream>
   proxyOtherValue: ComputedRef<any>[]
   placeholder?: ComputedRef<string>
   clearable: ComputedRef<boolean>
