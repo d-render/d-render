@@ -24,12 +24,21 @@
       height: 22px;
       line-height: 22px;
       font-size: 14px;
-      color: #c0c0c0;
     }
   }
   .cip-table-column-selection{
     display: inline-flex;
     align-items: center;
     column-gap: 8px;
+  }
+  .cip-button + .cip-button{
+    margin-left: 8px;
+  }
+}
+
+// 颜色的修改
+html:not(.dark){
+  .cip-table__text{
+    color: #c0c0c0;
   }
 }
