@@ -185,7 +185,7 @@ export const judgeUseFn = (key, config, effect) => {
   }
 }
 
-export const useOptions = (props, multiple, updateStream, context) => {
+export const useOptions = (props, multiple, updateStream, context, { autoGet = true } = {}) => {
   const optionProps = computed(() => {
     return Object.assign({ label: 'label', value: 'value', children: 'children' }, props.config?.treeProps, props.config?.optionProps)
   })
@@ -284,17 +284,19 @@ export const useOptions = (props, multiple, updateStream, context) => {
       return modelValue
     }
   }
-  if (!(props.config.dependOn?.length) && !(props.config.outDependOn?.length)) {
-    getOptions() // .then(() => { console.log('[init]: getOptions') })
-    if (props.config.options) { // 动态表单设计时修改options需要触发此方法
-      watch(() => props.config.options, (val) => {
-        getOptions() // .then(() => { console.log('[config.options change]: getOptions') })
-      })
+  if (autoGet) {
+    if (!(props.config.dependOn?.length) && !(props.config.outDependOn?.length)) {
+      getOptions() // .then(() => { console.log('[init]: getOptions') })
+      if (props.config.options) { // 动态表单设计时修改options需要触发此方法
+        watch(() => props.config.options, (val) => {
+          getOptions() // .then(() => { console.log('[config.options change]: getOptions') })
+        })
+      }
+    } else {
+      watch([() => props.dependOnValues, () => props.outDependOnValues], ([dependOnValues, outDependOnValues]) => {
+        getOptions(dependOnValues || {}, outDependOnValues || {}) // .then(() => { console.log('[dependOn change]: getOptions') })
+      }, { immediate: true })
     }
-  } else {
-    watch([() => props.dependOnValues, () => props.outDependOnValues], ([dependOnValues, outDependOnValues]) => {
-      getOptions(dependOnValues || {}, outDependOnValues || {}) // .then(() => { console.log('[dependOn change]: getOptions') })
-    }, { immediate: true })
   }
   // options部分组件重新定义proxyOptionsValue
   const proxyOptionsValue = computed({
