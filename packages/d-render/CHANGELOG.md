@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.6
+
+### Patch Changes
+
+- fix(d-render): [cip-table]控制按钮的间距为 8px
+
 ## 2.1.5
 
 ### Patch Changes
