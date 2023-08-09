@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.7
+
+### Patch Changes
+
+- fix(styles): 修复 cip-button-text 存在 padding 导致宽度超过预期导致换行的问题
+
 ## 2.1.6
 
 ### Patch Changes
