@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.8
+
+### Patch Changes
+
+- feat(styles): 扩展对 form-label 部分的背景色控制
+
 ## 2.1.7
 
 ### Patch Changes
