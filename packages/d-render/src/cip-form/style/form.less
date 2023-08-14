@@ -1,6 +1,9 @@
 // 不同状态下label content颜色控制
 // 默认
 // readonly
+html.dark{
+  --cip-form-border-label-bg: var(~'--@{elNamespace}-bg-color');
+}
 .cip-form--readonly{
   --cip-form-label-color: var(--el-text-color-primary);
 }
@@ -32,7 +35,7 @@
   grid-gap: 0;
   position: relative;
   @border-color: var(~'--@{elNamespace}-border-color-lighter');
-  //border-top: 1px solid @border-color;
+  // border-top: 1px solid @border-color;
   // cip-form-layout/classify会使用grid样式
   &.cip-form--grid{
     grid-gap: 0;
@@ -55,10 +58,10 @@
       margin-bottom: 0;
     }
     .@{elNamespace}-form-item__label{
-      background: #FAFAFA;
+      background: var(--cip-form-border-label-bg, #FAFAFA);
       padding: 4px 8px;
       border-right: 1px solid @border-color;
-      //font-weight: 500;
+      // font-weight: 500;
       text-align: left;
       justify-content: flex-start; // el-form-item__label默认开启flex导致text-align无效
       height: 100%;
