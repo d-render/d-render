@@ -4,7 +4,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import { buildDirResolve } from '../utils/path.js'
 import { rimrafSync } from 'rimraf'
 
-console.log('ENTRY_MODULE', process.env.ENTRY_MODULE);
+console.log('ENTRY_MODULE', process.env.ENTRY_MODULE)
 
 const ENTRY_MODULE = process.env.ENTRY_MODULE
 const projectPath = `../packages/${ENTRY_MODULE}`

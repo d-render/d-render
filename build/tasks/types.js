@@ -1,69 +1,82 @@
-import { getParamsFromCommand } from '../utils/tool.js'
-import fglob from 'fast-glob'
-import extra from 'fs-extra'
-import chalk from 'chalk'
-import { buildDirResolve } from '../utils/path.js'
-import { rimrafSync } from 'rimraf'
-const { entry = process.env.ENTRY_MODULE } = getParamsFromCommand(process.argv)
-if (!entry) process.exit(2)
-const projectPath = `../packages/${entry}`
-rimrafSync(buildDirResolve(`${projectPath}/types`))
-const projectSchemePath = buildDirResolve(`${projectPath}/src/**/component.scheme.js`)
-const outputFileSync = extra.outputFileSync
-console.log('projectSchemePath', projectSchemePath)
-const componentSchemes = fglob.sync(projectSchemePath)
+/**
+ * @description 此文件用于生成按需引入的组件
+ */
+require('@esbuild-kit/cjs-loader')
+const { buildDirResolve } = require("build/utils/path")
+console.log('buildDirResolve',buildDirResolve)
+const chalk = require('chalk')
+const fglob = require('fast-glob')
+const { writeFileSync } = require('fs-extra')
+const entry =  process.env.ENTRY_MODULE || 'cip-styles'
+console.log('types entry', entry)
+const packageBase = buildDirResolve(`../packages/${entry}`)
+const dirs = fglob.sync(`${packageBase}/src/**/component.scheme.js`)
 
 const getTsTypeByType = (type) => {
   if (Array.isArray(type)) {
     return type.map(t => getTsTypeByType(t)).join('|')
   }
-  if (type === Object) return 'import(\'@d-render/shared\').IAnyObject'
+  if (type === Object) return 'IAnyObject'
   if (type === String) return 'string'
   if (type === Boolean) return 'boolean'
   if (type === Number) return 'number'
-  if (type === Function) return 'function():void'
+  if (type === Function) return '(()=>void)'
   if (type === Array) return 'Array<any>'
 }
 
+const formatKey = (key) => {
+  if (/(-|:)/.test(key)) {
+    return `'${key}'`
+  } else {
+    return key
+  }
+}
+
+// 生产组件类型
+
 const componentDTs = {}
 const genComponentsDTs = () => {
-  return Promise.all(componentSchemes.map(dir => {
+  return Promise.all(dirs.map(dir => {
     // const componentScheme = require(dir)/**/
     return new Promise((resolve) => {
+      console.log(dir)
       import(dir).then((res) => {
+        console.log(res)
         const { componentScheme } = res.default
         const propsScheme = componentScheme.propsScheme
         const propsString = Object.keys(propsScheme).reduce((acc, key, i) => {
           const config = propsScheme[key]
           const type = config.tsType || getTsTypeByType(config.type)
-          const isRequired = config.required === true
-          acc.push(`  ${key}${isRequired ? '' : '?'}: ${type}`)
+          const isRequired = config.required ? '' : '?'
+
+          acc.push(`  ${formatKey(key)}${isRequired}: ${type}` + (config.intro ? ` // ${config.intro}` : ''))
           return acc
         }, []).join('\n')
         const emitsScheme = componentScheme.eventsScheme
         const emitsString = Object.keys(emitsScheme || {}).reduce((acc, key) => {
           const config = emitsScheme[key]
-          const type = config.tsType || ` (${config.cbVar?.split(', ').map(v => `${v}: any`).join(', ') ?? ''}) => void`
-          const keyString = key.includes(':') ? `"${key}"` : key
-          acc.push(`  ${keyString}: ${type}`)
+          const type = config.tsType || `(${config.cbVar?.split(', ').map(v => `${formatKey(v)}: any`).join(', ') ?? ''}) => void`
+          const keyString = formatKey(key) // key.includes(':') ? `'${key}'` : key
+          acc.push(`  ${keyString}?: ${type}`)
           return acc
         }, []).join('\n')
         const slotsScheme = componentScheme.slotsScheme
-        const slotsString = Object.keys(slotsScheme || {}).reduce((acc, key) => {
-          const type = slotsScheme[key] || {}
-          acc.push(`  ${key}: ${type}`)
+        const slotsLen = Object.keys(slotsScheme || {}).length
+        const slotsString =  Object.keys(slotsScheme || {}).reduce((acc, key) => {
+          const type = JSON.stringify(slotsScheme[key] || {})
+          acc.push(`  ${formatKey(key)}?: ${type}`)
           return acc
         }, []).join('\n')
 
-        const content = `export const ${componentScheme.name}: import('@d-render/shared').CustomComponent<{\n${propsString}\n}, {\n${emitsString}\n}, {\n${slotsString}\n}>
-export default ${componentScheme.name}
+        const componentName = componentScheme.name || 'Component'
+        const content = `import { CustomComponent, IAnyObject } from '@xdp/types'
+export const ${componentName}: CustomComponent<{\n${propsString}\n}, {\n${emitsString}\n}${ slotsLen > 0 ? ',{\n'+slotsString+'\n}' : '' }>
+export default ${componentName}
 `
-        console.log(dir)
-        const filename = dir.match(/src\/(.*)\/component.scheme.js/)[1]
-        console.log(filename)
+        const filename = dir.replace(packageBase, '').replace('/src', '').replace('/component.scheme.js', '')
         try {
-          outputFileSync(buildDirResolve(`../packages/${entry}/types/${filename}.d.ts`), content, 'utf-8')
-          componentDTs[componentScheme.name] = `${filename}`
+          writeFileSync(`${packageBase}/types${filename}.d.ts`, content, 'utf-8')
+          componentDTs[componentName] = `.${filename}`
           console.log(
             chalk.green(`generate ./types${filename}.d.ts success !`)
           )
@@ -78,23 +91,22 @@ export default ${componentScheme.name}
 
 // 生成main.d.ts类型
 genComponentsDTs().then(res => {
-  const mainContent = `export {
-  DRender,
-  settingValueTransformState,
-  generateFieldList,
-  insertFieldConfigToList,
-  keysToConfigMap,
-  defineSearchFieldConfig,
-  defineFormFieldConfig,
-  defineTableFieldConfig
-} from '@d-render/shared'
-${Object.keys(componentDTs).reduce((acc, key) => {
-    acc.push(`export { ${key} } from './${componentDTs[key]}'`)
-    return acc
-  }, []).join('\n')}
+  let mainContent = ''
+  if(Object.keys(componentDTs).length > 1){
+    mainContent = `${Object.keys(componentDTs).reduce((acc, key) => {
+      acc.push(`export { ${key} } from '${componentDTs[key]}'`)
+      return acc
+    }, []).join('\n')}
 `
+  }else{
+    mainContent = `${Object.keys(componentDTs).reduce((acc, key) => {
+      acc.push(`export { ${key} as default } from '${componentDTs[key]}'`)
+      return acc
+    }, []).join('\n')}
+`
+  }
   try {
-    outputFileSync(buildDirResolve(`${projectPath}/types/main.d.ts`), mainContent, 'utf-8')
+    writeFileSync(`${packageBase}/types/main.d.ts`, mainContent, 'utf-8')
     console.log(
       chalk.green('generate ./types/main.d.ts success !')
     )
@@ -102,3 +114,5 @@ ${Object.keys(componentDTs).reduce((acc, key) => {
     console.log(e)
   }
 })
+
+// 表单设计弹框特殊引入

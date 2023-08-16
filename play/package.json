@@ -18,7 +18,6 @@
     "@cip/utils": "^5.0.6",
     "@ctrl/tinycolor": "^3.6.0",
     "@d-render/design": "workspace:*",
-    "@d-render/plugin-antdv": "workspace:*",
     "@d-render/plugin-standard": "workspace:*",
     "@d-render/shared": "workspace:*",
     "@element-plus/icons-vue": "^2.1.0",
