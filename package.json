@@ -25,7 +25,7 @@
     "demo": "pnpm -C play serve",
     "changeset": "changeset",
     "gen:version": "changeset version",
-    "build-all": "run-s build:**",
+    "build-all": "pnpm run '/^build:(.*)/'",
     "deploy:docs": "pnpm -C play build && scp -r play/dist/* x-develop.cn:~/web_html/docs/"
   },
   "keywords": [],
@@ -63,7 +63,6 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-less": "^5.0.0",
     "gulp-rename": "^2.0.0",
-    "npm-run-all": "^4.1.5",
     "rimraf": "^5.0.0",
     "rollup": "^3.21.7",
     "rollup-plugin-esbuild": "^5.0.0",
