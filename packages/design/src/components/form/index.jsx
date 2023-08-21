@@ -3,9 +3,9 @@ import { useNamespace } from '@d-render/shared'
 import DesignLayout from '../../widgets/layout'
 import DesignModules from '../../widgets/modules'
 import { EditorRenderer, EditorOutline, EditorCode, EditorTpl } from '../../svg'
-import Structure from '../../widgets/side-components/structure'
-import CodeSource from '../../widgets/side-components/code-source'
-import FormComponents from '../../widgets/side-components/component-group'
+import Structure from '../../widgets/aside/structure'
+import CodeSource from '../../widgets/aside/code-source'
+import FormComponents from '../../widgets/aside/component-group'
 export default {
   props: {
     schema: {},
