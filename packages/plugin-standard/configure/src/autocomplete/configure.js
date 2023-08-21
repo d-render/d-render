@@ -1,29 +1,13 @@
-import { CipFormInputTransform } from 'd-render'
-import { ElAutocomplete } from 'element-plus'
+import { basicInputConfigureOptions } from '@d-render/shared'
 export default {
-  name: 'StandardAutoComplete',
-  setup () {
-    const elInputProps = [
-      'fetchSuggestions',
-      'placeholder',
-      'clearable',
-      'valueKey',
-      'debounce',
-      'placement',
-      'triggerOnFocus',
-      'selectWhenUnmatched',
-      'name',
-      'label',
-      'hideLoading',
-      'popperClass',
-      'teleported',
-      'highlight-first-item',
-      'fit-input-width'
-    ]
-
-    return () => <CipFormInputTransform
-      inputPropsConfig={elInputProps}
-      comp={ElAutocomplete}
-    />
-  }
+  ...basicInputConfigureOptions(),
+  placeholder: {},
+  defaultValue: {
+    type: 'staticOptionsConfig',
+    label: '静态数据',
+    otherKey: 'options',
+    limit: 20
+  },
+  required: {},
+  requiredErrorMessage: {}
 }
