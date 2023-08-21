@@ -1,0 +1,46 @@
+.page-design-structure{
+  padding: 0 12px;
+  .common-style(){
+    height: 32px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  };
+  .structure-tree{
+    &__item{
+      margin-left: 8px;
+      .common-style();
+      &.is-active{
+        background: var(--el-color-primary-light-9);
+        color: var(--el-color-primary);
+      }
+    }
+  }
+  .structure-sub-tree{
+    &.is-active{
+      > .structure-sub-tree__title{
+        background: var(--el-color-primary-light-9);
+        color: var(--el-color-primary);
+      }
+    }
+    &__title{
+      display: flex;
+      .common-style();
+
+      &__icon{
+        margin-right: 4px;
+        transition: transform 0.3s;
+        &.is-expand{
+          transform: rotate(90deg);
+        }
+      }
+    }
+    &__panel{
+      display: none;
+      padding-left: 12px;
+      &.is-expand{
+        display: block;
+      }
+    }
+  }
+}

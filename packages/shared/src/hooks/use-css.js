@@ -1,3 +1,5 @@
+import { computed } from 'vue'
+
 export const defaultNamespace = 'dr'
 const statePrefix = 'is-'
 const _bem = (namespace, block, blockSuffix, element, modifier) => {
@@ -16,9 +18,9 @@ const _bem = (namespace, block, blockSuffix, element, modifier) => {
 
 export const useNamespace = (
   block,
-  namespaceOverrides
+  namespaceOverrides = undefined
 ) => {
-  const namespace = defaultNamespace
+  const namespace = computed(() => defaultNamespace)
   const b = (blockSuffix = '') =>
     _bem(namespace.value, block, blockSuffix, '', '')
   const e = (element) =>

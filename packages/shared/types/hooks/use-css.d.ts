@@ -5,7 +5,7 @@ const _bem = (namespace: string, block: string, blockSuffix: string, element: st
 
 export const useNamespace = (
   block: string,
-  namespaceOverrides: string
+  namespaceOverrides?: string
 ) => {
   const namespace = defaultNamespace
   const b = (blockSuffix = '') =>

@@ -1,0 +1,23 @@
+.dr-design-modules__wrapper{
+  .dr-design-modules__item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--dr-design-header-height);
+    height: var(--dr-design-header-height);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    & + .dr-design-modules__item{
+      margin-top: 12px;
+    }
+    &:hover{
+      background: var(--el-color-primary-light-9);
+      color: var(--el-color-primary)
+    }
+    &.is-active{
+      background: var(--el-color-primary-light-9);
+      color: var(--el-color-primary);
+      border-color: var(--el-color-primary);
+    }
+  }
+}

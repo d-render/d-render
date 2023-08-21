@@ -22,7 +22,7 @@ export default {
       navMenu={menu.value}
       withTabs={true}
       hideFooter={true}
-      layout={'left-2'}
+      layout={'top-left'}
       homeView={{ fullPath: '/' }}
     >
       {{

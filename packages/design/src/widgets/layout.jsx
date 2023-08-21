@@ -1,33 +1,32 @@
 import { ElScrollbar } from 'element-plus'
-
+import { useNamespace } from '@d-render/shared'
 export default {
   props: { navTitle: String },
   setup (props, { slots }) {
-    const prefix = 'dr'
-    const cssBase = `${prefix}-design`
-    return () => <div class={'dr-design'}>
-      <div class={styles.header}>
+    const ns = useNamespace('design-layout')
+    return () => <div class={ns.b()}>
+      <div class={ns.e('header')}>
         {slots.title?.()}
-        <div class={styles.handle}>{slots.handle?.()}</div>
+        <div class={ns.e('handle')}>{slots.handle?.()}</div>
       </div>
-      <div class={styles.main}>
-        <div class={styles.modules}>
+      <div class={ns.e('main')}>
+        <div class={ns.e('modules')}>
           {slots.modules?.()}
         </div>
-        <div class={styles.nav}>
-          <div class={styles.nav__title}>
+        <div class={ns.e('nav')}>
+          <div class={ns.e('nav__title')}>
             {props.navTitle}
           </div>
-          <div class={styles.nav__content}>
+          <div class={ns.e('nav__content')}>
             <ElScrollbar>
               {slots.nav?.()}
             </ElScrollbar>
           </div>
         </div>
-        <div class={styles.content}>
+        <div class={ns.e('content')}>
           {slots.content?.()}
         </div>
-        <div class={styles.configure}>
+        <div class={ns.e('configure')}>
           {slots.configure?.()}
         </div>
       </div>

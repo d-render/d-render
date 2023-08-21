@@ -2,12 +2,19 @@
   "name": "@d-render/design",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./esm/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "vuedraggable": "^4.1.0",
+    "@cip/code-mirror": "^1.0.4"
+  },
   "peerDependencies": {
-    "@d-render/shared": "workspace:>=1.2.2"
+    "@cip/code-mirror": "^1.0.4",
+    "@d-render/shared": "workspace:>=1.2.2",
+    "vuedraggable": "^4.1.0",
+    "vue": "^3.3.2"
   },
   "keywords": [],
   "author": "",

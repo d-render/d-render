@@ -61,27 +61,16 @@ export const menu = [
     ]
   },
   PluginsMenu,
-  // {
-  //   name: '_lowPages',
-  //   title: 'Low Pages',
-  //   children: [
-  //     {
-  //       name: '/low/1',
-  //       title: 'Low Pages1',
-  //       route: '/low/1'
-  //     },
-  //     {
-  //       name: '/low/2',
-  //       title: 'Low Pages2',
-  //       route: '/low/2'
-  //     },
-  //     {
-  //       name: '/low/3',
-  //       title: 'Low Pages3',
-  //       route: '/low/3'
-  //     }
-  //   ]
-  // },
+  {
+    name: '_playground',
+    title: 'Playground',
+    children: [
+      {
+        name: 'PlaygroundFormDesign',
+        title: 'FormDesign'
+      }
+    ]
+  },
   {
     name: '_changelog',
     title: '更新日志',
