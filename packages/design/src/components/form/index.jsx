@@ -9,12 +9,15 @@ import FormComponents from '@/widgets/aside/component-group'
 
 import Drawing from '@/widgets/drawing'
 
+import { useSelect } from '@/hooks/use-select'
+
 export default {
   props: {
     schema: {},
     componentsGroupList: {}
   },
-  setup (props) {
+  emits: ['update:scheme', 'update:config'],
+  setup (props, { emit }) {
     const ns = useNamespace('form-design')
     const defaultModules = [
       { name: 'renderer', title: '组件', icon: <EditorRenderer/> },
@@ -23,8 +26,23 @@ export default {
       { name: 'tpl', title: '模版', icon: <EditorTpl/> }
     ]
     const currentModuleName = ref('renderer')
-    const selectItem = ref({})
-    const selectItemId = ref()
+    const { selectItem, selectItemId, changeSelect, updateSelectItem } = useSelect()
+
+    const updateScheme = (schema) => {
+      // 进入使用designType 出来使用type
+      emit('update:scheme', schema)
+    }
+    const updateConfig = (config) => {
+      const scheme = props.schema
+      scheme.config = config
+      emit('update:config', config)
+    }
+    const updateList = (list) => {
+      const schema = props.schema
+      schema.list = list
+      updateScheme(schema)
+    }
+
     return () => <DesignLayout navTitle={currentModuleName.value} class={[ns.b()]}>
       {{
         title: () => '表单设计器',

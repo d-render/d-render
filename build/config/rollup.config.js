@@ -25,7 +25,7 @@ export function getRollupOptions (
         input,
         'esm',
         join(buildDirResolve(distEsm), output),
-        [...plugins, alias()],
+        [...plugins, alias({ rootDir: inputDir })],
         externals
       )
     ]
