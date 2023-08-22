@@ -104,8 +104,7 @@ import { CipForm } from 'd-render'
 import CipInputSwitch from '@cip/components/cip-input-switch'
 import ConfigTabs from './config-tabs'
 import { formConfigFieldConfigList, getComponentConfigure } from './config'
-import { mergeFieldConfig, configMapToList } from '@cip/utils/config-util'
-import { configureOptionsFieldConfigMap, defaultConfigureOptions } from '@d-render/shared'
+import { mergeFieldConfig, configMapToList, configureOptionsFieldConfigMap, defaultConfigureOptions } from '@d-render/shared'
 import { ElInputNumber, ElSelect, ElOption, ElInput } from 'element-plus'
 import CodeMirrorDialog from './code-mirror-dialog'
 import { isLayoutType } from '../../../utils'
@@ -225,7 +224,7 @@ export default {
     })
     const dependOnOptions = computed(() => {
       const { keyList } = getDependOnSelectList(props?.data?.list ?? [])
-      return [...keyList ]
+      return [...keyList]
     })
     // 判断当前选中字段是否为子表单中的字段
     const isCurrentInTable = computed(() => {

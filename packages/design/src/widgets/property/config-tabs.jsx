@@ -1,14 +1,8 @@
-<template>
-  <div class="config-tabs">
-    <template v-for="group in groupList" :key="group.name">
-      <config-tab :name="group.value" :is-active="group.value === active" @onClick="activeGroup">{{group.label}}</config-tab>
-    </template>
-  </div>
-</template>
-<script>
+// 导入必要的库和组件
+import { defineComponent } from 'vue'
 import ConfigTab from './config-tab'
-export default {
-  components: { ConfigTab },
+
+export default defineComponent({
   props: {
     active: String,
     groupList: Array
@@ -18,9 +12,20 @@ export default {
     const activeGroup = (name) => {
       emit('update:active', name)
     }
-    return {
-      activeGroup
-    }
+
+    return () => (
+      <div class="config-tabs">
+      {props.groupList.map(group => (
+        <ConfigTab
+          key={group.value}
+          name={group.value}
+          is-active={group.value === props.active}
+          onClick={() => activeGroup(group.value)}
+        >
+        {group.label}
+        </ConfigTab>
+      ))}
+      </div>
+    )
   }
-}
-</script>
+})

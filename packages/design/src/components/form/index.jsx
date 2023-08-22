@@ -1,11 +1,14 @@
 import { ref } from 'vue'
 import { useNamespace } from '@d-render/shared'
-import DesignLayout from '../../widgets/layout'
-import DesignModules from '../../widgets/modules'
-import { EditorRenderer, EditorOutline, EditorCode, EditorTpl } from '../../svg'
-import Structure from '../../widgets/aside/structure'
-import CodeSource from '../../widgets/aside/code-source'
-import FormComponents from '../../widgets/aside/component-group'
+import DesignLayout from '@/widgets/layout'
+import DesignModules from '@/widgets/modules'
+import { EditorRenderer, EditorOutline, EditorCode, EditorTpl } from '@/svg'
+import Structure from '@/widgets/aside/structure'
+import CodeSource from '@/widgets/aside/code-source'
+import FormComponents from '@/widgets/aside/component-group'
+
+import Drawing from '@/widgets/drawing'
+
 export default {
   props: {
     schema: {},
@@ -39,7 +42,12 @@ export default {
           {currentModuleName.value === 'code' && <CodeSource></CodeSource>}
           {currentModuleName.value === 'renderer' && <FormComponents groupList={props.componentsGroupList}/>}
         </>,
-        content: () => 'content',
+        content: () => <Drawing
+          data={props.schema}
+          selectId={selectItemId.value}
+          onSelect={(item) => changeSelect(item)}
+          onUpdateList={(list) => { updateList(list) }}
+        />,
         configure: () => 'configure'
       }}
     </DesignLayout>

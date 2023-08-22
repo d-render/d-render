@@ -19,22 +19,13 @@ export function getRollupOptions (
 ) {
   return files.reduce((acc, input) => {
     const output = input.replace(inputDir, '').replace(/\.(js(x)|vue)/, '.js')
-    const ret = input.replace(inputDir, '').split('/').length - 2
-    const retPath = ret === 0
-      ? '.'
-      : new Array(ret).fill('..').join('/') + '/'
     return [
       ...acc,
       getConfig(
         input,
         'esm',
         join(buildDirResolve(distEsm), output),
-        [...plugins, paths({
-          rootDir: inputDir,
-          entries: {
-            '@/': retPath
-          }
-        })],
+        [...plugins, paths()],
         externals
       )
     ]
