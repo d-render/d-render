@@ -1,10 +1,12 @@
-import './index.less'
 import { DRender } from 'd-render'
 import { inject, ref, provide, reactive } from 'vue'
 import { ElTag, ElIcon } from 'element-plus'
 import { CaretRight } from '@element-plus/icons-vue'
+import logo from "play/src/views/framework/logo";
+// import './index.less'
 const dRender = new DRender()
 const isLayoutType = (type) => dRender.isLayoutType(type)
+console.log(dRender.layoutTypeList, 'layoutTypeList')
 const CustomTree = {
   props: {
     list: Array,
@@ -14,7 +16,9 @@ const CustomTree = {
   setup (props) {
     const pageDesign = inject('pageDesign', {})
     return () => <div class={{ 'structure-tree': !props.isSub, 'structure-sub-tree': props.isSub }}>{props.list.map(item => {
-      const isLayout = isLayoutType(pageDesign.drawTypeMap[item.config.type] ?? item.config.type)
+      console.log(item, 'CustomTree', item.config.type)
+      const isLayout = isLayoutType(pageDesign?.drawTypeMap?.[item.config.type] ?? item.config.type)
+      console.log(isLayout, 'isLayout')
       if (isLayout) {
         return <CustomTreeParent modelValue={props.modelValue} item={item}/>
       }
@@ -58,7 +62,7 @@ const CustomTreeItem = {
     const pageStructure = inject('page-structure', {})
     return () => <div class={['structure-tree__item', { 'is-active': props.modelValue === props.item.id }]}
                       onClick={() => pageStructure.onSelect(props.item)}
-    >{props.item.config.type}</div>
+    ><span>{props.item.config.type}（{props.item.key}）</span></div>
   }
 }
 
