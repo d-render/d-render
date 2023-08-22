@@ -6,7 +6,7 @@ import { ref } from 'vue'
 export default {
   setup () {
     const schema = ref({})
-    const equipment = ref({})
+    const equipment = ref('pc')
     return () => <PlInfo>
       <DrFormDesign
         style={'background: #fff'}

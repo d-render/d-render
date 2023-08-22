@@ -7,6 +7,7 @@ import Structure from '@/widgets/aside/structure'
 import EquipmentRadio from '@/widgets/equipment-radio'
 import CodeSource from '@/widgets/aside/code-source'
 import FormComponents from '@/widgets/aside/component-group'
+import Property from '@/widgets/property'
 
 import Drawing from '@/widgets/drawing'
 
@@ -89,7 +90,13 @@ export default {
           onSelect={(item) => changeSelect(item)}
           onUpdateList={(list) => { updateList(list) }}
         />,
-        configure: () => 'configure'
+        configure: () => <Property
+          selectItem={selectItem.value}
+          data={props.schema}
+          onUpdate:selectItem={(val) => updateSelectItem(val)}
+        >
+          {{ default: ({ name }) => slots.property({ name }) }}
+        </Property>
       }}
     </DesignLayout>
   }

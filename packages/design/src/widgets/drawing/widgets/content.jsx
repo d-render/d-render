@@ -1,4 +1,6 @@
 import { computed, defineAsyncComponent, defineComponent } from 'vue'
+import { Rank, DocumentCopy, Delete } from '@element-plus/icons-vue'
+import { ElIcon } from 'element-plus'
 import { isLayoutType } from '@/util'
 // import './content.less'
 export default defineComponent({
@@ -86,21 +88,30 @@ export default defineComponent({
       ]}
       style={{ gridColumn: `span ${props.element.config?.span || 1}` }}
     >
-      {/* <span
-        class="right-top item-field-key"> {itemFieldKey.value}
-      </span> */}
-      <i class={'el-icon-rank show-focus handle-icon move-icon'} />
+      {props.selectId === props.element.id && <span class="right-top item-field-key"> {itemFieldKey.value}</span>}
+      <ElIcon size={22} class={'show-focus handle-icon move-icon'}>
+        <Rank/>
+      </ElIcon>
+      {/* <i class={'el-icon-rank show-focus handle-icon move-icon'} /> */}
       <div class="right-bottom show-focus">
-        {formContentProps.value.showCopy && <i class="el-icon-document-copy handle-icon" onClick={(e) => {
-          e.stopPropagation()
-          formContentProps.value.onCopy(e)
-        }} />}
-        <i
-          class="el-icon-delete handle-icon"
+        {formContentProps.value.showCopy && <ElIcon
+          size={22}
+          class={'handle-icon'}
+          onClick={(e) => {
+            e.stopPropagation()
+            formContentProps.value.onCopy(e)
+          }}>
+          <DocumentCopy />
+        </ElIcon> }
+        <ElIcon
+          class="handle-icon"
+          size={22}
           onClick={(e) => {
             e.stopPropagation()
             formContentProps.value.onDelete(e)
-          }} />
+          }}>
+          <Delete />
+        </ElIcon>
       </div>
       <FormContent.value { ...formContentProps.value }/>
     </div>

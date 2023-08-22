@@ -107,7 +107,7 @@ import { formConfigFieldConfigList, getComponentConfigure } from './config'
 import { mergeFieldConfig, configMapToList, configureOptionsFieldConfigMap, defaultConfigureOptions } from '@d-render/shared'
 import { ElInputNumber, ElSelect, ElOption, ElInput } from 'element-plus'
 import CodeMirrorDialog from './code-mirror-dialog'
-import { isLayoutType } from '../../../utils'
+import { isLayoutType } from '@/util'
 import ChangeValueDialog from './fn-config/change-value'
 import ChangeConfigDialog from './fn-config/change-config'
 

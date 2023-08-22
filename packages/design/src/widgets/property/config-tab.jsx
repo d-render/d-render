@@ -6,7 +6,7 @@ export default defineComponent({
     isActive: Boolean
   },
   emits: ['onClick'],
-  setup (props, { emit }) {
+  setup (props, { emit, slots }) {
     const emitClick = () => {
       emit('onClick', props.name)
     }
@@ -16,7 +16,7 @@ export default defineComponent({
         class={['config-tab', { 'config-tab--active': props.isActive }]}
         onClick={withModifiers(emitClick, ['stop'])}
       >
-        <slot></slot>
+        {slots.default?.()}
       </div>
     )
   }

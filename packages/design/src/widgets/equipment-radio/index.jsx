@@ -1,27 +1,32 @@
 import { ElIcon } from 'element-plus'
+import { useNamespace } from '@d-render/shared'
 import { PC, Mobile } from '@/svg'
 export default {
   props: {
-    modelValue: {},
-    options: {}
+    modelValue: {}
   },
   emits: ['update:modelValue', 'change'],
   setup (props, { emit }) {
+    const ns = useNamespace('equipment-radio')
     const change = (value) => {
       emit('update:modelValue', value)
       emit('change', value)
     }
-    const options = [{
-      value: 'pc', svg: PC
-    }, {
-      value: 'mobile', svg: Mobile
-    }]
-    return () => <div class={'equipment-radio'}>
+    const options = [
+      {
+        value: 'pc', svg: PC
+      },
+      {
+        value: 'mobile', svg: Mobile
+      }
+    ]
+    // 'equipment-radio__option' 'equipment-radio__option--active'
+    return () => <div class={ns.b()}>
       {(options || []).map(option => (
         <div
-          class={['equipment-radio__option', { 'equipment-radio__option--active': option.value === props.modelValue }]}
+          class={[ns.e('option'), { [ns.is('active')]: option.value === props.modelValue }]}
           onClick={() => change(option.value)}>
-          <ElIcon size={14} >{option.svg.render()}</ElIcon>
+          <ElIcon >{option.svg.render()}</ElIcon>
         </div>))}
     </div>
   }
