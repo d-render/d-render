@@ -1,6 +1,9 @@
 import { v4 as uuid } from 'uuid'
 import { cloneDeep, toUpperFirstCase } from '@d-render/shared'
-import { isLayoutType } from '../utils'
+import { DRender } from 'd-render'
+export const isLayoutType = (type) => {
+  return new DRender().isLayoutType(type)
+}
 // 允许有otherValue的字段
 export const twoValueComponentList = [
   'dateRange',

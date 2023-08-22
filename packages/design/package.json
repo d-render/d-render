@@ -7,12 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "vuedraggable": "^4.1.0",
-    "@cip/code-mirror": "^1.0.4"
+    "@cip/code-mirror": "^1.0.4",
+    "@xdp/button": "^1.1.2",
+    "vuedraggable": "^4.1.0"
+
   },
   "peerDependencies": {
     "@cip/code-mirror": "^1.0.4",
     "@d-render/shared": "workspace:>=1.2.2",
+    "@xdp/button": "^1.1.2",
     "vuedraggable": "^4.1.0",
     "vue": "^3.3.2"
   },

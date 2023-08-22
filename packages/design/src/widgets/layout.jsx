@@ -6,7 +6,8 @@ export default {
     const ns = useNamespace('design-layout')
     return () => <div class={ns.b()}>
       <div class={ns.e('header')}>
-        {slots.title?.()}
+        <div class={ns.e('title')}>{slots.title?.()}</div>
+        <div class={ns.e('equipment')}>{slots.equipment?.()}</div>
         <div class={ns.e('handle')}>{slots.handle?.()}</div>
       </div>
       <div class={ns.e('main')}>

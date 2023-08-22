@@ -1,4 +1,4 @@
-import DesignLayout from '../widgets/layout'
+import DesignLayout from '@/widgets/layout'
 export default {
   props: {
     schema: {}

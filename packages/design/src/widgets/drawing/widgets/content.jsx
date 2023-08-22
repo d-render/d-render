@@ -1,5 +1,5 @@
 import { computed, defineAsyncComponent, defineComponent } from 'vue'
-import { isLayoutType } from '../../../../utils'
+import { isLayoutType } from '@/util'
 // import './content.less'
 export default defineComponent({
   props: {
@@ -36,7 +36,7 @@ export default defineComponent({
       default: true
     }
   },
-  setup(props, { attrs }) {
+  setup (props, { attrs }) {
     // 获取渲染所需要的组件
     const getFormContentComponent = (type) => {
       return defineAsyncComponent(() => import(`./${type}`))
@@ -102,7 +102,7 @@ export default defineComponent({
             formContentProps.value.onDelete(e)
           }} />
       </div>
-      <FormContent.value  { ...formContentProps.value }/>
+      <FormContent.value { ...formContentProps.value }/>
     </div>
   }
 })
