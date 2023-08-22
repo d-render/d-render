@@ -2,7 +2,7 @@ import fg from 'fast-glob'
 import { getRollupBaseConfig } from './rollup.base.config.js'
 import { buildDirResolve } from '../utils/path.js'
 import { join } from 'node:path'
-import paths from '../rollup-plugins/rullip-plugin-alias.js'
+import alias from '../rollup-plugins/rullip-plugin-alias.js'
 export function getAllComponentDirs (inputDir, ignore = []) {
   return fg.sync(`${inputDir}/**/*.(jsx|js|mjs|vue)`, {
     ignore
@@ -25,7 +25,7 @@ export function getRollupOptions (
         input,
         'esm',
         join(buildDirResolve(distEsm), output),
-        [...plugins, paths()],
+        [...plugins, alias()],
         externals
       )
     ]
