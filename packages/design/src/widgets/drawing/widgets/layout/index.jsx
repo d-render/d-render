@@ -4,14 +4,14 @@ import { CipFormLayout } from 'd-render'
 import { drawingContentProps } from '../common-props'
 import { useFieldDrawingItem } from '../use-field-drawing-item'
 import FormDrawingContent from '../content'
-
+import { useNamespace } from '@d-render/shared'
 export default {
   inheritAttrs: false,
   props: drawingContentProps,
   emits: ['delete', 'copy', 'selectItem', 'update:config'],
   setup (props, { emit }) {
     const { computedConfig } = useFieldDrawingItem({ props, emit })
-
+    const ns = useNamespace('design-draw-content__layout')
     const updateConfig = (val) => {
       emit('update:config', val)
     }
@@ -53,7 +53,7 @@ export default {
               handle={'.move-icon'}
               ghostClass={'ghost'}
               animation={200}
-              componentData={{ class: 'form-drawing__layout__item', style: { } }}
+              componentData={{ class: [ns.e('item'), { [ns.em('item', 'empty')]: children.length === 0 }], style: { } }}
               onAdd={(val) => addOptionChild(optionIndex, val)}
             >
               {{

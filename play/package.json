@@ -11,7 +11,7 @@
     "@cip/cci-standard-theme": "^0.0.5",
     "@cip/code-mirror": "^1.0.4",
     "@cip/components": "6.0.32",
-    "@cip/d-render-plugin-cci": "2.0.1",
+    "@cip/d-render-plugin-cci": "2.0.7",
     "@cip/hooks": "^5.0.1",
     "@cip/request": "^5.0.4",
     "@cip/styles": "^6.0.6",
@@ -19,6 +19,7 @@
     "@ctrl/tinycolor": "^3.6.0",
     "@d-render/design": "workspace:*",
     "@d-render/plugin-standard": "workspace:*",
+    "@d-render/plugin-standard-configure": "workspace:*",
     "@d-render/shared": "workspace:*",
     "@element-plus/icons-vue": "^2.1.0",
     "ant-design-vue": "^3.2.20",
@@ -37,7 +38,8 @@
     "uuid": "~8.3.2",
     "vant": "^4.4.0",
     "vue": "^3.3.2",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "wangeditor": "^4.7.15"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

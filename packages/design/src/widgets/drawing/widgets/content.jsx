@@ -2,6 +2,7 @@ import { computed, defineAsyncComponent, defineComponent } from 'vue'
 import { Rank, DocumentCopy, Delete } from '@element-plus/icons-vue'
 import { ElIcon } from 'element-plus'
 import { isLayoutType } from '@/util'
+import { useNamespace } from '@d-render/shared'
 // import './content.less'
 export default defineComponent({
   props: {
@@ -39,6 +40,7 @@ export default defineComponent({
     }
   },
   setup (props, { attrs }) {
+    const ns = useNamespace('design-draw-content')
     // 获取渲染所需要的组件
     const getFormContentComponent = (type) => {
       return defineAsyncComponent(() => import(`./${type}`))
@@ -78,12 +80,14 @@ export default defineComponent({
       {...props}
       {...attrs}
       class={[
-        'form-content',
-        `form-drawing__${type.value}`,
+        ns.b(),
+        ns.e(type.value),
         formContentProps.value.config.class,
         {
-          'is-active': formContentProps.value.isActive,
-          'form-drawing--hidden': props.element.config?.hideItem
+          [ns.is('active')]: formContentProps.value.isActive,
+          // 'is-active': formContentProps.value.isActive,
+          [ns.m('hidden')]: props.element.config?.hideItem
+          // 'form-drawing--hidden': props.element.config?.hideItem
         }
       ]}
       style={{ gridColumn: `span ${props.element.config?.span || 1}` }}

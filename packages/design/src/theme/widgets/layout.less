@@ -12,15 +12,21 @@
     border-bottom: var(--dr-design-border);
     justify-content: space-between;
     align-items: center;
+    padding: 0 12px;
   }
-  &__title{}
-  &__equipment{}
+  &__title{
+    flex: 1;
+  }
+  &__equipment{
+    flex: 1;
+    text-align: center;
+  }
   &__handle{
+    flex: 1;
     display: flex;
     align-items: center;
     //flex-grow: 2;
     justify-content: flex-end;
-    padding-right: 24px;
   }
   &__main{
     height: calc(100% - var(--dr-design-header-height));
@@ -60,5 +66,8 @@
     width: var(--dr-design-configure-width, 355px);
     height: 100%;
     overflow: hidden;
+  }
+  &__preview{
+    padding: 24px;
   }
 }

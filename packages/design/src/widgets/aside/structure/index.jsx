@@ -1,8 +1,7 @@
 import { DRender } from 'd-render'
 import { inject, ref, provide, reactive } from 'vue'
-import { ElTag, ElIcon } from 'element-plus'
+import { ElIcon } from 'element-plus'
 import { CaretRight } from '@element-plus/icons-vue'
-import logo from "play/src/views/framework/logo";
 // import './index.less'
 const dRender = new DRender()
 const isLayoutType = (type) => dRender.isLayoutType(type)

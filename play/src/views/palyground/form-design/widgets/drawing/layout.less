@@ -1,0 +1,24 @@
+@elNamespace: el;
+@warning: var(--el-color-warning);
+&__layout {
+  min-height: 30px;
+  //background-color: fade(@warning, 10%);
+  //background-color: var(~"--@{elNamespace}-color-warning-light-9");
+  //border: 1px dashed #999;
+  &__item--empty {
+    height: 100%;
+    border: 1px dashed #ddd;
+    background: #fff;
+    min-height: 50px;
+  }
+  &:hover {
+    outline-color: @primary;
+  }
+  &.is-active:not(.ghost) {
+    //border-color: @warning;
+    outline-color: @warning;
+    .handle-icon {
+      background-color: @warning;
+    }
+  }
+}
