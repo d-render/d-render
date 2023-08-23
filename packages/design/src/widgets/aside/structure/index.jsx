@@ -56,9 +56,10 @@ const CustomTreeItem = {
   props: { item: Object, modelValue: [String, Number] },
   setup (props) {
     const pageStructure = inject('page-structure', {})
+    const subTitle = `{ ${props.item.key} }`
     return () => <div class={['structure-tree__item', { 'is-active': props.modelValue === props.item.id }]}
                       onClick={() => pageStructure.onSelect(props.item)}
-    ><span class="structure-tree__item--text">{props.item.config.type}（{props.item.key}）</span></div>
+    ><span class="structure-tree__item__text">{props.item.config.type}<span class="structure-tree__item__status">{subTitle}</span></span></div>
   }
 }
 
