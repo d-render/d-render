@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import {computed, ref, watch} from 'vue'
 import { useNamespace } from '@d-render/shared'
 import DesignLayout from '@/widgets/layout'
 import DesignModules from '@/widgets/modules'
@@ -56,15 +56,17 @@ export default {
       methods: [], // 提供给当前页面使用的methods
       grid: 1
     })
-
+    const navTitle = computed(() => {
+      const item = defaultModules.find(i => i.name === currentModuleName.value) ?? {}
+      return item.title
+    })
     watch(() => props.schema, (val) => {
       if (!val) {
         // 如果scheme为空则直接进行初始化
         updateSchema(initSchema())
       }
     }, { immediate: true })
-
-    return () => <DesignLayout navTitle={currentModuleName.value} class={[ns.b()]}>
+    return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]}>
       {{
         title: () => '表单设计器',
         equipment: () => <EquipmentRadio modelValue={props.equipment} onUpdate:modelValue={updateEquipment}/>,
