@@ -34,7 +34,7 @@ export const componentsGroupList = [
       { type: 'staff', icon: 'el-icon-user', label: '人员' },
       { type: 'office', icon: 'el-icon-office-building', label: '机构' },
       {
-        type: 'table',
+        type: 'tableDesign',
         class: 'disabled-table',
         icon: 'el-icon-menu',
         label: '子表单',

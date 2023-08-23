@@ -6,10 +6,13 @@ import { componentsGroupList } from './config'
 import CipButton from '@cip/components/cip-button'
 import './widgets/drawing/index.less'
 import { ref } from 'vue'
+import schemaJson from './schema'
+
 export default {
   setup () {
     const schema = ref({})
     const equipment = ref('pc')
+    schema.value = schemaJson
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
         style={'background: #fff'}

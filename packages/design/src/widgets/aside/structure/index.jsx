@@ -1,8 +1,8 @@
-import './index.less'
 import { DRender } from 'd-render'
 import { inject, ref, provide, reactive } from 'vue'
-import { ElTag, ElIcon } from 'element-plus'
+import { ElIcon } from 'element-plus'
 import { CaretRight } from '@element-plus/icons-vue'
+// import './index.less'
 const dRender = new DRender()
 const isLayoutType = (type) => dRender.isLayoutType(type)
 const CustomTree = {
@@ -14,7 +14,7 @@ const CustomTree = {
   setup (props) {
     const pageDesign = inject('pageDesign', {})
     return () => <div class={{ 'structure-tree': !props.isSub, 'structure-sub-tree': props.isSub }}>{props.list.map(item => {
-      const isLayout = isLayoutType(pageDesign.drawTypeMap[item.config.type] ?? item.config.type)
+      const isLayout = isLayoutType(pageDesign?.drawTypeMap?.[item.config.type] ?? item.config.type)
       if (isLayout) {
         return <CustomTreeParent modelValue={props.modelValue} item={item}/>
       }
@@ -44,7 +44,7 @@ const CustomTreeParent = {
       <div class={['structure-sub-tree__panel', { 'is-expand': isExpand.value }]}>
         {props.item.config.options.map((option, idx) => <div key={`${option.key}-${idx}`}>
           {/* <ElTag type={'info'}>slot-{option.key}</ElTag> */}
-          <div style={'padding-left: 4px;'}>
+          <div>
             <CustomTree isSub={true} modelValue={props.modelValue} list={option.children}/>
           </div>
         </div>)}
@@ -58,7 +58,7 @@ const CustomTreeItem = {
     const pageStructure = inject('page-structure', {})
     return () => <div class={['structure-tree__item', { 'is-active': props.modelValue === props.item.id }]}
                       onClick={() => pageStructure.onSelect(props.item)}
-    >{props.item.config.type}</div>
+    ><span class="structure-tree__item--text">{props.item.config.type}（{props.item.key}）</span></div>
   }
 }
 

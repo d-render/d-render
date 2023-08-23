@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { CipFormRender } from 'd-render'
 import { useNamespace } from '@d-render/shared'
 import { CipButton } from '@xdp/button'
@@ -59,7 +59,10 @@ export default {
       methods: [], // 提供给当前页面使用的methods
       grid: 1
     })
-
+    const navTitle = computed(() => {
+      const item = defaultModules.find(i => i.name === currentModuleName.value) ?? {}
+      return item.title
+    })
     watch(() => props.schema, (val) => {
       if (!val) {
         // 如果scheme为空则直接进行初始化
@@ -71,7 +74,7 @@ export default {
       isPreview.value = !isPreview.value
     }
     const testModel = ref({})
-    return () => <DesignLayout navTitle={currentModuleName.value} class={[ns.b()]} preview={isPreview.value}>
+    return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]} preview={isPreview.value}>
       {{
         title: () => slots.title?.(),
         equipment: () => <EquipmentRadio modelValue={props.equipment} onUpdate:modelValue={updateEquipment}/>,
@@ -89,11 +92,11 @@ export default {
           modules={defaultModules}
         />,
         nav: () => <>
-          {/* {currentModuleName.value === 'structure' && <Structure */}
-          {/*  modelValue={selectItemId.value} */}
-          {/*  list={props.schema?.list} */}
-          {/*  onUpdate:selectItem={(val) => { selectItem.value = val }} */}
-          {/* />} */}
+           {currentModuleName.value === 'structure' && <Structure
+            modelValue={selectItemId.value}
+            list={props.schema?.list}
+            onUpdate:selectItem={(val) => { selectItem.value = val }}
+           />}
           {currentModuleName.value === 'code' && <CodeSource modelValue={props.schema} onUpdate:modelValue={updateSchema}></CodeSource>}
           {currentModuleName.value === 'renderer' && <FormComponents groupList={props.componentsGroupList}/>}
           {slots.nav?.({ name: currentModuleName.value })}
