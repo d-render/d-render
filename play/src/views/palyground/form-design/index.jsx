@@ -3,13 +3,13 @@ import '@d-render/design/dist/index.css'
 import PlInfo from '@cip/components/page-layout/info'
 import { componentsGroupList } from './config'
 import { ref } from 'vue'
-import schema from './schema'
+import schemaJson from './schema'
 
-console.log(schema, 'schema')
 export default {
   setup () {
     const schema = ref({})
     const equipment = ref('pc')
+    schema.value = schemaJson
     return () => <PlInfo>
       <DrFormDesign
         style={'background: #fff'}

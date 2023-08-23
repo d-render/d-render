@@ -74,11 +74,11 @@ export default {
           modules={defaultModules}
         />,
         nav: () => <>
-          {/* {currentModuleName.value === 'structure' && <Structure */}
-          {/*  modelValue={selectItemId.value} */}
-          {/*  list={props.schema?.list} */}
-          {/*  onUpdate:selectItem={(val) => { selectItem.value = val }} */}
-          {/* />} */}
+           {currentModuleName.value === 'structure' && <Structure
+            modelValue={selectItemId.value}
+            list={props.schema?.list}
+            onUpdate:selectItem={(val) => { selectItem.value = val }}
+           />}
           {currentModuleName.value === 'code' && <CodeSource modelValue={props.schema} onUpdate:modelValue={updateSchema}></CodeSource>}
           {currentModuleName.value === 'renderer' && <FormComponents groupList={props.componentsGroupList}/>}
           {slots.nav?.({ name: currentModuleName.value })}
