@@ -1,7 +1,7 @@
 import { h, watch } from 'vue'
 import VueDraggable from 'vuedraggable'
 import { CipForm } from 'd-render'
-import { isNotEmpty } from '@d-render/shared'
+import { isNotEmpty, useNamespace } from '@d-render/shared'
 import { useFieldDrawing, useList } from './use-field-drawing'
 import FormDrawingContent from './widgets/content'
 export default {
@@ -12,8 +12,10 @@ export default {
   },
   emits: ['updateList', 'select'],
   setup (props, context) {
+    const ns = useNamespace('design-drawing')
     const { list, updateList } = useList({ props, emit: context.emit })
     const { selectItem, deleteItem, copyItem } = useFieldDrawing({ list, updateList, emit: context.emit })
+
     const addItem = ({ newIndex }) => {
       const newItem = list.value[newIndex]
       context.emit('select', newItem)
@@ -48,11 +50,11 @@ export default {
         selectItem(list.value[0])
       }
     }, { immediate: true })
-    return () => <div class={'cip-fd-form-drawing-container'}>
+    // class={'cip-fd-form-drawing-container'}
+    return () => <div class={[ns.e('container')]} >
       {list.value.length === 0 && <div class={'empty-form--text'}>从左侧拖拽来添加字段</div>}
-      <div class={['cip-fd-form-drawing', `cip-fd-form-drawing--${props.equipment}`]}>
+      <div class={[ns.b(), ns.m(props.equipment)]}>
         <CipForm
-
           fieldList={[]}
           size={props.data.tableSize || 'default'}
           labelWidth={`${props.data.labelWidth}px`}
@@ -69,7 +71,7 @@ export default {
             ghostClass={'ghost'}
             animation={200}
             componentData={{
-              class: 'cip-fd-form-content__wrapper',
+              class: ns.be('content', 'wrapper'),
               style: isNotEmpty(props.data.grid)
                 ? `display: grid; grid-template-columns: repeat(${props.data.grid},1fr);align-content: start;`
                 : ''

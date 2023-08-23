@@ -1,0 +1,87 @@
+//@import '../../../../theme/variate.less';
+@elNamespace: el;
+@danger: var(--el-color-danger);
+@success: var(--el-color-success);
+.dr-design-draw-content{
+  // 表单项公共样式
+  user-select: none;
+  position: relative;
+  margin: 2px 0;
+  padding: 1px;
+  @import "./item";
+  @import "./layout";
+  &--hidden{
+    //background-color: fade(@danger, 10%) !important;
+    background-color: var(~'--@{elNamespace}-color-danger-light-9') !important;//@danger !important;
+    .@{elNamespace}-form-item__content{
+      // table下的el-form-item__content默认添加了白色导致hidden的颜色无法正常展示
+      background-color: transparent !important;
+    }
+  }
+  &.ghost{ // 拖动时的样式
+    margin: 0;
+    padding: 0;
+    width: auto;
+    min-height: 0;
+    border: 2px solid @danger;
+    height: 0;
+    overflow: hidden;
+    * {
+      display: none;
+    }
+  }
+  .form-table-columns{
+    .form-content.ghost{
+      border: 2px solid @danger;
+      height: 100%;
+    }
+  }
+  &:hover{
+    outline-width: 1px;
+    outline-style: dashed;
+  }
+  &.is-active:not(.ghost){
+    //border-style:solid;
+    //border-width: 1px;
+    outline-style: solid;
+    outline-width: 2px;
+    > .show-focus{
+      visibility: visible;
+    }
+  }
+  .show-focus{
+    visibility: hidden;
+    line-height: 1em;
+  }
+  .item-field-key{
+    color: @success;
+  }
+  .handle-icon{
+    cursor: pointer;
+    padding: 4px;
+    color: #fff;
+  }
+  .move-icon{
+    cursor: move;
+    position: absolute;
+    top: 0;
+    left:0;
+    z-index: 3;
+    opacity: .5;
+  }
+  .right-top{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 2;
+  }
+  .right-bottom{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+  }
+  .handler-size{
+    font-size: 16px;
+  }
+}

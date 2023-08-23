@@ -1,0 +1,23 @@
+@primary: var(--el-color-primary);
+&__item{
+  //background-color: rgba(236,245,255,.3);
+  //border: 1px dashed #999;
+  &__mask{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+  &:hover{
+    outline-color: @primary;
+  }
+  &.is-active:not(.ghost){
+    //border-color: @primary ;
+    outline-color: @primary;
+    .handle-icon{
+      background-color: @primary;
+    }
+  }
+}

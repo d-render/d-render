@@ -1,7 +1,10 @@
 import { ElScrollbar } from 'element-plus'
 import { useNamespace } from '@d-render/shared'
 export default {
-  props: { navTitle: String },
+  props: {
+    navTitle: String,
+    preview: { type: Boolean, default: undefined }
+  },
   setup (props, { slots }) {
     const ns = useNamespace('design-layout')
     return () => <div class={ns.b()}>
@@ -10,7 +13,7 @@ export default {
         <div class={ns.e('equipment')}>{slots.equipment?.()}</div>
         <div class={ns.e('handle')}>{slots.handle?.()}</div>
       </div>
-      <div class={ns.e('main')}>
+      {!props.preview && <div class={ns.e('main')}>
         <div class={ns.e('modules')}>
           {slots.modules?.()}
         </div>
@@ -30,7 +33,11 @@ export default {
         <div class={ns.e('configure')}>
           {slots.configure?.()}
         </div>
-      </div>
+      </div>}
+      {props.preview && <div class={ns.e('preview')}>
+        {slots.preview?.()}
+      </div>}
+
     </div>
   }
 }

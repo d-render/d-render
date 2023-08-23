@@ -1,5 +1,8 @@
 import { ref, watch } from 'vue'
+import { CipFormRender } from 'd-render'
 import { useNamespace } from '@d-render/shared'
+import { CipButton } from '@xdp/button'
+import { View } from '@element-plus/icons-vue'
 import DesignLayout from '@/widgets/layout'
 import DesignModules from '@/widgets/modules'
 import { EditorRenderer, EditorOutline, EditorCode, EditorTpl } from '@/svg'
@@ -63,12 +66,24 @@ export default {
         updateSchema(initSchema())
       }
     }, { immediate: true })
-
-    return () => <DesignLayout navTitle={currentModuleName.value} class={[ns.b()]}>
+    const isPreview = ref(false)
+    const togglePreview = () => {
+      isPreview.value = !isPreview.value
+    }
+    const testModel = ref({})
+    return () => <DesignLayout navTitle={currentModuleName.value} class={[ns.b()]} preview={isPreview.value}>
       {{
-        title: () => '表单设计器',
+        title: () => slots.title?.(),
         equipment: () => <EquipmentRadio modelValue={props.equipment} onUpdate:modelValue={updateEquipment}/>,
-        handle: () => 'handle',
+        handle: () => <>
+          {!isPreview.value && <>
+            <CipButton type={'primary'} icon={View} onClick={() => { togglePreview() }}>预览</CipButton>
+            {slots.handle?.()}
+          </>}
+          {
+            isPreview.value && <CipButton type={'primary'} onClick={() => { togglePreview() }}>编辑</CipButton>
+          }
+        </>,
         modules: () => <DesignModules
           v-model={currentModuleName.value}
           modules={defaultModules}
@@ -96,7 +111,8 @@ export default {
           onUpdate:selectItem={(val) => updateSelectItem(val)}
         >
           {{ default: ({ name }) => slots.property({ name }) }}
-        </Property>
+        </Property>,
+        preview: () => <CipFormRender v-model:model={testModel.value} scheme={props.schema} equipment={props.equipment}/>
       }}
     </DesignLayout>
   }
