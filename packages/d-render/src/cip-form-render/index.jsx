@@ -1,5 +1,6 @@
 import { computed, getCurrentInstance, ref, watch, reactive, provide } from 'vue'
 import CipForm from '../cip-form'
+import { settingValueTransformState, getFormValueByTemplate } from '@d-render/shared'
 export default {
   name: 'CipFormRender',
   props: {
@@ -10,6 +11,11 @@ export default {
   },
   emits: ['update:model'],
   setup (props, { emit, expose }) {
+    watch(() => props.model, (val) => {
+      settingValueTransformState('form', val)
+      // eslint-disable-next-line no-template-curly-in-string
+      console.log(getFormValueByTemplate('${form.select_4723042d}'))
+    }, { immediate: true, deep: true })
     const cipFormRef = ref(null)
     const instance = getCurrentInstance()
     const fieldList = computed(() => props.scheme.list || [])

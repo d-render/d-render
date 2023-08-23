@@ -11,7 +11,7 @@
     "dev-js": "rollup -c ./build/tasks/javascript.js --watch",
     "build-js": "rollup -c ./build/tasks/javascript.js",
     "build-types": "node ./build/tasks/types.js",
-    "dev:d-render": "cross-env ENTRY_MODULE=d-render pnpm run dev",
+    "dev:d-render": "cross-env ENTRY_MODULE=d-render pnpm run dev-js",
     "build:d-render": "cross-env ENTRY_MODULE=d-render pnpm run '/^(build-js|build-styles|build-types)$/'",
     "dev:shared": "cross-env ENTRY_MODULE=shared pnpm run dev-js",
     "build:shared": "cross-env ENTRY_MODULE=shared pnpm run build-js",
