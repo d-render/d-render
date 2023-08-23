@@ -1,7 +1,8 @@
 import { DRender } from 'd-render'
-import { inject, ref, provide, reactive } from 'vue'
+import { inject, ref, provide, reactive, computed } from 'vue'
 import { ElIcon } from 'element-plus'
 import { CaretRight } from '@element-plus/icons-vue'
+import logo from "play/src/views/framework/logo";
 // import './index.less'
 const dRender = new DRender()
 const isLayoutType = (type) => dRender.isLayoutType(type)
@@ -23,6 +24,16 @@ const CustomTree = {
     </div>
   }
 }
+const TreeTitle = {
+  props: {
+    title: String,
+    subTitle: String
+  },
+  setup (props) {
+    const subTitle = computed(() => `{ ${props.subTitle} }`)
+    return () => <span class="structure-tree__item__text">{props.title}<span class="structure-tree__item__status">{subTitle.value}</span></span>
+  }
+}
 const CustomTreeParent = {
   props: { item: Object, modelValue: [String, Number] },
   setup (props) {
@@ -39,7 +50,7 @@ const CustomTreeParent = {
       }}>
         <ElIcon class={['structure-sub-tree__title__icon', { 'is-expand': isExpand.value }]}
                 onClick={() => toggleExpand()}><CaretRight/></ElIcon>
-        {props.item.config.type}
+        <TreeTitle title={props.item.config.type} subTitle={props.item.key} onClick={() => pageStructure.onSelect(props.item)}></TreeTitle>
       </div>
       <div class={['structure-sub-tree__panel', { 'is-expand': isExpand.value }]}>
         {props.item.config.options.map((option, idx) => <div key={`${option.key}-${idx}`}>
@@ -56,10 +67,9 @@ const CustomTreeItem = {
   props: { item: Object, modelValue: [String, Number] },
   setup (props) {
     const pageStructure = inject('page-structure', {})
-    const subTitle = `{ ${props.item.key} }`
     return () => <div class={['structure-tree__item', { 'is-active': props.modelValue === props.item.id }]}
                       onClick={() => pageStructure.onSelect(props.item)}
-    ><span class="structure-tree__item__text">{props.item.config.type}<span class="structure-tree__item__status">{subTitle}</span></span></div>
+    ><TreeTitle title={props.item.config.type} subTitle={props.item.key}></TreeTitle></div>
   }
 }
 
