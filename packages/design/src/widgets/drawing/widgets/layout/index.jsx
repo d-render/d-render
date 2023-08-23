@@ -53,7 +53,7 @@ export default {
               handle={'.move-icon'}
               ghostClass={'ghost'}
               animation={200}
-              componentData={{ class: ns.e('item'), style: { } }}
+              componentData={{ class: [ns.e('item'), { [ns.em('item', 'empty')]: children.length === 0 }], style: { } }}
               onAdd={(val) => addOptionChild(optionIndex, val)}
             >
               {{
