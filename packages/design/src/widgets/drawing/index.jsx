@@ -4,17 +4,24 @@ import { CipForm } from 'd-render'
 import { isNotEmpty, useNamespace } from '@d-render/shared'
 import { useFieldDrawing, useList } from './use-field-drawing'
 import FormDrawingContent from './widgets/content'
+import DeviceContainer from './widgets/device-container'
+
 export default {
   props: {
     data: { type: Object, default: () => ({}) },
     equipment: { type: String },
-    selectId: [Number, String]
+    selectId: [Number, String],
+    deviceType: {}
   },
   emits: ['updateList', 'select'],
-  setup (props, context) {
+  setup(props, context) {
     const ns = useNamespace('design-drawing')
     const { list, updateList } = useList({ props, emit: context.emit })
-    const { selectItem, deleteItem, copyItem } = useFieldDrawing({ list, updateList, emit: context.emit })
+    const { selectItem, deleteItem, copyItem } = useFieldDrawing({
+      list,
+      updateList,
+      emit: context.emit,
+    })
 
     const addItem = ({ newIndex }) => {
       const newItem = list.value[newIndex]
@@ -72,39 +79,45 @@ export default {
       }
     }, { immediate: true })
     // class={'cip-fd-form-drawing-container'}
-    return () => <div class={[ns.e('container')]} >
-      {list.value.length === 0 && <div class={'empty-form--text'}>从左侧拖拽来添加字段</div>}
-      <div class={[ns.b(), ns.m(props.equipment)]}>
-        <CipForm
-          fieldList={[]}
-          size={props.data.tableSize || 'default'}
-          labelWidth={`${props.data.labelWidth}px`}
-          labelPosition={props.data.labelPosition}
-          labelSuffix={props.data.labelSuffix}
-          equipment={props.equipment}
-        >
-          <VueDraggable
-            modelValue={list.value}
-            onUpdate:modelValue={(val) => updateList(val)}
-            itemKey={'id'}
-            group={'components'}
-            handle={'.move-icon'}
-            ghostClass={'ghost'}
-            animation={200}
-            componentData={{
-              class: ns.be('content', 'wrapper'),
-              style: isNotEmpty(props.data.grid)
-                ? `display: grid; grid-template-columns: repeat(${props.data.grid},1fr);align-content: start;`
-                : ''
-            }}
-            onAdd={({ newIndex }) => addItem({ newIndex })}>
-            {{
-              item: FormContent
-            }}
-          </VueDraggable>
-        </CipForm>
-
+    return () => (
+      <div class={[ns.e('container')]}>
+        {list.value.length === 0 && (
+          <div class='empty-form--text'>从左侧拖拽来添加字段</div>
+        )}
+        <div class={[ns.b(), ns.m(props.equipment)]}>
+          <DeviceContainer equipment={props.equipment} deviceType={props.deviceType}>
+            <CipForm
+              fieldList={[]}
+              size={props.data.tableSize || 'default'}
+              labelWidth={`${props.data.labelWidth}px`}
+              labelPosition={props.data.labelPosition}
+              labelSuffix={props.data.labelSuffix}
+              equipment={props.equipment}
+            >
+              <VueDraggable
+                modelValue={list.value}
+                onUpdate:modelValue={(val) => updateList(val)}
+                itemKey={'id'}
+                group={'components'}
+                handle={'.move-icon'}
+                ghostClass={'ghost'}
+                animation={200}
+                componentData={{
+                  class: ns.be('content', 'wrapper'),
+                  style: isNotEmpty(props.data.grid)
+                    ? `display: grid; grid-template-columns: repeat(${props.data.grid},1fr);align-content: start;`
+                    : ''
+                }}
+                onAdd={({ newIndex }) => addItem({ newIndex })}
+              >
+                {{
+                  item: FormContent
+                }}
+              </VueDraggable>
+            </CipForm>
+          </DeviceContainer>
+        </div>
       </div>
-    </div>
-  }
-}
+    );
+  },
+};

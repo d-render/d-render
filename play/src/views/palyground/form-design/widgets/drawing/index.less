@@ -1,33 +1,40 @@
 @elNamespace: el;
-.dr-design-drawing{
-  &__container{
-    position: relative;
-    box-sizing: border-box;
-    height: 100%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: auto;
-    overflow-x: hidden;
-  }
-  &--pc{
-    width: 100%;
-    height: 100%;
-  }
-  &--mobile{
-    width: 375px;
-    height: 667px;
-  }
-  .cip-form{
-    height: 100%;
-  }
-  &-content__wrapper{
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 100%;
-    //border: 1px dashed #333;
-    background: #fff;
-    @import "./content";
-  }
+.dr-design-drawing {
+    &__container {
+        position: relative;
+        box-sizing: border-box;
+        height: 100%;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+        overflow-x: hidden;
+    }
+
+    &--pc {
+        width: 100%;
+        height: 100%;
+    }
+
+    &--mobile {
+        .cip-form {
+            background: #fff;
+            border-radius: 0;
+            pointer-events: auto;
+        }
+    }
+
+    .cip-form {
+        height: 100%;
+    }
+
+    &-content__wrapper {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 100%;
+        //border: 1px dashed #333;
+        background: #fff;
+        @import "./content";
+    }
 }
