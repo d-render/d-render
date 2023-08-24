@@ -8,11 +8,12 @@
   &__item--empty {
     height: 100%;
     border: 1px dashed #ddd;
-    background: #fff;
+//    background: #fff;
     min-height: 50px;
+    background: rgb(240,240,240);
   }
-  &:hover {
-    outline-color: @primary;
+  &.is-hover:not(.ghost){
+    outline-color: @warning;
   }
   &.is-active:not(.ghost) {
     //border-color: @warning;

@@ -1,4 +1,4 @@
-import { h, watch } from 'vue'
+import { h, watch, ref, provide, computed } from 'vue'
 import VueDraggable from 'vuedraggable'
 import { CipForm } from 'd-render'
 import { isNotEmpty, useNamespace } from '@d-render/shared'
@@ -25,6 +25,27 @@ export default {
       element.config = val
       updateList(cloneList, 'layoutUpdate')
     }
+    // TODO: 此处需要处理layout删除时的数据
+    const hoverList = ref([])
+    const entryElement = (id) => {
+      leaveElement(id)
+      hoverList.value.push(id)
+    }
+    const leaveElement = (id) => {
+      const idx = hoverList.value.indexOf(id)
+      if (idx > -1) {
+        hoverList.value.splice(hoverList.value.indexOf(id), 1)
+      }
+    }
+    const currentHoverId = computed(() => {
+      if (hoverList.value.length === 0) return undefined
+      return hoverList.value[hoverList.value.length - 1]
+    })
+    provide('designDrawing', {
+      entryElement,
+      leaveElement,
+      currentHoverId
+    })
 
     // 表单内容包含 布局和input && table(特殊)
     const FormContent = (...args) => {
@@ -38,7 +59,7 @@ export default {
           updateConfig(element, val)
         },
         onClick: () => { selectItem(element) },
-        onDelete: () => deleteItem(index),
+        onDelete: () => { deleteItem(index); leaveElement(element.id) },
         onCopy: () => copyItem(index),
         onSelectItem: (element) => selectItem(element)
       }
@@ -82,6 +103,7 @@ export default {
             }}
           </VueDraggable>
         </CipForm>
+
       </div>
     </div>
   }

@@ -10,7 +10,7 @@
     bottom: 0;
     z-index: 1;
   }
-  &:hover{
+  &.is-hover:not(.ghost){
     outline-color: @primary;
   }
   &.is-active:not(.ghost){
@@ -20,4 +20,7 @@
       background-color: @primary;
     }
   }
+}
+&__item + &__item{
+  border-top: 1px solid #ddd;
 }

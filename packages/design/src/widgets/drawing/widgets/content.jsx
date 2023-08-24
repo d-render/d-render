@@ -1,4 +1,4 @@
-import { computed, defineAsyncComponent, defineComponent } from 'vue'
+import { computed, defineAsyncComponent, defineComponent, inject } from 'vue'
 import { Rank, DocumentCopy, Delete } from '@element-plus/icons-vue'
 import { ElIcon } from 'element-plus'
 import { isLayoutType } from '@/util'
@@ -39,7 +39,8 @@ export default defineComponent({
       default: true
     }
   },
-  setup (props, { attrs }) {
+  emits: ['changeHoverId'],
+  setup (props, { attrs, emit }) {
     const ns = useNamespace('design-draw-content')
     // 获取渲染所需要的组件
     const getFormContentComponent = (type) => {
@@ -76,6 +77,7 @@ export default defineComponent({
     })
     const type = computed(() => getComponentType(props.element))
     const FormContent = computed(() => getFormContentComponent(type.value))
+    const { entryElement, leaveElement, currentHoverId } = inject('designDrawing', {})
     return () => <div
       {...props}
       {...attrs}
@@ -84,12 +86,15 @@ export default defineComponent({
         ns.e(type.value),
         formContentProps.value.config.class,
         {
+          [ns.is('hover')]: currentHoverId.value === props.element.id,
           [ns.is('active')]: formContentProps.value.isActive,
           // 'is-active': formContentProps.value.isActive,
           [ns.m('hidden')]: props.element.config?.hideItem
           // 'form-drawing--hidden': props.element.config?.hideItem
         }
       ]}
+      onMouseenter={() => { entryElement(props.element.id) }}
+      onMouseleave={() => { leaveElement(props.element.id) }}
       style={{ gridColumn: `span ${props.element.config?.span || 1}` }}
     >
       {props.selectId === props.element.id && <span class="right-top item-field-key"> {itemFieldKey.value}</span>}

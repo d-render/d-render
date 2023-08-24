@@ -6,7 +6,7 @@
   // 表单项公共样式
   user-select: none;
   position: relative;
-  margin: 2px 0;
+//  margin: 2px 0;
   padding: 1px;
   @import "./item";
   @import "./layout";
@@ -36,7 +36,7 @@
       height: 100%;
     }
   }
-  &:hover{
+  &.is-hover:not(.ghost){
     outline-width: 1px;
     outline-style: dashed;
   }
@@ -78,8 +78,9 @@
   .right-bottom{
     position: absolute;
     right: 0;
-    bottom: 0;
+    bottom: -3px;
     z-index: 2;
+    opacity: .5;
   }
   .handler-size{
     font-size: 16px;

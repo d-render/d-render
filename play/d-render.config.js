@@ -12,11 +12,7 @@ export default {
   plugins: [
     insertConfig(insertConfig(PluginCCI, { text: PluginStandardConfigure.text }, 'configure'), PluginCCIMobile, 'mobile'),
     {
-      input: completePluginStandard.input
-    },
-    {
-      select: PluginCCI.select,
-      default: PluginCCI.default
+      input: insertConfig(completePluginStandard, { input: PluginCCIMobile.input }, 'mobile').input
     },
     customInputsPlugin,
     customLayoutPlugin
