@@ -29,15 +29,21 @@ const useVirtualSchema = () => {
 const useTpl = () => {
   const tplList = ref([])
   const initTpl = () => {
-    tplList.value = [
-      { name: '', code: '' }
-    ]
+    const data = localStorage.getItem('tpl')
+    if (data) {
+      tplList.value = data
+        ? JSON.parse(data)
+        : []
+    }
   }
-  const saveTpl = (codesource) => {
-    ElMessageBox.prompt({
-      type: 'input'
+  const saveTpl = (source) => {
+    ElMessageBox.prompt('模版名称', '保存模版', {
+      inputValidator: val => !!val.trim(),
+      inputPlaceholder: '请输入模版名称',
+      inputErrorMessage: '请输入模版名称'
     }).then(val => {
-
+      tplList.value.push({ name: val, source })
+      localStorage.setItem('tpl', JSON.stringify(tplList.value))
     })
   }
 
