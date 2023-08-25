@@ -86,8 +86,9 @@
   display: flex;
   width: 100%;
   &.cip-form-item--hidden{ // 隐藏
-    height: 0;
-    overflow: hidden;
+    display: none !important;
+//    height: 0;
+//    overflow: hidden;
   }
   // 手动实现label-position top [注释：原el-form不支持对单个item进行label-position的配置]
   &.cip-form-item--label-position-top{

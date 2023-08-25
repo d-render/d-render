@@ -5,7 +5,7 @@ import { CipButton } from '@xdp/button'
 import { View } from '@element-plus/icons-vue'
 import DesignLayout from '@/widgets/layout'
 import DesignModules from '@/widgets/modules'
-import { EditorRenderer, EditorOutline, EditorCode, EditorTpl } from '@/svg'
+import { EditorRenderer, EditorOutline, EditorCode } from '@/svg'
 import Structure from '@/widgets/aside/structure'
 import EquipmentRadio from '@/widgets/equipment-radio'
 import CodeSource from '@/widgets/aside/code-source'
@@ -20,7 +20,14 @@ export default {
   props: {
     schema: {},
     equipment: {},
-    componentsGroupList: {}
+    componentsGroupList: {},
+    modules: {
+      default: () => []
+    },
+    defaultModule: String,
+    excludeModules: {
+      default: () => []
+    }
   },
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
@@ -28,10 +35,19 @@ export default {
     const defaultModules = [
       { name: 'renderer', title: '组件', icon: <EditorRenderer/> },
       { name: 'structure', title: '结构', icon: <EditorOutline/> },
-      { name: 'code', title: '源码', icon: <EditorCode/> },
-      { name: 'tpl', title: '模版', icon: <EditorTpl/> }
+      { name: 'code', title: '源码', icon: <EditorCode/> }
     ]
+
+    const asideModules = computed(() => {
+      return defaultModules.concat(props.modules).filter(v => !props.excludeModules.includes(v.name))
+    })
     const currentModuleName = ref('renderer')
+    if (props.defaultModule && asideModules.value.find(v => v.name === props.defaultModule)) {
+      // eslint-disable-next-line vue/no-setup-props-destructure
+      currentModuleName.value = props.defaultModule
+    } else {
+      currentModuleName.value = asideModules.value[0].name
+    }
     const { selectItem, selectItemId, changeSelect, updateSelectItem } = useSelect()
 
     const updateSchema = (schema) => {
@@ -60,7 +76,7 @@ export default {
       grid: 1
     })
     const navTitle = computed(() => {
-      const item = defaultModules.find(i => i.name === currentModuleName.value) ?? {}
+      const item = asideModules.value.find(i => i.name === currentModuleName.value) ?? {}
       return item.title
     })
     watch(() => props.schema, (val) => {
@@ -89,7 +105,7 @@ export default {
         </>,
         modules: () => <DesignModules
           v-model={currentModuleName.value}
-          modules={defaultModules}
+          modules={asideModules.value}
         />,
         nav: () => <>
            {currentModuleName.value === 'structure' && <Structure
