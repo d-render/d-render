@@ -1,7 +1,10 @@
 @primary: var(--el-color-primary);
+&__item, &__layout{
+  .dr-design-drawing--mobile & + &{
+    border-top: 1px solid #ddd;
+  }
+}
 &__item{
-  //background-color: rgba(236,245,255,.3);
-  //border: 1px dashed #999;
   &__mask{
     position: absolute;
     left: 0;
@@ -20,7 +23,4 @@
       background-color: @primary;
     }
   }
-}
-&__item + &__item{
-  border-top: 1px solid #ddd;
 }
