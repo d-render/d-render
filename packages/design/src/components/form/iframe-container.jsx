@@ -1,5 +1,5 @@
 import { onMounted, ref, createApp } from 'vue'
-
+import DeviceContainer from '@/widgets/drawing/widgets/device-container'
 export default {
   props: {},
   setup (props, { slots }) {
@@ -9,8 +9,6 @@ export default {
       iframe$.value.onload = () => {
         Array.from(document.head.childNodes).filter(v => v.nodeName === 'STYLE')
           .forEach(style => {
-            console.log(style)
-            console.log(style.cloneNode())
             iframe$.value.contentDocument.head.appendChild(style.cloneNode(true))
           })
         // styles.use()
@@ -21,13 +19,22 @@ export default {
         }).mount(iframe$.value.contentDocument.getElementById('app'))
       }
     })
-    return () => <iframe ref={iframe$} srcdoc={doc.value}></iframe>
+    const style = {
+      margin: 'auto 0',
+      pointerEvents: 'auto',
+      width: '100%',
+      height: '100%',
+      border: 'none'
+    }
+    return () => <DeviceContainer>
+      <iframe ref={iframe$} srcdoc={doc.value} style={style}></iframe>
+    </DeviceContainer>
   }
 }
 
 const defaultDoc = `<html>
     <body>
-        <div id="app">hello world</div>
+        <div id="app"></div>
     </body>
 </html>
 `
