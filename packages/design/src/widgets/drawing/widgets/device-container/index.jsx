@@ -3,7 +3,7 @@ export default {
   props: {
     equipment: {
       type: String,
-      default: 'pc'
+      default: 'mobile'
     },
     deviceType: {
       type: String,
