@@ -148,7 +148,8 @@ export default {
             onUpdate:selectItem={(val) => updateSelectItem(val)}
             list={configTabs.value}
         >
-            {/* { slots.configure?.({ name: currentTab.value }) } */}
+            {currentTab.value === 'field' && '123'}
+            { slots.configure?.({ name: currentTab.value }) }
         </Property>,
         preview: () => <>
           { props.equipment === 'pc' && <CipFormRender

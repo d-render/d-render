@@ -1,28 +1,30 @@
-import IphoneSix from "./mobile/iphone-six";
+import IphoneSix from './mobile/iphone-six'
 export default {
   props: {
     equipment: {
       type: String,
-      default: "pc",
+      default: 'pc'
     },
     deviceType: {
       type: String,
-      default: "IphoneSix"
+      default: 'IphoneSix'
     }
   },
-  setup(props, { slots }) {
+  setup (props, { slots }) {
     const mapComponents = {
       IphoneSix
     }
-    const comp = mapComponents[props.deviceType]
-    const mobileContainer = <comp>{
-    slots?.default()
-    }</comp>
-    const pcContainer = <>{slots?.default()}</>;
+    const Comp = (props, { slots }) => {
+      const _Comp = mapComponents[props.deviceType] ?? mapComponents.IphoneSix
+      return <_Comp>{slots.default?.()}</_Comp>
+    }
+
     return () => <>
     {
-      props.equipment === 'pc' ? pcContainer : mobileContainer
+      props.equipment === 'pc'
+        ? slots.default?.()
+        : <Comp>{slots.default?.()}</Comp>
     }
-    </>;
-  },
-};
+    </>
+  }
+}

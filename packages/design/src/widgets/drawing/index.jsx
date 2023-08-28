@@ -14,13 +14,13 @@ export default {
     deviceType: {}
   },
   emits: ['updateList', 'select'],
-  setup(props, context) {
+  setup (props, context) {
     const ns = useNamespace('design-drawing')
     const { list, updateList } = useList({ props, emit: context.emit })
     const { selectItem, deleteItem, copyItem } = useFieldDrawing({
       list,
       updateList,
-      emit: context.emit,
+      emit: context.emit
     })
 
     const addItem = ({ newIndex }) => {
@@ -118,6 +118,6 @@ export default {
           </DeviceContainer>
         </div>
       </div>
-    );
-  },
-};
+    )
+  }
+}

@@ -15,6 +15,7 @@ export default {
         onUpdate:active={(val) => { emit('update:active', val) }}
         list={props.list}
       />
+      {slots.default()}
     </div>
   }
 }
