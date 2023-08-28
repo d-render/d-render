@@ -8,7 +8,7 @@ import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
 import { ref } from 'vue'
 import { isJson } from '@cip/utils/util'
-import { TplNav, tplModuleConfig } from './plugins/tpl'
+import { TplNav, tplModuleConfig, EditorTpl } from './plugins/tpl'
 const useVirtualSchema = () => {
   const fieldKey = 'formSchema'
   const get = () => {
@@ -77,14 +77,17 @@ export default {
         v-model:equipment={equipment.value}
       >
         {{
-          title: () => <span class={'font-20'}>CIP可视化编辑器</span>,
+          title: () => <span class={'font-20'}>CIP可视化表单编辑器</span>,
           nav: ({ name }) => <>
             {name === tplModuleConfig.name && <TplNav list={tplList.value}/>}
           </>,
+          preHandle: () => <>
+            <CipButton text icon={EditorTpl} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
+          </>,
           handle: () => <>
-            <CipButton type={'primary'} icon={Promotion} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
           </>
+          // configure: ({ name }) => <div>{name}</div>
         }}
       </DrFormDesign>
     </PlInfo>

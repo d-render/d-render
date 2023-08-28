@@ -5,7 +5,7 @@ import ConfigTab from './config-tab'
 export default defineComponent({
   props: {
     active: String,
-    groupList: Array
+    list: Array
   },
   emits: ['update:active'],
   setup (props, { emit }) {
@@ -15,14 +15,14 @@ export default defineComponent({
 
     return () => (
       <div class="config-tabs">
-      {props.groupList.map(group => (
+      {props.list.map(group => (
         <ConfigTab
-          key={group.value}
-          name={group.value}
-          is-active={group.value === props.active}
-          onClick={() => activeGroup(group.value)}
+          key={group.name}
+          name={group.name}
+          is-active={group.name === props.active}
+          onClick={() => activeGroup(group.name)}
         >
-        {group.label}
+        {group.title}
         </ConfigTab>
       ))}
       </div>

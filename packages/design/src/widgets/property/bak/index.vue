@@ -83,11 +83,11 @@
             ></change-config-dialog>
           </template>
         </cip-form>
-        <cip-form v-show="activeType === 'form'"
-                  label-position="top"
-                  :model="data"
-                  @update:model="updateData"
-                  :field-list="formConfigFieldConfigList"></cip-form>
+<!--        <cip-form v-show="activeType === 'form'"-->
+<!--                  label-position="top"-->
+<!--                  :model="data"-->
+<!--                  @update:model="updateData"-->
+<!--                  :field-list="formConfigFieldConfigList"></cip-form>-->
 <!--        <cip-form v-show="activeType === 'column'"-->
 <!--                  label-position="top"-->
 <!--                  :model="tableConfig"-->

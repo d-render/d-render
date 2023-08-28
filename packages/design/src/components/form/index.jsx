@@ -13,8 +13,10 @@ import FormComponents from '@/widgets/aside/component-group'
 import Property from '@/widgets/property'
 
 import Drawing from '@/widgets/drawing'
+import IframeContainer from './iframe-container'
 
 import { useSelect } from '@/hooks/use-select'
+import { useCompose } from '@/hooks/use-compose'
 
 export default {
   props: {
@@ -27,27 +29,40 @@ export default {
     defaultModule: String,
     excludeModules: {
       default: () => []
-    }
+    },
+    configTabs: {},
+    excludeConfigTabs: {},
+    defaultConfigTabs: {}
   },
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
     const ns = useNamespace('form-design')
+
     const defaultModules = [
       { name: 'renderer', title: '组件', icon: <EditorRenderer/> },
       { name: 'structure', title: '结构', icon: <EditorOutline/> },
       { name: 'code', title: '源码', icon: <EditorCode/> }
     ]
 
-    const asideModules = computed(() => {
-      return defaultModules.concat(props.modules).filter(v => !props.excludeModules.includes(v.name))
+    const [currentModuleName, asideModules] = useCompose(props, {
+      key: 'modules',
+      excludeKey: 'excludeModules',
+      activeKey: 'defaultModule',
+      defaultValue: defaultModules
     })
-    const currentModuleName = ref('renderer')
-    if (props.defaultModule && asideModules.value.find(v => v.name === props.defaultModule)) {
-      // eslint-disable-next-line vue/no-setup-props-destructure
-      currentModuleName.value = props.defaultModule
-    } else {
-      currentModuleName.value = asideModules.value[0].name
-    }
+
+    const defaultConfigTabs = [
+      { name: 'field', title: '字段配置' },
+      { name: 'form', title: '表单配置' }
+    ]
+
+    const [currentTab, configTabs] = useCompose(props, {
+      key: 'configTabs',
+      excludeKey: 'excludeConfigTabs',
+      activeKey: 'defaultConfigTabs',
+      defaultValue: defaultConfigTabs
+    })
+
     const { selectItem, selectItemId, changeSelect, updateSelectItem } = useSelect()
 
     const updateSchema = (schema) => {
@@ -96,6 +111,7 @@ export default {
         equipment: () => <EquipmentRadio modelValue={props.equipment} onUpdate:modelValue={updateEquipment}/>,
         handle: () => <>
           {!isPreview.value && <>
+            {slots.preHandle?.()}
             <CipButton type={'primary'} icon={View} onClick={() => { togglePreview() }}>预览</CipButton>
             {slots.handle?.()}
           </>}
@@ -108,11 +124,11 @@ export default {
           modules={asideModules.value}
         />,
         nav: () => <>
-           {currentModuleName.value === 'structure' && <Structure
-            modelValue={selectItemId.value}
-            list={props.schema?.list}
-            onUpdate:selectItem={(val) => { selectItem.value = val }}
-           />}
+          {currentModuleName.value === 'structure' && <Structure
+          modelValue={selectItemId.value}
+          list={props.schema?.list}
+          onUpdate:selectItem={(val) => { selectItem.value = val }}
+          />}
           {currentModuleName.value === 'code' && <CodeSource modelValue={props.schema} onUpdate:modelValue={updateSchema}></CodeSource>}
           {currentModuleName.value === 'renderer' && <FormComponents groupList={props.componentsGroupList}/>}
           {slots.nav?.({ name: currentModuleName.value })}
@@ -124,14 +140,30 @@ export default {
           onSelect={(item) => changeSelect(item)}
           onUpdateList={(list) => { updateList(list) }}
         />,
-        configure: () => <Property
-          selectItem={selectItem.value}
-          data={props.schema}
-          onUpdate:selectItem={(val) => updateSelectItem(val)}
+        configure: () =>
+          <Property
+            v-model:active={currentTab.value}
+            selectItem={selectItem.value}
+            data={props.schema}
+            onUpdate:selectItem={(val) => updateSelectItem(val)}
+            list={configTabs.value}
         >
-          {{ default: ({ name }) => slots.property({ name }) }}
+            {/* { slots.configure?.({ name: currentTab.value }) } */}
         </Property>,
-        preview: () => <CipFormRender v-model:model={testModel.value} scheme={props.schema} equipment={props.equipment}/>
+        preview: () => <>
+          { props.equipment === 'pc' && <CipFormRender
+            v-model:model={testModel.value}
+            scheme={props.schema}
+            equipment={props.equipment}
+          />}
+          { props.equipment === 'mobile' && <IframeContainer >
+            <CipFormRender
+              v-model:model={testModel.value}
+              scheme={props.schema}
+              equipment={props.equipment}
+            />
+          </IframeContainer>}
+        </>
       }}
     </DesignLayout>
   }

@@ -16,7 +16,7 @@ export default defineComponent({
         class={['config-tab', { 'config-tab--active': props.isActive }]}
         onClick={withModifiers(emitClick, ['stop'])}
       >
-        {slots.default?.()}
+         {slots.default?.()}
       </div>
     )
   }
