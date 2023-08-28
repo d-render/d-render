@@ -1,4 +1,5 @@
 import ConfigTabs from './config-tabs/config-tabs'
+import FieldConfig from './property/field-config'
 export default {
   name: 'DrDesignConfigure',
   props: {
@@ -15,7 +16,9 @@ export default {
         onUpdate:active={(val) => { emit('update:active', val) }}
         list={props.list}
       />
-      {slots.default()}
+      <div style={'padding: 0 12px;'}>
+        {slots.default()}
+      </div>
     </div>
   }
 }

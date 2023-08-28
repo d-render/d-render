@@ -11,6 +11,8 @@ import EquipmentRadio from '@/widgets/equipment-radio'
 import CodeSource from '@/widgets/aside/code-source'
 import FormComponents from '@/widgets/aside/component-group'
 import Property from '@/widgets/property'
+import FieldConfig from '@/widgets/property/field-config'
+import FormConfig from '@/widgets/property/form-config'
 
 import Drawing from '@/widgets/drawing'
 import IframeContainer from './iframe-container'
@@ -148,7 +150,13 @@ export default {
             onUpdate:selectItem={(val) => updateSelectItem(val)}
             list={configTabs.value}
         >
-            {currentTab.value === 'field' && '123'}
+            {currentTab.value === 'field' && <FieldConfig
+              v-model:selectItem={selectItem.value}
+            />}
+            {currentTab.value === 'form' && <FormConfig
+              schema={props.schema}
+              onUpdate:schema={updateSchema}
+            />}
             { slots.configure?.({ name: currentTab.value }) }
         </Property>,
         preview: () => <>
