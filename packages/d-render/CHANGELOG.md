@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.9
+
+### Patch Changes
+
+- fix(style): 修复 labelPosition 为 top 时 label 宽度过长导致意外的 label for 效果
+
 ## 2.1.8
 
 ### Patch Changes
