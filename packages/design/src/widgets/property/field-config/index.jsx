@@ -1,11 +1,10 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { CipForm } from 'd-render'
-import { formConfigFieldConfigList, getComponentConfigure } from '../config'
+import { getComponentConfigure } from '../config'
 import {
-  configMapToList,
   configureOptionsFieldConfigMap,
   defaultConfigureOptions,
-  mergeFieldConfig
+  generateFieldList
 } from '@d-render/shared'
 export default {
   name: 'DrDesignFieldConfig',
@@ -30,7 +29,7 @@ export default {
         console.warn(`form-design: 获取${val}组件配置文件发生错误,使用默认配置进行替换`)
         configure = defaultConfigureOptions()
       }
-      return configMapToList(mergeFieldConfig(configure, configureOptionsFieldConfigMap))
+      return generateFieldList(configure, configureOptionsFieldConfigMap)
     }
     const fieldComponentConfigureFieldConfigList = ref([])
     watch(() => itemConfig.value.type, (val) => {
@@ -48,7 +47,12 @@ export default {
     }, { immediate: true })
 
     const updateSelectItem = (val) => {
-      emit('update:selectItem', val)
+      const selectItem = props.selectItem
+      Reflect.deleteProperty(val, 'key')
+      Reflect.deleteProperty(val, 'id')
+      selectItem.config = { ...val }
+      // console.log('selectItem', selectItem)
+      emit('update:selectItem', selectItem)
     }
 
     return () => <CipForm
