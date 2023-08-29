@@ -68,6 +68,10 @@ export default {
 
     const customModules = [tplModuleConfig]
 
+    const onUpdateSchema = (source) => {
+      schema.value = source
+    }
+
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
         style={'background: #fff'}
@@ -79,7 +83,7 @@ export default {
         {{
           title: () => <span class={'font-20'}>CIP可视化表单编辑器</span>,
           nav: ({ name }) => <>
-            {name === tplModuleConfig.name && <TplNav list={tplList.value}/>}
+            {name === tplModuleConfig.name && <TplNav list={tplList.value} onUpdateSchema={onUpdateSchema} />}
           </>,
           preHandle: () => <>
             <CipButton text icon={EditorTpl} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
