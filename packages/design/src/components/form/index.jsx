@@ -20,6 +20,10 @@ import IframeContainer from './iframe-container'
 import { useSelect } from '@/hooks/use-select'
 import { useCompose } from '@/hooks/use-compose'
 
+import { depthFirstSearchTree } from '@/util'
+import Breadcrumb from './breadcrumb'
+
+
 export default {
   props: {
     schema: {},
@@ -68,7 +72,6 @@ export default {
     const { selectItem, selectItemId, changeSelect, updateSelectItem } = useSelect()
 
     const updateSchema = (schema) => {
-      console.log(schema)
       // 进入使用designType 出来使用type
       emit('update:schema', schema)
     }
@@ -107,6 +110,7 @@ export default {
       isPreview.value = !isPreview.value
     }
     const testModel = ref({})
+    const breadcrumb = computed(() => depthFirstSearchTree(props.schema?.list?.[0] || {}, selectItemId.value, 'id') || [])
     return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]} preview={isPreview.value}>
       {{
         title: () => slots.title?.(),
@@ -135,13 +139,18 @@ export default {
           {currentModuleName.value === 'renderer' && <FormComponents groupList={props.componentsGroupList}/>}
           {slots.nav?.({ name: currentModuleName.value })}
         </>,
-        content: () => <Drawing
-          equipment={props.equipment}
-          data={props.schema}
-          selectId={selectItemId.value}
-          onSelect={(item) => changeSelect(item)}
-          onUpdateList={(list) => { updateList(list) }}
-        />,
+        content: () => <>
+        {
+          <Breadcrumb list={breadcrumb.value} onItem-click={item => selectItem.value = item}></Breadcrumb>
+        }
+          <Drawing
+            equipment={props.equipment}
+            data={props.schema}
+            selectId={selectItemId.value}
+            onSelect={(item) => changeSelect(item)}
+            onUpdateList={(list) => { updateList(list) }}
+          />
+        </>,
         configure: () =>
           <Property
             v-model:active={currentTab.value}

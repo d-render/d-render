@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import { cloneDeep, toUpperFirstCase } from '@d-render/shared'
 import { DRender } from 'd-render'
+import { getFieldValue } from '@d-render/shared'
 export const isLayoutType = (type) => {
   return new DRender().isLayoutType(type)
 }
@@ -78,4 +79,26 @@ export const getTableItem = (item) => {
     result.config.otherKey = `other${toUpperFirstCase(item.config.key)}`
   }
   return result
+}
+
+
+export const depthFirstSearchTree = (tree, value, key, depth = 0) => {
+  depth++
+  if (!tree) return
+  if (getFieldValue(tree, key) === value) {
+    const { children, ...useObject } = tree
+    return [useObject]
+  }
+  // 最深至搜索10层
+  if (depth > 9) return
+  const _children = isLayoutType(tree?.config?.type) ? (tree.config?.children || tree.config?.options) : (tree.children || tree.options)
+  if (!_children) return
+  for (let i = 0, loop = _children.length; i < loop; i++) {
+    const result = depthFirstSearchTree(_children[i], value, key, depth)
+    if (result) {
+      const { children, ...useObject } = tree
+      result.unshift(useObject)
+      return result
+    }
+  }
 }

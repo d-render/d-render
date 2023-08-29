@@ -14,7 +14,7 @@ const CustomTree = {
   },
   setup (props) {
     const pageDesign = inject('pageDesign', {})
-    return () => <div class={{ 'structure-tree': !props.isSub, 'structure-sub-tree': props.isSub }}>{props?.list.map(item => {
+    return () => <div class={{ 'structure-tree': !props.isSub, 'structure-sub-tree': props.isSub }}>{props?.list?.map(item => {
       const isLayout = isLayoutType(pageDesign?.drawTypeMap?.[item.config.type] ?? item.config.type)
       if (isLayout) {
         return <CustomTreeParent modelValue={props.modelValue} item={item}/>
