@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.13
+
+### Patch Changes
+
+- fix(d-render): [cip-form-item]修复 span 的逻辑错误
+
 ## 2.1.12
 
 ### Patch Changes
