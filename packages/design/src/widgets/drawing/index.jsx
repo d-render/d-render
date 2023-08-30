@@ -105,7 +105,7 @@ export default {
                 componentData={{
                   class: ns.be('content', 'wrapper'),
                   style: isNotEmpty(props.data.grid)
-                    ? `display: grid; grid-template-columns: repeat(${props.data.grid},1fr);align-content: start;`
+                    ? `display: grid;column-gap: 12px; grid-template-columns: repeat(${props.data.grid},1fr); align-content: start;`
                     : ''
                 }}
                 onAdd={({ newIndex }) => addItem({ newIndex })}
