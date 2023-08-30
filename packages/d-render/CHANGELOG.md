@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.12
+
+### Patch Changes
+
+- refactor(d-render): [cip-form-item]去除 grid 为 true 的转换逻辑,此部分由父组件直接转换
+
 ## 2.1.11
 
 ### Patch Changes
