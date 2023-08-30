@@ -5,7 +5,7 @@ import {
   getFieldValue,
   useFormProvide,
   DRender,
-  useCipPageConfig
+  useCipPageConfig, isEmpty
 } from '@d-render/shared'
 import { useConfig, useComponentProps } from '@xdp/config'
 import CipFormItem from '../cip-form-item'
@@ -52,7 +52,16 @@ export default {
       'scrollToError'
     ]
     const formProps = useComponentProps(props, 'form', formPropsKey, [cipPageConfig])
-
+    // grid为真时，pc和pad转换为3， 移动端强制转为1
+    const grid = computed(() => {
+      if (isEmpty(formProps.value.grid)) return undefined
+      if (['pc', 'pad'].includes(props.equipment)) {
+        if (formProps.value.grid === true) return 3
+        return formProps.value.grid
+      } else {
+        return 1
+      }
+    })
     const labelPositionBridge = computed(() => {
       // [Broken]: 当表单出现border时强制修改labelPosition为right
       if (formProps.value.border && props.showOnly) {
@@ -95,7 +104,7 @@ export default {
         config,
         dataBus: props.dataBus,
         readonly: props.showOnly,
-        grid: formProps.value.grid,
+        grid: grid.value,
         formLabelPosition: labelPositionBridge.value,
         labelPosition: labelPositionBridge.value,
         'onUpdate:model': (val) => {
@@ -140,7 +149,7 @@ export default {
     // 渲染单个字段
     const getFormDefaultSlot = ({ key, config } = {}, isShow) => {
       // 若存在字段key值的插槽覆盖则配置整个ElFormItem
-      config._isGrid = formProps.value.grid
+      config._isGrid = grid.value
       config._isShow = isShow
       if (context.slots[key]) {
         return context.slots[key]({ key, config })
@@ -231,12 +240,12 @@ export default {
         'cip-form',
         `cip-form--${props.equipment}`,
         {
-          'cip-form--grid': formProps.value.grid,
+          'cip-form--grid': grid.value,
           'cip-form--border': formProps.value.border && props.showOnly,
           'cip-form--readonly': props.showOnly
         }
       ],
-      style: { gridTemplateColumns: `repeat(${typeof formProps.value.grid === 'number' ? formProps.value.grid : 3},1fr)` },
+      style: { gridTemplateColumns: `repeat(${grid.value},1fr)` },
       size: 'default',
       // labelPosition: _labelPosition.value,
       scrollToError: formProps.value.scrollToError,
