@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.10
+
+### Patch Changes
+
+- feat(d-render): [cip-form-item]允许通过 itemMarginBottom 的控制项的底部外边距
+
 ## 2.1.9
 
 ### Patch Changes
