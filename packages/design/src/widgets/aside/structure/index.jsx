@@ -2,8 +2,8 @@ import { DRender } from 'd-render'
 import { inject, ref, provide, reactive, computed } from 'vue'
 import { ElIcon } from 'element-plus'
 import { CaretRight } from '@element-plus/icons-vue'
-import logo from "play/src/views/framework/logo";
-// import './index.less'
+import { ElTag } from 'element-plus'
+
 const dRender = new DRender()
 const isLayoutType = (type) => dRender.isLayoutType(type)
 const CustomTree = {
@@ -27,11 +27,15 @@ const CustomTree = {
 const TreeTitle = {
   props: {
     title: String,
-    subTitle: String
+    subTitle: String,
+    span: {
+      type: Number,
+      default: 1
+    }
   },
   setup (props) {
     const subTitle = computed(() => `{ ${props.subTitle} }`)
-    return () => <span class="structure-tree__item__text">{props.title}<span class="structure-tree__item__status">{subTitle.value}</span></span>
+    return () => <span class="structure-tree__item__text">{props.title} <ElTag size='small' type='warning'> {props.span}</ElTag><span class="structure-tree__item__status" title={subTitle.value}>{subTitle.value}</span></span>
   }
 }
 const CustomTreeParent = {
@@ -50,7 +54,7 @@ const CustomTreeParent = {
       }}>
         <ElIcon class={['structure-sub-tree__title__icon', { 'is-expand': isExpand.value }]}
                 onClick={() => toggleExpand()}><CaretRight/></ElIcon>
-        <TreeTitle title={props.item.config.type} subTitle={props.item.key} onClick={() => pageStructure.onSelect(props.item)}></TreeTitle>
+        <TreeTitle title={props.item.config.type} subTitle={props.item.key} onClick={() => pageStructure.onSelect(props.item)} span={props.item.config.span}></TreeTitle>
       </div>
       <div class={['structure-sub-tree__panel', { 'is-expand': isExpand.value }]}>
         {props.item.config.options.map((option, idx) => <div key={`${option.key}-${idx}`}>
@@ -69,7 +73,7 @@ const CustomTreeItem = {
     const pageStructure = inject('page-structure', {})
     return () => <div class={['structure-tree__item', { 'is-active': props.modelValue === props.item.id }]}
                       onClick={() => pageStructure.onSelect(props.item)}
-    ><TreeTitle title={props.item.config.type} subTitle={props.item.key}></TreeTitle></div>
+    ><TreeTitle title={props.item.config.type} subTitle={props.item.key} span={props.item.config.span}></TreeTitle></div>
   }
 }
 
