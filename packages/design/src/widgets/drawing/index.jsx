@@ -78,6 +78,13 @@ export default {
         selectItem(list.value[0])
       }
     }, { immediate: true })
+    const grid = computed(() => {
+      if (props.equipment === 'mobile') {
+        return 1
+      } else {
+        return props.data.grid ?? 1
+      }
+    })
     // class={'cip-fd-form-drawing-container'}
     return () => (
       <div class={[ns.e('container')]}>
@@ -105,7 +112,7 @@ export default {
                 componentData={{
                   class: ns.be('content', 'wrapper'),
                   style: isNotEmpty(props.data.grid)
-                    ? `display: grid;column-gap: 12px; grid-template-columns: repeat(${props.data.grid},1fr); align-content: start;`
+                    ? `display: grid;column-gap: 12px; grid-template-columns: repeat(${grid.value},1fr); align-content: start;`
                     : ''
                 }}
                 onAdd={({ newIndex }) => addItem({ newIndex })}
