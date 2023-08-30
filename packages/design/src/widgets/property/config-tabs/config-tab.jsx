@@ -2,8 +2,7 @@ import { defineComponent, withModifiers } from 'vue'
 
 export default defineComponent({
   props: {
-    name: String,
-    isActive: Boolean
+    name: String
   },
   emits: ['onClick'],
   setup (props, { emit, slots }) {
@@ -12,10 +11,7 @@ export default defineComponent({
     }
 
     return () => (
-      <div
-        class={['config-tab', { 'config-tab--active': props.isActive }]}
-        onClick={withModifiers(emitClick, ['stop'])}
-      >
+      <div onClick={withModifiers(emitClick, ['stop'])}>
          {slots.default?.()}
       </div>
     )

@@ -23,7 +23,6 @@ import { useCompose } from '@/hooks/use-compose'
 import { depthFirstSearchTree } from '@/util'
 import Breadcrumb from './breadcrumb'
 
-
 export default {
   props: {
     schema: {},
@@ -99,6 +98,7 @@ export default {
       const item = asideModules.value.find(i => i.name === currentModuleName.value) ?? {}
       return item.title
     })
+
     watch(() => props.schema, (val) => {
       if (!val) {
         // 如果scheme为空则直接进行初始化
@@ -156,7 +156,7 @@ export default {
             v-model:active={currentTab.value}
             selectItem={selectItem.value}
             data={props.schema}
-            onUpdate:selectItem={(val) => updateSelectItem(val)}
+            onUpdate:selectItem={(val) => updateSelectItem(val, true)}
             list={configTabs.value}
         >
             {currentTab.value === 'field' && <FieldConfig
@@ -166,7 +166,7 @@ export default {
               schema={props.schema}
               onUpdate:schema={updateSchema}
             />}
-            { slots.configure?.({ name: currentTab.value }) }
+            { slots.configure?.({ name: currentTab.value, selectItem, updateSelectItem }) }
         </Property>,
         preview: () => <>
           { props.equipment === 'pc' && <CipFormRender

@@ -7,10 +7,15 @@ export const useSelect = () => {
   const changeSelect = (fieldConfig) => {
     selectItem.value = fieldConfig
   }
-  const updateSelectItem = (val) => {
+  const updateSelectItem = (val, withHook) => {
     // 使用地址引用的特性修改值
-    selectItem.value.key = val.key || ''
-    selectItem.value.config = val
+    if (withHook) {
+      selectItem.value.key = val.key || ''
+      selectItem.value.config = val
+    } else {
+      selectItem.value = val
+    }
   }
+
   return { selectItem, selectItemId, changeSelect, updateSelectItem }
 }

@@ -9,6 +9,7 @@ import CipMessage from '@cip/components/cip-message'
 import { ref } from 'vue'
 import { isJson } from '@cip/utils/util'
 import { TplNav, tplModuleConfig, EditorTpl } from './plugins/tpl'
+import { CssConfigure } from './plugins/configure/css'
 const useVirtualSchema = () => {
   const fieldKey = 'formSchema'
   const get = () => {
@@ -73,6 +74,7 @@ export default {
         style={'background: #fff'}
         componentsGroupList={componentsGroupList}
         modules={customModules}
+        configTabs={[{ name: 'css', title: '外观' }]}
         v-model:schema={schema.value}
         v-model:equipment={equipment.value}
       >
@@ -86,8 +88,14 @@ export default {
           </>,
           handle: () => <>
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
+          </>,
+          configure: ({ name, selectItem, updateSelectItem }) => <>
+            {name === 'css' && <CssConfigure
+              selectItem={selectItem}
+              onUpdate:selectItem={updateSelectItem}
+              schema={schema.value}
+            />}
           </>
-          // configure: ({ name }) => <div>{name}</div>
         }}
       </DrFormDesign>
     </PlInfo>

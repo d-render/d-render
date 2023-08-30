@@ -1,5 +1,5 @@
 import ConfigTabs from './config-tabs/config-tabs'
-import FieldConfig from './property/field-config'
+import { ElScrollbar } from 'element-plus'
 export default {
   name: 'DrDesignConfigure',
   props: {
@@ -10,15 +10,19 @@ export default {
   },
   emits: ['update:active'],
   setup (props, { slots, emit }) {
-    return () => <div>
+    return () => <>
       <ConfigTabs
         active={props.active}
         onUpdate:active={(val) => { emit('update:active', val) }}
         list={props.list}
       />
-      <div style={'padding: 0 12px;'}>
-        {slots.default()}
+      <div class={'dr-configure-container'} >
+        <ElScrollbar>
+          <div style={'padding: 0 12px;'}>
+            {slots.default()}
+          </div>
+        </ElScrollbar>
       </div>
-    </div>
+    </>
   }
 }
