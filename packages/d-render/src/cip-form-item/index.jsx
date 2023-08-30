@@ -276,7 +276,7 @@ export default {
     }
     const cipFormStyle = computed(() => {
       if (props.grid) {
-        const span = Math.max(props.grid === true ? 3 : props.grid, formItemConfig.value.span)
+        const span = Math.max(props.grid, formItemConfig.value.span)
         return { gridColumn: `span ${span || 1}`, ...formItemConfig.value.itemStyle }
       } else {
         return (elForm.inline && !props.inTable) ? formItemConfig.value.style : formItemConfig.value.itemStyle
