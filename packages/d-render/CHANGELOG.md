@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.11
+
+### Patch Changes
+
+- fix(d-render): [cip-form]修复 grid 值小于字段配置中的 span 时导致的展示异常
+
 ## 2.1.10
 
 ### Patch Changes
