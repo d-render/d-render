@@ -11,9 +11,10 @@ module.exports = {
     '@vue/eslint-config-standard'
   ],
   rules: {
-    'vue/multi-word-component-names': 0
+    'vue/multi-word-component-names': 0,
+    'import/extensions': 0
   },
   parserOptions: {
-    ecmaVersion: 'latest'
+    ecmaVersion: 12
   }
 }

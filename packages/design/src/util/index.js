@@ -82,23 +82,29 @@ export const getTableItem = (item) => {
 }
 
 
-export const depthFirstSearchTree = (tree, value, key, depth = 0) => {
-  depth++
-  if (!tree) return
-  if (getFieldValue(tree, key) === value) {
-    const { children, ...useObject } = tree
-    return [useObject]
-  }
-  // 最深至搜索10层
-  if (depth > 9) return
-  const _children = isLayoutType(tree?.config?.type) ? (tree.config?.children || tree.config?.options) : (tree.children || tree.options)
-  if (!_children) return
-  for (let i = 0, loop = _children.length; i < loop; i++) {
-    const result = depthFirstSearchTree(_children[i], value, key, depth)
-    if (result) {
+export const depthFirstSearchTree = (list, value, key) => {
+  const searchTree = (tree, value, key) => {
+    if (!tree) return
+    if (getFieldValue(tree, key) === value) {
       const { children, ...useObject } = tree
-      result.unshift(useObject)
-      return result
+      return [useObject]
+    }
+    const _children = isLayoutType(tree?.config?.type) ? (tree.config?.children || tree.config?.options) : (tree.children || tree.options)
+    if (!_children) return
+    for (let i = 0, loop = _children.length; i < loop; i++) {
+      const result = searchTree(_children[i], value, key)
+      debugger
+      if (result) {
+        const { children, ...useObject } = tree
+        result.unshift(useObject)
+        return result
+      }
     }
   }
+  let _list = []
+  for (let i = 0, len = list.length; i < len; i++) {
+    _list = searchTree(list[i], value, key) || []
+    if (_list.length) break
+  }
+  return _list
 }

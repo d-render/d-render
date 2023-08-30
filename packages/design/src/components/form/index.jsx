@@ -110,7 +110,7 @@ export default {
       isPreview.value = !isPreview.value
     }
     const testModel = ref({})
-    const breadcrumb = computed(() => depthFirstSearchTree(props.schema?.list?.[0] || {}, selectItemId.value, 'id') || [])
+    const breadcrumb = computed(() => depthFirstSearchTree(props.schema?.list || [], selectItemId.value, 'id') || [])
     return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]} preview={isPreview.value}>
       {{
         title: () => slots.title?.(),

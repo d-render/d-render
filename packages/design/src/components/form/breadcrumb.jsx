@@ -14,7 +14,8 @@ export default {
       return props.list.filter(item => item.key) || []
     })
     return () =>  <div class='dr-breadcrumb--container'>
-        <ElBreadcrumb separator='/'>
+        <ElBreadcrumb separator='>'>
+          <ElBreadcrumbItem>页面</ElBreadcrumbItem>
           {
             breadcrumb.value.map(item => <ElBreadcrumbItem onClick={() => emit('item-click', item)}>
               <a>{ item?.config?.label }</a>
