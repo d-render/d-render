@@ -263,6 +263,7 @@ export default {
             'content--end': formItemConfig.value.contentEnd
           }
         ],
+        style: { marginBottom: formItemConfig.value.itemMarginBottom },
         prop: formItemConfig.value.ruleKey || props.fieldKey, // 子表单内的输入框会生成一个ruleKey
         rules: rules.value,
         labelWidth: getLabelWidth(formItemConfig.value),
