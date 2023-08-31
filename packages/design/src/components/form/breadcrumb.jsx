@@ -6,9 +6,9 @@ export default {
     list: {
       type: Array,
       default: () => []
-    }
+    },
   },
-  emits: ['item-click'],
+  emits: ['itemClick'],
   setup (props, { emit }) {
     const breadcrumb = computed(() => {
       return props.list.filter(item => item.key) || []
@@ -17,7 +17,7 @@ export default {
         <ElBreadcrumb separator='>'>
           <ElBreadcrumbItem>页面</ElBreadcrumbItem>
           {
-            breadcrumb.value.map(item => <ElBreadcrumbItem onClick={() => emit('item-click', item)}>
+            breadcrumb.value.map(item => <ElBreadcrumbItem onClick={() => emit('itemClick', item)}>
               <a>{ item?.config?.label }</a>
             </ElBreadcrumbItem>)
           }

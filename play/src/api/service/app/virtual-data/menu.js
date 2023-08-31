@@ -68,6 +68,10 @@ export const menu = [
       {
         name: 'PlaygroundFormDesign',
         title: 'FormDesign'
+      },
+      {
+        name: 'PlaygroundTableDesign',
+        title: 'TableDesign'
       }
     ]
   },

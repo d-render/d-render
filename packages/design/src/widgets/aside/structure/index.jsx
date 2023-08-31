@@ -28,14 +28,16 @@ const TreeTitle = {
   props: {
     title: String,
     subTitle: String,
-    span: {
-      type: Number,
-      default: 1
-    }
+    span: Number
   },
   setup (props) {
     const subTitle = computed(() => `{ ${props.subTitle} }`)
-    return () => <span class="structure-tree__item__text">{props.title} <ElTag size='small' type='warning'> {props.span}</ElTag><span class="structure-tree__item__status" title={subTitle.value}>{subTitle.value}</span></span>
+    return () => <span class="structure-tree__item__text">{props.title}
+      {
+        props.span && <ElTag size='small' type='warning'> {props.span}</ElTag>
+      }
+      <span class="structure-tree__item__status" title={subTitle.value}>{subTitle.value}</span>
+    </span>
   }
 }
 const CustomTreeParent = {

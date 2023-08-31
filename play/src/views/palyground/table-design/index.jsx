@@ -56,9 +56,9 @@ const useTpl = () => {
 }
 export default {
   setup () {
-    const { get, set } = useVirtualSchema()
+    const { set } = useVirtualSchema()
     const { tplList, initTpl, saveTpl } = useTpl()
-    const schema = ref(get())
+    const schema = ref({})
     const equipment = ref('pc')
 
     initTpl()
@@ -72,8 +72,12 @@ export default {
     const onUpdateSchema = (source) => {
       schema.value = source
     }
+    const drawTypeMap = {
+      table: 'tableDesign'
+    }
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
+        drawTypeMap={drawTypeMap}
         style={'background: #fff'}
         componentsGroupList={componentsGroupList}
         modules={customModules}
@@ -82,7 +86,7 @@ export default {
         v-model:equipment={equipment.value}
       >
         {{
-          title: () => <span class={'font-20'}>CIP可视化表单编辑器</span>,
+          title: () => <span class={'font-20'}>CIP可视化表格编辑器</span>,
           nav: ({ name }) => <>
             {name === tplModuleConfig.name && <TplNav list={tplList.value} onUpdateSchema={onUpdateSchema} />}
           </>,

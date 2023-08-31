@@ -47,11 +47,11 @@ export default defineComponent({
     const getFormContentComponent = (type) => {
       return defineAsyncComponent(() => import(`./${type}`))
     }
+    const pageDeisgn = inject('pageDesign', {})
     const getComponentType = (element) => {
       const { config: { type } } = element
-      if (type === 'table') {
-        return 'table'
-      } else if (isLayoutType(type)) {
+      const usingType = pageDeisgn.drawTypeMap?.[type] || type
+      if (isLayoutType(usingType)) {
         return 'layout'
       } else {
         return 'item'

@@ -10,7 +10,8 @@ export default {
   props: drawingContentProps,
   emits: ['delete', 'copy', 'selectItem', 'update:config'],
   setup (props, { emit }) {
-    const { computedConfig } = useFieldDrawingItem({ props, emit })
+    const { computedConfig, drawType } = useFieldDrawingItem({ props, emit })
+    console.log(drawType.value, 'drawType')
     const ns = useNamespace('design-draw-content__layout')
     const updateConfig = (val) => {
       emit('update:config', val)
@@ -40,6 +41,7 @@ export default {
     return () => (
       <CipFormLayout
         config={computedConfig.value}
+        drawType={drawType.value}
         onUpdate:config={(val) => updateConfig(val)}
         onSelectItem={(element) => selectItem(element)}
       >

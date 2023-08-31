@@ -39,7 +39,8 @@ export default {
     },
     configTabs: {},
     excludeConfigTabs: {},
-    defaultConfigTabs: {}
+    defaultConfigTabs: {},
+    drawTypeMap: {}
   },
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
@@ -113,6 +114,10 @@ export default {
     }
     const testModel = ref({})
     const breadcrumb = computed(() => depthFirstSearchTree(props.schema?.list || [], selectItemId.value, 'id') || [])
+    const pageDesign = reactive({
+      drawTypeMap: props.drawTypeMap
+    })
+    provide('pageDesign', pageDesign)
     return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]} preview={isPreview.value}>
       {{
         title: () => slots.title?.(),
@@ -143,7 +148,7 @@ export default {
         </>,
         content: () => <>
         {
-          <Breadcrumb list={breadcrumb.value} onItem-click={item => selectItem.value = item}></Breadcrumb>
+          <Breadcrumb list={breadcrumb.value} onItemClick={item => selectItem.value = item}></Breadcrumb>
         }
           <Drawing
             equipment={props.equipment}
