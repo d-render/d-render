@@ -3,6 +3,7 @@ export const drawingContentProps = {
   isActive: Boolean,
   fieldKey: String,
   config: Object,
+  grid: Number,
   formLabelPosition: String,
   showCopy: {
     type: Boolean,

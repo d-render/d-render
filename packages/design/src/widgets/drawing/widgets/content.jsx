@@ -37,7 +37,8 @@ export default defineComponent({
     showCopy: {
       type: Boolean,
       default: true
-    }
+    },
+    grid: Number
   },
   emits: ['changeHoverId'],
   setup (props, { attrs, emit }) {
@@ -67,6 +68,7 @@ export default defineComponent({
       onClick: props.onClick,
       onDelete: props.onDelete,
       onCopy: props.onCopy,
+      grid: props.grid,
       onSelectItem: props.onSelectItem
     }))
     const itemFieldKey = computed(() => {
@@ -78,6 +80,13 @@ export default defineComponent({
     const type = computed(() => getComponentType(props.element))
     const FormContent = computed(() => getFormContentComponent(type.value))
     const { entryElement, leaveElement, currentHoverId } = inject('designDrawing', {})
+    const span = computed(() => {
+      if (props.grid && props.element.config?.span) {
+        return props.grid < props.element.config.span ? props.grid : props.element.config.span
+      } else {
+        return 1
+      }
+    })
     return () => <div
       {...props}
       {...attrs}
@@ -95,7 +104,7 @@ export default defineComponent({
       ]}
       onMouseenter={() => { entryElement(props.element.id) }}
       onMouseleave={() => { leaveElement(props.element.id) }}
-      style={{ gridColumn: `span ${props.element.config?.span || 1}` }}
+      style={{ gridColumn: `span ${span.value || 1}` }}
     >
       {props.selectId === props.element.id && <span class="right-top item-field-key"> {itemFieldKey.value}</span>}
       <ElIcon size={22} class={'show-focus handle-icon move-icon'}>

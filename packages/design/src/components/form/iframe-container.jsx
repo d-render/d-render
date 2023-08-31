@@ -1,5 +1,4 @@
 import { onMounted, ref, createApp } from 'vue'
-import DeviceContainer from '@/widgets/drawing/widgets/device-container'
 export default {
   props: {},
   setup (props, { slots }) {
@@ -26,13 +25,15 @@ export default {
       height: '100%',
       border: 'none'
     }
-    return () => <DeviceContainer>
-      <iframe ref={iframe$} srcdoc={doc.value} style={style}></iframe>
-    </DeviceContainer>
+    return () => <iframe ref={iframe$} srcdoc={doc.value} style={style}></iframe>
   }
 }
 
 const defaultDoc = `<html>
+    <style type="text/css">
+        html,body {height: 100%; margin: 0; padding: 0}
+        #app{height: 100%}
+    </style>
     <body>
         <div id="app"></div>
     </body>

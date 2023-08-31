@@ -1,4 +1,6 @@
-import { computed, ref, watch } from 'vue'
+import DeviceContainer from '@/widgets/device-container'
+import { ElScrollbar } from 'element-plus'
+import { computed, ref, watch, Fragment, Component } from 'vue'
 import { CipFormRender } from 'd-render'
 import { useNamespace } from '@d-render/shared'
 import { CipButton } from '@xdp/button'
@@ -168,20 +170,27 @@ export default {
             />}
             { slots.configure?.({ name: currentTab.value, selectItem, updateSelectItem }) }
         </Property>,
-        preview: () => <>
-          { props.equipment === 'pc' && <CipFormRender
-            v-model:model={testModel.value}
-            scheme={props.schema}
-            equipment={props.equipment}
-          />}
-          { props.equipment === 'mobile' && <IframeContainer >
-            <CipFormRender
-              v-model:model={testModel.value}
-              scheme={props.schema}
-              equipment={props.equipment}
-            />
-          </IframeContainer>}
-        </>
+        preview: () => <DeviceContainer equipment={props.equipment} >
+
+           {props.equipment === 'pc' && <ElScrollbar>
+              <CipFormRender
+                style={{ padding: '20px', background: '#fff' }}
+                v-model:model={testModel.value}
+                scheme={props.schema}
+                equipment={props.equipment}
+              />
+            </ElScrollbar>}
+
+           { props.equipment === 'mobile' && <IframeContainer >
+            <ElScrollbar>
+              <CipFormRender
+                v-model:model={testModel.value}
+                scheme={props.schema}
+                equipment={props.equipment}
+              />
+            </ElScrollbar>
+           </IframeContainer>}
+        </DeviceContainer>
       }}
     </DesignLayout>
   }

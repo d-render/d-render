@@ -4,7 +4,8 @@ import { CipForm } from 'd-render'
 import { isNotEmpty, useNamespace } from '@d-render/shared'
 import { useFieldDrawing, useList } from './use-field-drawing'
 import FormDrawingContent from './widgets/content'
-import DeviceContainer from './widgets/device-container'
+import { ElScrollbar } from 'element-plus'
+import DeviceContainer from '@/widgets/device-container'
 
 export default {
   props: {
@@ -59,6 +60,7 @@ export default {
       const { element, index } = args[0]
       const formContentProps = {
         selectId: props.selectId,
+        grid: grid.value,
         element,
         index,
         formLabelPosition: props.data.formLabelPosition,
@@ -93,35 +95,38 @@ export default {
         )}
         <div class={[ns.b(), ns.m(props.equipment)]}>
           <DeviceContainer equipment={props.equipment} deviceType={props.deviceType}>
-            <CipForm
-              fieldList={[]}
-              size={props.data.tableSize || 'default'}
-              labelWidth={`${props.data.labelWidth}px`}
-              labelPosition={props.data.labelPosition}
-              labelSuffix={props.data.labelSuffix}
-              equipment={props.equipment}
-            >
-              <VueDraggable
-                modelValue={list.value}
-                onUpdate:modelValue={(val) => updateList(val)}
-                itemKey={'id'}
-                group={'components'}
-                handle={'.move-icon'}
-                ghostClass={'ghost'}
-                animation={200}
-                componentData={{
-                  class: ns.be('content', 'wrapper'),
-                  style: isNotEmpty(props.data.grid)
-                    ? `display: grid;column-gap: 12px; grid-template-columns: repeat(${grid.value},1fr); align-content: start;`
-                    : ''
-                }}
-                onAdd={({ newIndex }) => addItem({ newIndex })}
+            <ElScrollbar>
+              <CipForm
+                style={{ padding: props.equipment === 'pc' ? '20px' : undefined }}
+                fieldList={[]}
+                size={props.data.tableSize || 'default'}
+                labelWidth={`${props.data.labelWidth}px`}
+                labelPosition={props.data.labelPosition}
+                labelSuffix={props.data.labelSuffix}
+                equipment={props.equipment}
               >
-                {{
-                  item: FormContent
-                }}
-              </VueDraggable>
-            </CipForm>
+                <VueDraggable
+                  modelValue={list.value}
+                  onUpdate:modelValue={(val) => updateList(val)}
+                  itemKey={'id'}
+                  group={'components'}
+                  handle={'.move-icon'}
+                  ghostClass={'ghost'}
+                  animation={200}
+                  componentData={{
+                    class: ns.be('content', 'wrapper'),
+                    style: isNotEmpty(grid.value)
+                      ? `display: grid;column-gap: 12px; grid-template-columns: repeat(${grid.value},1fr); align-content: start;`
+                      : ''
+                  }}
+                  onAdd={({ newIndex }) => addItem({ newIndex })}
+                >
+                  {{
+                    item: FormContent
+                  }}
+                </VueDraggable>
+              </CipForm>
+            </ElScrollbar>
           </DeviceContainer>
         </div>
       </div>

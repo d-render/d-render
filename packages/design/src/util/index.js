@@ -93,7 +93,6 @@ export const depthFirstSearchTree = (list, value, key) => {
     if (!_children) return
     for (let i = 0, loop = _children.length; i < loop; i++) {
       const result = searchTree(_children[i], value, key)
-      debugger
       if (result) {
         const { children, ...useObject } = tree
         result.unshift(useObject)
