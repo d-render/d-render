@@ -42,6 +42,7 @@ export default {
       <CipFormLayout
         config={computedConfig.value}
         drawType={drawType.value}
+        isDesign={true}
         onUpdate:config={(val) => updateConfig(val)}
         onSelectItem={(element) => selectItem(element)}
       >

@@ -1,6 +1,6 @@
 import DeviceContainer from '@/widgets/device-container'
 import { ElScrollbar } from 'element-plus'
-import { computed, ref, watch, Fragment, Component } from 'vue'
+import { computed, ref, watch, Fragment, Component, reactive, provide } from 'vue'
 import { CipFormRender } from 'd-render'
 import { useNamespace } from '@d-render/shared'
 import { CipButton } from '@xdp/button'
