@@ -9,6 +9,15 @@
 //    background: #fff;
     min-height: 50px;
     background: rgb(240,240,240);
+    position: relative;
+    &:after{
+      content: '内容区';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #999;
+    }
   }
   &.is-hover:not(.ghost){
     outline-color: @warning;
