@@ -40,7 +40,12 @@ export const componentsGroupList = [
         icon: 'el-icon-menu',
         label: '子表单',
         hideLabel: true,
-        options: []
+        options: [
+          {
+            key: 'default',
+            children: []
+          }
+        ]
       }
     ]
   },
