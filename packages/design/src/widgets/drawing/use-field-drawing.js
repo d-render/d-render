@@ -1,6 +1,6 @@
 import { computed } from 'vue'
-import { getCopyRow } from '../../util'
-import { getNextItem } from '@d-render/shared'
+// import { getCopyRow } from '../../util'
+import { getNextItem, getCopyRow } from '@d-render/shared'
 export const useList = ({ props, emit }) => {
   const list = computed(() => {
     return props.data?.list || []
