@@ -1,5 +1,4 @@
 import { computed, inject } from 'vue'
-
 export const useFieldDrawingItem = ({ props, emit }) => {
   // FEAT: drawType优先级高于type
   const pageDesign = inject('pageDesign', {})

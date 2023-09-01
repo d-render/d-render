@@ -63,8 +63,6 @@ export const getCopyRow = (row) => {
   const type = row.config?.type
   if (isLayoutType(type)) {
     return getCopyLayout(row)
-  } else if (type === 'table') {
-    return getCopyTable(row)
   } else {
     return getCopyItem(row)
   }

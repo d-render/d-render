@@ -12,7 +12,7 @@ export default {
     const ns = useNamespace('design-draw-content__item')
 
     const model = ref({})
-    const { computedConfig } = useFieldDrawingItem({ props, emit })
+    const { computedConfig, drawType } = useFieldDrawingItem({ props, emit })
     return () => (
       <>
         <div class={[ns.e('mask')]}/>
@@ -22,6 +22,8 @@ export default {
           style={{
             width: computedConfig.value.width
           }}
+          isDesign={true}
+          drawType={drawType.value}
           onUpdate:model={(val) => { model.value = val }}
           fieldKey={props.fieldKey}
           formLabelPosition={props.formLabelPosition}
