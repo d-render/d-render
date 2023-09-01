@@ -13,8 +13,13 @@
 &-container--design &--ip6{
     .cip-form {
         height: 100%;
+        overflow: auto;
     }
 }
+&-container--preview &--ip6{
+    font-size: 0;
+}
+
 &--ip6{
     width: 419px;
     height: 798px;
@@ -27,13 +32,6 @@
     pointer-events: none;
     border-style: solid;
     border-width: 64px 22px;
-    &:after{
-        content: '';
-        visibility: hidden;
-        display: block;
-        height: 0;
-        clear: both;
-    }
 }
 
 &__sound {
