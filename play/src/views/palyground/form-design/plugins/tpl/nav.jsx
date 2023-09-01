@@ -3,17 +3,17 @@ import './index.less'
 
 export default {
   props: {
-    list: Array
+    data: Array
   },
-  emits: ['updateSchema'],
+  emits: ['update:schema'],
   setup (props, { emit }) {
     const onClick = (item) => {
-      emit('updateSchema', item.source)
+      emit('update:schema', item.source)
     }
-
+    console.log(props.data)
     return () => <>
       {
-        props.list.map(item => (
+        props.data?.map(item => (
           <div class="design-template" onClick={() => onClick(item)}>
             <div class="design-template-title">{item.name.value}</div>
             <div class="design-template-render">

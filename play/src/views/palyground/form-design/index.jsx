@@ -8,8 +8,8 @@ import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
 import { ref } from 'vue'
 import { isJson } from '@cip/utils/util'
-import { TplNav, tplModuleConfig, EditorTpl } from './plugins/tpl'
-import { CssConfigure } from './plugins/configure/css'
+import { TplNavPlugin } from './plugins/tpl'
+import { CssConfigurePlugin } from './plugins/css'
 const useVirtualSchema = () => {
   const fieldKey = 'formSchema'
   const get = () => {
@@ -67,42 +67,40 @@ export default {
       CipMessage.success('发布成功')
     }
 
-    const customModules = [tplModuleConfig]
+    const tplNavPlugin = new TplNavPlugin({
+      data: tplList.value
+    })
 
-    const onUpdateSchema = (source) => {
-      schema.value = source
-    }
+    const plugins = [tplNavPlugin, new CssConfigurePlugin()]
+
     const drawTypeMap = {
       table: 'tableDesign'
     }
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
-        drawTypeMap={drawTypeMap}
         style={'background: #fff'}
         componentsGroupList={componentsGroupList}
-        modules={customModules}
-        configTabs={[{ name: 'css', title: '外观' }]}
         v-model:schema={schema.value}
         v-model:equipment={equipment.value}
+        drawTypeMap={drawTypeMap}
+        plugins={plugins}
       >
         {{
           title: () => <span class={'font-20'}>CIP可视化表单编辑器</span>,
-          nav: ({ name }) => <>
-            {name === tplModuleConfig.name && <TplNav list={tplList.value} onUpdateSchema={onUpdateSchema} />}
-          </>,
+
           preHandle: () => <>
-            <CipButton text icon={EditorTpl} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
+             <CipButton text icon={tplNavPlugin.config.icon} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
           </>,
           handle: () => <>
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
-          </>,
-          configure: ({ name, selectItem, updateSelectItem }) => <>
-            {name === 'css' && <CssConfigure
-              selectItem={selectItem}
-              onUpdate:selectItem={updateSelectItem}
-              schema={schema.value}
-            />}
           </>
+          // configure: ({ name, selectItem, updateSelectItem }) => <>
+          //   {name === 'css' && <CssConfigure
+          //     selectItem={selectItem}
+          //     onUpdate:selectItem={updateSelectItem}
+          //     schema={schema.value}
+          //   />}
+          // </>
         }}
       </DrFormDesign>
     </PlInfo>

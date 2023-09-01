@@ -1,8 +1,8 @@
 import { computed, ref } from 'vue'
-export const useCompose = (props, { key, excludeKey, equalKey = 'name', activeKey, defaultValue }) => {
+export const useCompose = (props, { excludeKey, equalKey = 'name', activeKey, defaultValue, custom }) => {
   const value = ref()
   const list = computed(() => {
-    let result = defaultValue.concat(props[key]).filter(v => !!v)
+    let result = defaultValue.concat(custom).filter(v => !!v)
     if (props[excludeKey]) {
       result = result.filter(v => !props[excludeKey].includes(v[equalKey]))
     }

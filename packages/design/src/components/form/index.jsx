@@ -21,7 +21,7 @@ import IframeContainer from './iframe-container'
 
 import { useSelect } from '@/hooks/use-select'
 import { useCompose } from '@/hooks/use-compose'
-
+import { usePlugins } from '@/hooks/use-plugins'
 import { depthFirstSearchTree } from '@/util'
 import Breadcrumb from './breadcrumb'
 
@@ -40,12 +40,13 @@ export default {
     configTabs: {},
     excludeConfigTabs: {},
     defaultConfigTabs: {},
-    drawTypeMap: {}
+    drawTypeMap: {},
+    plugins: Array
   },
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
     const ns = useNamespace('form-design')
-
+    const { modules, configure } = usePlugins(props.plugins)
     const defaultModules = [
       { name: 'renderer', title: '组件', icon: <EditorRenderer/> },
       { name: 'structure', title: '结构', icon: <EditorOutline/> },
@@ -53,23 +54,25 @@ export default {
     ]
 
     const [currentModuleName, asideModules] = useCompose(props, {
-      key: 'modules',
       excludeKey: 'excludeModules',
       activeKey: 'defaultModule',
-      defaultValue: defaultModules
+      defaultValue: defaultModules,
+      custom: modules.map(v => v.config)
     })
-
+    console.log(asideModules.value)
     const defaultConfigTabs = [
       { name: 'field', title: '字段配置' },
       { name: 'form', title: '表单配置' }
     ]
-
+    console.log(configure)
     const [currentTab, configTabs] = useCompose(props, {
-      key: 'configTabs',
-      excludeKey: 'excludeConfigTabs',
-      activeKey: 'defaultConfigTabs',
-      defaultValue: defaultConfigTabs
+      excludeKey: 'excludeConfigure',
+      activeKey: 'defaultConfigure',
+      defaultValue: defaultConfigTabs,
+      custom: configure.map(v => v.config)
     })
+
+    console.log(configTabs.value)
 
     const { selectItem, selectItemId, changeSelect, updateSelectItem } = useSelect()
 
@@ -144,6 +147,14 @@ export default {
           />}
           {currentModuleName.value === 'code' && <CodeSource modelValue={props.schema} onUpdate:modelValue={updateSchema}></CodeSource>}
           {currentModuleName.value === 'renderer' && <FormComponents groupList={props.componentsGroupList}/>}
+          {modules.map(module => {
+            const { Component, config } = module
+            return config.name === currentModuleName.value && <Component
+              key={config.name}
+              data={module.options.data}
+              onUpdate:schema={updateSchema}
+            />
+          })}
           {slots.nav?.({ name: currentModuleName.value })}
         </>,
         content: () => <>
@@ -173,6 +184,14 @@ export default {
               schema={props.schema}
               onUpdate:schema={updateSchema}
             />}
+            {configure.map(conf => {
+              const { config, Component } = conf
+              return config.name === currentTab.value && <Component
+                key={config.name}
+                schema={props.schema}
+                v-model:selectItem={selectItem.value}
+              />
+            })}
             { slots.configure?.({ name: currentTab.value, selectItem, updateSelectItem }) }
         </Property>,
         preview: () => <DeviceContainer type={'preview'} equipment={props.equipment} >
