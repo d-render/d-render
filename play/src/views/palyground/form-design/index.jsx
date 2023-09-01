@@ -72,8 +72,12 @@ export default {
     const onUpdateSchema = (source) => {
       schema.value = source
     }
+    const drawTypeMap = {
+      table: 'tableDesign'
+    }
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
+        drawTypeMap={drawTypeMap}
         style={'background: #fff'}
         componentsGroupList={componentsGroupList}
         modules={customModules}

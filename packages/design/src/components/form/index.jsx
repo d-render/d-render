@@ -175,25 +175,27 @@ export default {
             />}
             { slots.configure?.({ name: currentTab.value, selectItem, updateSelectItem }) }
         </Property>,
-        preview: () => <DeviceContainer equipment={props.equipment} >
+        preview: () => <DeviceContainer type={'preview'} equipment={props.equipment} >
 
-           {props.equipment === 'pc' && <ElScrollbar>
+           {props.equipment === 'pc' &&
+           // <ElScrollbar>
               <CipFormRender
                 style={{ padding: '20px', background: '#fff' }}
                 v-model:model={testModel.value}
                 scheme={props.schema}
                 equipment={props.equipment}
               />
-            </ElScrollbar>}
+             // </ElScrollbar>
+           }
 
            { props.equipment === 'mobile' && <IframeContainer >
-            <ElScrollbar>
+            {/* <ElScrollbar> */}
               <CipFormRender
                 v-model:model={testModel.value}
                 scheme={props.schema}
                 equipment={props.equipment}
               />
-            </ElScrollbar>
+            {/* </ElScrollbar> */}
            </IframeContainer>}
         </DeviceContainer>
       }}

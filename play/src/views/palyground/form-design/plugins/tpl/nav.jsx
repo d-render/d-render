@@ -11,7 +11,7 @@ export default {
       emit('updateSchema', item.source)
     }
 
-    return () => <el-scrollbar>
+    return () => <>
       {
         props.list.map(item => (
           <div class="design-template" onClick={() => onClick(item)}>
@@ -27,6 +27,6 @@ export default {
           </div>
         ))
       }
-    </el-scrollbar>
+    </>
   }
 }

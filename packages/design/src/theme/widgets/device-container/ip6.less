@@ -4,8 +4,18 @@
     position: absolute;
     z-index: 100;
 }
+//.cip-form {
+//    background: #fff;
+//    border-radius: 0;
+//    pointer-events: auto;
+//    overflow: auto;
+//}
+&-container--design &--ip6{
+    .cip-form {
+        height: 100%;
+    }
+}
 &--ip6{
-
     width: 419px;
     height: 798px;
     position: relative;
@@ -17,6 +27,13 @@
     pointer-events: none;
     border-style: solid;
     border-width: 64px 22px;
+    &:after{
+        content: '';
+        visibility: hidden;
+        display: block;
+        height: 0;
+        clear: both;
+    }
 }
 
 &__sound {
@@ -62,4 +79,13 @@
 }
 &__screen{
     height: 100%;
+    overflow: auto;
+    pointer-events: all;
+    &:after{
+        content: '';
+        visibility: hidden;
+        display: block;
+        height: 0;
+        clear: both;
+    }
 }

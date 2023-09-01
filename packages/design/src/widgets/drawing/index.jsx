@@ -4,7 +4,6 @@ import { CipForm } from 'd-render'
 import { isNotEmpty, useNamespace } from '@d-render/shared'
 import { useFieldDrawing, useList } from './use-field-drawing'
 import FormDrawingContent from './widgets/content'
-import { ElScrollbar } from 'element-plus'
 import DeviceContainer from '@/widgets/device-container'
 
 export default {
@@ -94,8 +93,7 @@ export default {
           <div class='empty-form--text'>从左侧拖拽来添加字段</div>
         )}
         <div class={[ns.b(), ns.m(props.equipment)]}>
-          <DeviceContainer equipment={props.equipment} deviceType={props.deviceType}>
-            <ElScrollbar>
+          <DeviceContainer type={'design'} equipment={props.equipment} deviceType={props.deviceType}>
               <CipForm
                 style={{ padding: props.equipment === 'pc' ? '20px' : undefined }}
                 fieldList={[]}
@@ -126,7 +124,6 @@ export default {
                   }}
                 </VueDraggable>
               </CipForm>
-            </ElScrollbar>
           </DeviceContainer>
         </div>
       </div>

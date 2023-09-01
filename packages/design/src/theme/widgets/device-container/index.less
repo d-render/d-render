@@ -1,12 +1,21 @@
-.dr-design-device-container{
+.dr-device-container{
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f7f7f9;
   height: 100%;
   width: 100%;
+  &:after{
+    content: '';
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+  }
 }
-.dr-design-device {
+.dr-device {
+  height: 100%;
+  width: 100%;
   @import "./ip6.less";
   @import "./pc.less";
 }
