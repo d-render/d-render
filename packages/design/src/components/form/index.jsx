@@ -22,37 +22,22 @@ export default {
   props: {
     schema: {},
     equipment: {},
-    componentsGroupList: {},
-    modules: {
-      default: () => []
-    },
-    defaultModule: String,
-    excludeModules: {
-      default: () => []
-    },
-    configTabs: {},
-    excludeConfigTabs: {},
-    defaultConfigTabs: {},
     drawTypeMap: {},
-    plugins: Array
+    defaultModule: {},
+    defaultConfigure: {},
+    plugins: { type: Array, default: () => [] }
   },
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
     const ns = useNamespace('form-design')
     const { modules, configure } = usePlugins(props.plugins)
-    const defaultModules = []
 
     const [currentModuleName, asideModules] = useCompose(props, {
-      excludeKey: 'excludeModules',
       activeKey: 'defaultModule',
-      defaultValue: defaultModules,
       custom: modules.map(v => v.config)
     })
-    const defaultConfigTabs = []
     const [currentTab, configTabs] = useCompose(props, {
-      excludeKey: 'excludeConfigure',
       activeKey: 'defaultConfigure',
-      defaultValue: defaultConfigTabs,
       custom: configure.map(v => v.config)
     })
 
