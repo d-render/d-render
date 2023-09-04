@@ -10,7 +10,7 @@ export default {
   props: drawingContentProps,
   emits: ['delete', 'copy', 'selectItem', 'update:config'],
   setup (props, { emit }) {
-    const { computedConfig, drawType } = useFieldDrawingItem({ props, emit })
+    const { computedConfig, drawType, putStrategy } = useFieldDrawingItem({ props, emit })
     console.log(drawType.value, 'drawType')
     const ns = useNamespace('design-draw-content__layout')
     const updateConfig = (val) => {
@@ -19,6 +19,12 @@ export default {
 
     const selectItem = (element) => {
       emit('selectItem', element)
+    }
+    const judgePut = (...val) => {
+      const dom = val?.[2] ?? {}
+      const strategy = putStrategy[props.config.type]
+      if (strategy) return strategy(dom)
+      return true
     }
     const FormContent = ({ element, optionIndex, childIndex, updateOptionChild, copyOptionChild, deleteOptionChild }) => {
       const formContentProps = {
@@ -52,7 +58,7 @@ export default {
               modelValue={children}
               onUpdate:modelValue={(val) => { updateOptionChildren(optionIndex, val) }}
               itemKey={'id'}
-              group={'components'}
+              group={{ name: 'components', put: judgePut }}
               handle={'.move-icon'}
               ghostClass={'ghost'}
               animation={200}

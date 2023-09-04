@@ -94,6 +94,9 @@ export default {
     const drawTypeMap = {
       table: 'tableDesign'
     }
+    const putStrategy = {
+      table: (dom) => !dom.classList.contains('disabled-table')
+    }
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
         style={'background: #fff'}
@@ -101,6 +104,7 @@ export default {
         v-model:equipment={equipment.value}
         drawTypeMap={drawTypeMap}
         plugins={plugins}
+        putStrategy={putStrategy}
       >
         {{
           title: () => <span class={'font-20'}>CIP可视化表单编辑器</span>,

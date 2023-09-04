@@ -25,6 +25,7 @@ export default {
     drawTypeMap: {},
     defaultModule: {},
     defaultConfigure: {},
+    putStrategy: {},
     plugins: { type: Array, default: () => [] }
   },
   emits: ['update:schema', 'update:config', 'update:equipment'],
@@ -86,7 +87,8 @@ export default {
     const testModel = ref({})
     const breadcrumb = computed(() => depthFirstSearchTree(props.schema?.list || [], selectItemId.value, 'id') || [])
     const pageDesign = reactive({
-      drawTypeMap: props.drawTypeMap
+      drawTypeMap: props.drawTypeMap,
+      putStrategy: props.putStrategy
     })
     provide('pageDesign', pageDesign)
     return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]} preview={isPreview.value}>

@@ -21,10 +21,12 @@ export const useFieldDrawingItem = ({ props, emit }) => {
     emit('copy')
     e.stopPropagation()
   }
+  const putStrategy = pageDesign.putStrategy
   return {
     computedConfig,
     deleteItem,
     copyItem,
-    drawType
+    drawType,
+    putStrategy
   }
 }

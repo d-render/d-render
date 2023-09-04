@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid'
-import { cloneDeep, toUpperFirstCase } from '@d-render/shared'
+import { cloneDeep, toUpperFirstCase, getFieldValue } from '@d-render/shared'
 import { DRender } from 'd-render'
-import { getFieldValue } from '@d-render/shared'
 export const isLayoutType = (type) => {
   return new DRender().isLayoutType(type)
 }
@@ -78,7 +77,6 @@ export const getTableItem = (item) => {
   }
   return result
 }
-
 
 export const depthFirstSearchTree = (list, value, key) => {
   const searchTree = (tree, value, key) => {
