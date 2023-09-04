@@ -1,6 +1,6 @@
 import { ref, defineAsyncComponent, computed, nextTick } from 'vue'
 import { ElForm, ElFormItem, ElIcon, ElInput } from 'element-plus'
-import LSelect from '@/widgets/select'
+import LSelect from './select'
 import { Plus, Minus, RemoveFilled } from '@element-plus/icons-vue'
 import CipButtonText from '@cip/components/cip-button-text'
 import CipDialog from '@cip/components/cip-dialog'
