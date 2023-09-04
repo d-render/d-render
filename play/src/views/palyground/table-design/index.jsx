@@ -13,7 +13,7 @@ import {
   StructurePlugin,
   PalettePlugin,
   FieldConfigurePlugin,
-  FormConfigurePlugin
+  DrawTablePlugin
 } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from '../form-design/plugins/tpl'
 const useVirtualSchema = () => {
@@ -87,7 +87,7 @@ export default {
       new CodeSourcePlugin(),
       tplNavPlugin,
       new FieldConfigurePlugin(),
-      new FormConfigurePlugin()
+      new DrawTablePlugin()
     ]
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign

@@ -3,7 +3,6 @@ import { useFormLayoutOptions, isArray } from '@d-render/shared'
 
 export const useComponentSlots = (props, context) => {
   const { options, proxyValue, updateConfig, ...handler } = useFormLayoutOptions({ props, emit: context.emit })
-  debugger
   const componentSlots = computed(() => {
     if (props.config.usingSlots) {
       return props.config.usingSlots.reduce((acc, name, idx) => {

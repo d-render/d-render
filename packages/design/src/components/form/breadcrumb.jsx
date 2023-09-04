@@ -16,7 +16,7 @@ export default {
     })
     return () => <div class='dr-breadcrumb--container'>
         <ElBreadcrumb separator='>'>
-          <ElBreadcrumbItem>{props.draw?.config.title}</ElBreadcrumbItem>
+          <ElBreadcrumbItem>{props.draw?.config?.title}</ElBreadcrumbItem>
           {
             breadcrumb.value.map(item => <ElBreadcrumbItem onClick={() => emit('itemClick', item)}>
               <a>{ item?.config?.label }</a>
