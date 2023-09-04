@@ -1,7 +1,7 @@
 import Component from './component-group/index'
 import { EditorRenderer } from '@/svg'
 import { h } from 'vue'
-export class Palette {
+export class PalettePlugin {
   constructor (options) {
     this.type = 'modules'
     this.Component = Component

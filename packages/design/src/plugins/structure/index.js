@@ -1,7 +1,7 @@
 import Component from './component'
 import { EditorOutline } from '@/svg'
 import { h } from 'vue'
-export class Structure {
+export class StructurePlugin {
   constructor (options) {
     this.type = 'modules'
     this.Component = Component

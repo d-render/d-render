@@ -1,3 +1,5 @@
-export { CodeSource } from './code-source/index'
-export { Structure } from './structure'
-export { Palette } from './palette'
+export { CodeSourcePlugin } from './code-source/index'
+export { StructurePlugin } from './structure'
+export { PalettePlugin } from './palette'
+export { FieldConfigurePlugin } from './field-configure'
+export { FormConfigurePlugin } from './form-configure'

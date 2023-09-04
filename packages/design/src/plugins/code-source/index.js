@@ -1,7 +1,7 @@
 import CodeSourceComponent from './component'
 import { EditorCode } from '@/svg'
 import { h } from 'vue'
-export class CodeSource {
+export class CodeSourcePlugin {
   constructor (options) {
     this.type = 'modules'
     this.Component = CodeSourceComponent

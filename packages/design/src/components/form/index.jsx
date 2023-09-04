@@ -6,12 +6,8 @@ import { CipButton } from '@xdp/button'
 import { View } from '@element-plus/icons-vue'
 import DesignLayout from '@/widgets/layout'
 import DesignModules from '@/widgets/modules'
-import { EditorRenderer } from '@/svg'
 import EquipmentRadio from '@/widgets/equipment-radio'
-import FormComponents from '@/widgets/aside/component-group'
 import Property from '@/widgets/property'
-import FieldConfig from '@/widgets/property/field-config'
-import FormConfig from '@/widgets/property/form-config'
 
 import Drawing from '@/widgets/drawing'
 import IframeContainer from './iframe-container'
@@ -52,20 +48,13 @@ export default {
       defaultValue: defaultModules,
       custom: modules.map(v => v.config)
     })
-    console.log(asideModules.value)
-    const defaultConfigTabs = [
-      { name: 'field', title: '字段配置' },
-      { name: 'form', title: '表单配置' }
-    ]
-    console.log(configure)
+    const defaultConfigTabs = []
     const [currentTab, configTabs] = useCompose(props, {
       excludeKey: 'excludeConfigure',
       activeKey: 'defaultConfigure',
       defaultValue: defaultConfigTabs,
       custom: configure.map(v => v.config)
     })
-
-    console.log(configTabs.value)
 
     const { selectItem, selectItemId, changeSelect, updateSelectItem } = useSelect()
 
@@ -166,18 +155,12 @@ export default {
             onUpdate:selectItem={(val) => updateSelectItem(val, true)}
             list={configTabs.value}
         >
-            {currentTab.value === 'field' && <FieldConfig
-              v-model:selectItem={selectItem.value}
-            />}
-            {currentTab.value === 'form' && <FormConfig
-              schema={props.schema}
-              onUpdate:schema={updateSchema}
-            />}
             {configure.map(conf => {
               const { config, Component } = conf
               return config.name === currentTab.value && <Component
                 key={config.name}
                 schema={props.schema}
+                onUpdate:schema={updateSchema}
                 v-model:selectItem={selectItem.value}
               />
             })}

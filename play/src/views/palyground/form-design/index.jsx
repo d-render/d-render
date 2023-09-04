@@ -8,7 +8,13 @@ import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
 import { ref } from 'vue'
 import { isJson } from '@cip/utils/util'
-import { CodeSource, Structure, Palette } from '@d-render/design/esm/plugins'
+import {
+  CodeSourcePlugin,
+  StructurePlugin,
+  PalettePlugin,
+  FieldConfigurePlugin,
+  FormConfigurePlugin
+} from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from './plugins/tpl'
 import { CssConfigurePlugin } from './plugins/css'
 const useVirtualSchema = () => {
@@ -73,13 +79,15 @@ export default {
     })
 
     const plugins = [
-      new Palette({
+      new PalettePlugin({
         data: componentsGroupList
       }),
-      new Structure(),
-      new CodeSource(),
+      new StructurePlugin(),
+      new CodeSourcePlugin(),
       tplNavPlugin,
-      new CssConfigurePlugin()
+      new FieldConfigurePlugin(),
+      new CssConfigurePlugin(),
+      new FormConfigurePlugin()
     ]
 
     const drawTypeMap = {
