@@ -11,7 +11,8 @@ export default {
     data: { type: Object, default: () => ({}) },
     equipment: { type: String },
     selectId: [Number, String],
-    deviceType: {}
+    deviceType: {},
+    Component: {}
   },
   emits: ['updateList', 'select'],
   setup (props, context) {
@@ -86,6 +87,7 @@ export default {
         return props.data.grid ?? 1
       }
     })
+    console.log('C', props.Component)
     // class={'cip-fd-form-drawing-container'}
     return () => (
       <div class={[ns.e('container')]}>
@@ -94,7 +96,7 @@ export default {
         )}
         <div class={[ns.b(), ns.m(props.equipment)]}>
           <DeviceContainer type={'design'} equipment={props.equipment} deviceType={props.deviceType}>
-              <CipForm
+              <props.Component
                 style={{ padding: props.equipment === 'pc' ? '20px' : undefined }}
                 fieldList={[]}
                 size={props.data.tableSize || 'default'}
@@ -123,7 +125,7 @@ export default {
                     item: FormContent
                   }}
                 </VueDraggable>
-              </CipForm>
+              </props.Component>
           </DeviceContainer>
         </div>
       </div>

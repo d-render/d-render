@@ -30,7 +30,8 @@ export default {
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
     const ns = useNamespace('form-design')
-    const { modules, configure } = usePlugins(props.plugins)
+    const { modules, configure, draw } = usePlugins(props.plugins)
+    console.log('draw', draw)
 
     const [currentModuleName, asideModules] = useCompose(props, {
       activeKey: 'defaultModule',
@@ -122,9 +123,10 @@ export default {
         </>,
         content: () => <>
         {
-          <Breadcrumb list={breadcrumb.value} onItemClick={item => selectItem.value = item}></Breadcrumb>
+          <Breadcrumb list={breadcrumb.value} draw={draw} onItemClick={item => selectItem.value = item}></Breadcrumb>
         }
           <Drawing
+            Component={draw.Component}
             equipment={props.equipment}
             data={props.schema}
             selectId={selectItemId.value}

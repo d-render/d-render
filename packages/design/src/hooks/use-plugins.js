@@ -1,7 +1,7 @@
 export const usePlugins = (plugins) => {
   const modules = []
   const configure = []
-  console.log(plugins)
+  let draw = {}
   plugins.forEach(plugin => {
     const { type } = plugin
     if (type === 'modules') {
@@ -10,10 +10,15 @@ export const usePlugins = (plugins) => {
     if (type === 'configure') {
       configure.push(plugin)
     }
+    console.log(plugin)
+    if (type === 'draw') {
+      draw = plugin
+    }
   })
-  console.log('p', modules, configure)
+  console.log('p', modules, configure, draw)
   return {
     modules,
-    configure
+    configure,
+    draw
   }
 }
