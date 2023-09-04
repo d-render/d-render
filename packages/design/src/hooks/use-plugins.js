@@ -10,12 +10,10 @@ export const usePlugins = (plugins) => {
     if (type === 'configure') {
       configure.push(plugin)
     }
-    console.log(plugin)
     if (type === 'draw') {
       draw = plugin
     }
   })
-  console.log('p', modules, configure, draw)
   return {
     modules,
     configure,
