@@ -2,6 +2,7 @@ import { CipForm } from 'd-render'
 import './index.less'
 
 export default {
+  inheritAttrs: false,
   props: {
     data: Array
   },
