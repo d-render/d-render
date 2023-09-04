@@ -1,4 +1,4 @@
-import { CipForm } from 'd-render'
+import { CipFormRender } from 'd-render'
 import './index.less'
 
 export default {
@@ -18,11 +18,7 @@ export default {
           <div class="design-template" onClick={() => onClick(item)}>
             <div class="design-template-title">{item.name.value}</div>
             <div class="design-template-render">
-              <CipForm
-                model={{}}
-                fieldList={item.source.list}
-                showOnly={true}
-              />
+              <CipFormRender model={{}} scheme={item.source} />
             </div>
             <div class="design-template-cover"></div>
           </div>
