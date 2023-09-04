@@ -8,6 +8,7 @@ import {
 } from '@d-render/shared'
 export default {
   name: 'DrDesignFieldConfig',
+  inheritAttrs: false,
   props: {
     selectItem: { type: Object, default: () => ({}) },
     data: Object

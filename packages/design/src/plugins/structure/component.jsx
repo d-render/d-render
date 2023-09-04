@@ -79,6 +79,7 @@ const CustomTreeItem = {
 }
 
 export default {
+  inheritAttrs: false,
   props: {
     schema: Object,
     selectItem: Object

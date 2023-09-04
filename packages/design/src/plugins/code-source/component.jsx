@@ -1,6 +1,7 @@
 import CipCodeMirror from '@cip/code-mirror'
 import { isJson } from '@d-render/shared'
 export default {
+  inheritAttrs: false,
   props: {
     schema: {}
   },

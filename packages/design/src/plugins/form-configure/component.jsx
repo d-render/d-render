@@ -2,6 +2,7 @@ import { formConfigFieldConfigList } from './config'
 import { CipForm } from 'd-render'
 export default {
   name: 'DrFormConfig',
+  inheritAttrs: false,
   props: {
     schema: Object
   },

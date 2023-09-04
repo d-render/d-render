@@ -10,6 +10,7 @@ import { ElScrollbar } from 'element-plus'
 import FormComponentGroup from './group'
 export default {
   name: 'FormComponents',
+  inheritAttrs: false,
   components: { FormComponentGroup, ElScrollbar },
   props: {
     data: Array
