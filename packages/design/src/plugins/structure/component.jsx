@@ -1,20 +1,19 @@
 import { DRender } from 'd-render'
 import { inject, ref, provide, reactive, computed } from 'vue'
-import { ElIcon } from 'element-plus'
+import { ElIcon, ElTag } from 'element-plus'
 import { CaretRight } from '@element-plus/icons-vue'
-import { ElTag } from 'element-plus'
 
 const dRender = new DRender()
 const isLayoutType = (type) => dRender.isLayoutType(type)
 const CustomTree = {
   props: {
-    list: Array,
+    list: Object,
     modelValue: [String, Number],
     isSub: Boolean
   },
   setup (props) {
     const pageDesign = inject('pageDesign', {})
-    return () => <div class={{ 'structure-tree': !props.isSub, 'structure-sub-tree': props.isSub }}>{props?.list?.map(item => {
+    return () => <div class={{ 'structure-tree': !props.isSub, 'structure-sub-tree': props.isSub }}>{props.list?.map(item => {
       const isLayout = isLayoutType(pageDesign?.drawTypeMap?.[item.config.type] ?? item.config.type)
       if (isLayout) {
         return <CustomTreeParent modelValue={props.modelValue} item={item}/>
@@ -81,21 +80,22 @@ const CustomTreeItem = {
 
 export default {
   props: {
-    list: Array,
-    modelValue: [String, Number]
+    schema: Object,
+    selectItem: Object
+    // modelValue: [String, Number]
   },
   emits: ['update:selectItem'],
   setup (props, { emit }) {
     provide('page-structure', reactive({
-      activeId: props.modelValue,
+      activeId: props.selectItem?.id,
       onSelect: (item) => {
         emit('update:selectItem', item)
       }
     }))
     return () => <div class={'page-design-structure'}>
       <CustomTree
-        modelValue={props.modelValue}
-        list={props.list}>
+        modelValue={props.selectItem?.id}
+        list={props.schema?.list}>
       </CustomTree>
 
     </div>

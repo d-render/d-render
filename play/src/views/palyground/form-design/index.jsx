@@ -8,6 +8,7 @@ import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
 import { ref } from 'vue'
 import { isJson } from '@cip/utils/util'
+import { CodeSource, Structure, Palette } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from './plugins/tpl'
 import { CssConfigurePlugin } from './plugins/css'
 const useVirtualSchema = () => {
@@ -71,7 +72,15 @@ export default {
       data: tplList.value
     })
 
-    const plugins = [tplNavPlugin, new CssConfigurePlugin()]
+    const plugins = [
+      new Palette({
+        data: componentsGroupList
+      }),
+      new Structure(),
+      new CodeSource(),
+      tplNavPlugin,
+      new CssConfigurePlugin()
+    ]
 
     const drawTypeMap = {
       table: 'tableDesign'
@@ -79,7 +88,6 @@ export default {
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
         style={'background: #fff'}
-        componentsGroupList={componentsGroupList}
         v-model:schema={schema.value}
         v-model:equipment={equipment.value}
         drawTypeMap={drawTypeMap}
@@ -87,20 +95,12 @@ export default {
       >
         {{
           title: () => <span class={'font-20'}>CIP可视化表单编辑器</span>,
-
           preHandle: () => <>
              <CipButton text icon={tplNavPlugin.config.icon} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
           </>,
           handle: () => <>
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
           </>
-          // configure: ({ name, selectItem, updateSelectItem }) => <>
-          //   {name === 'css' && <CssConfigure
-          //     selectItem={selectItem}
-          //     onUpdate:selectItem={updateSelectItem}
-          //     schema={schema.value}
-          //   />}
-          // </>
         }}
       </DrFormDesign>
     </PlInfo>

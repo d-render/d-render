@@ -1,16 +1,13 @@
 import DeviceContainer from '@/widgets/device-container'
-import { ElScrollbar } from 'element-plus'
-import { computed, ref, watch, Fragment, Component, reactive, provide } from 'vue'
+import { computed, ref, watch, reactive, provide } from 'vue'
 import { CipFormRender } from 'd-render'
 import { useNamespace } from '@d-render/shared'
 import { CipButton } from '@xdp/button'
 import { View } from '@element-plus/icons-vue'
 import DesignLayout from '@/widgets/layout'
 import DesignModules from '@/widgets/modules'
-import { EditorRenderer, EditorOutline, EditorCode } from '@/svg'
-import Structure from '@/widgets/aside/structure'
+import { EditorRenderer } from '@/svg'
 import EquipmentRadio from '@/widgets/equipment-radio'
-import CodeSource from '@/widgets/aside/code-source'
 import FormComponents from '@/widgets/aside/component-group'
 import Property from '@/widgets/property'
 import FieldConfig from '@/widgets/property/field-config'
@@ -47,11 +44,7 @@ export default {
   setup (props, { emit, slots }) {
     const ns = useNamespace('form-design')
     const { modules, configure } = usePlugins(props.plugins)
-    const defaultModules = [
-      { name: 'renderer', title: '组件', icon: <EditorRenderer/> },
-      { name: 'structure', title: '结构', icon: <EditorOutline/> },
-      { name: 'code', title: '源码', icon: <EditorCode/> }
-    ]
+    const defaultModules = []
 
     const [currentModuleName, asideModules] = useCompose(props, {
       excludeKey: 'excludeModules',
@@ -140,18 +133,14 @@ export default {
           modules={asideModules.value}
         />,
         nav: () => <>
-          {currentModuleName.value === 'structure' && <Structure
-          modelValue={selectItemId.value}
-          list={props.schema?.list}
-          onUpdate:selectItem={(val) => { selectItem.value = val }}
-          />}
-          {currentModuleName.value === 'code' && <CodeSource modelValue={props.schema} onUpdate:modelValue={updateSchema}></CodeSource>}
-          {currentModuleName.value === 'renderer' && <FormComponents groupList={props.componentsGroupList}/>}
           {modules.map(module => {
             const { Component, config } = module
             return config.name === currentModuleName.value && <Component
               key={config.name}
-              data={module.options.data}
+              data={module.options?.data}
+              selectItem={selectItem.value}
+              onUpdate:selectItem={(val) => { selectItem.value = val }}
+              schema={props.schema}
               onUpdate:schema={updateSchema}
             />
           })}

@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar>
-    <template v-for="group in groupList" :key="group.groupName">
+    <template v-for="group in data" :key="group.groupName">
       <form-component-group :group="group" @add="add"></form-component-group>
     </template>
   </el-scrollbar>
@@ -12,7 +12,7 @@ export default {
   name: 'FormComponents',
   components: { FormComponentGroup, ElScrollbar },
   props: {
-    groupList: Array
+    data: Array
   },
   setup (props, { emit }) {
     const add = (row) => {
