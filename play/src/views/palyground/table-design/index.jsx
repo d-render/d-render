@@ -8,8 +8,14 @@ import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
 import { ref } from 'vue'
 import { isJson } from '@cip/utils/util'
-import { TplNav, tplModuleConfig, EditorTpl } from './plugins/tpl'
-import { CssConfigure } from './plugins/configure/css'
+import {
+  CodeSourcePlugin,
+  StructurePlugin,
+  PalettePlugin,
+  FieldConfigurePlugin,
+  FormConfigurePlugin
+} from '@d-render/design/esm/plugins'
+import { TplNavPlugin } from '../form-design/plugins/tpl'
 const useVirtualSchema = () => {
   const fieldKey = 'formSchema'
   const get = () => {
@@ -30,7 +36,7 @@ const useVirtualSchema = () => {
 const useTpl = () => {
   const tplList = ref([])
   const initTpl = () => {
-    const data = localStorage.getItem('tpl')
+    const data = localStorage.getItem('tableTpl')
     if (data) {
       tplList.value = data
         ? JSON.parse(data)
@@ -67,41 +73,37 @@ export default {
       CipMessage.success('发布成功')
     }
 
-    const customModules = [tplModuleConfig]
-
-    const onUpdateSchema = (source) => {
-      schema.value = source
-    }
     const drawTypeMap = {
       table: 'tableDesign'
     }
+    const tplNavPlugin = new TplNavPlugin({
+      data: tplList.value
+    })
+    const plugins = [
+      new PalettePlugin({
+        data: componentsGroupList
+      }),
+      new StructurePlugin(),
+      new CodeSourcePlugin(),
+      tplNavPlugin,
+      new FieldConfigurePlugin(),
+      new FormConfigurePlugin()
+    ]
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
         drawTypeMap={drawTypeMap}
         style={'background: #fff'}
-        componentsGroupList={componentsGroupList}
-        modules={customModules}
-        configTabs={[{ name: 'css', title: '外观' }]}
         v-model:schema={schema.value}
+        plugins={plugins}
         v-model:equipment={equipment.value}
       >
         {{
           title: () => <span class={'font-20'}>CIP可视化表格编辑器</span>,
-          nav: ({ name }) => <>
-            {name === tplModuleConfig.name && <TplNav list={tplList.value} onUpdateSchema={onUpdateSchema} />}
-          </>,
           preHandle: () => <>
-            <CipButton text icon={EditorTpl} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
+            <CipButton text icon={tplNavPlugin.config.icon} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
           </>,
           handle: () => <>
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
-          </>,
-          configure: ({ name, selectItem, updateSelectItem }) => <>
-            {name === 'css' && <CssConfigure
-              selectItem={selectItem}
-              onUpdate:selectItem={updateSelectItem}
-              schema={schema.value}
-            />}
           </>
         }}
       </DrFormDesign>
