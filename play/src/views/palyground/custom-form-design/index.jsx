@@ -1,13 +1,11 @@
 import { DrBasicDesign } from '@d-render/design'
 import { Promotion } from '@element-plus/icons-vue'
-import { ElMessageBox } from 'element-plus'
 import '@d-render/design/dist/index.css'
 import PlInfo from '@cip/components/page-layout/info'
 import { componentsGroupList } from './config'
 import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
 import { ref } from 'vue'
-import { isJson } from '@cip/utils/util'
 import {
   CodeSourcePlugin,
   StructurePlugin,
@@ -19,38 +17,12 @@ import {
 import { TplNavPlugin } from './plugins/tpl'
 import { CssConfigurePlugin } from './plugins/css'
 import { useVirtualSchema } from '../use-virtual-schema'
+import { useTpl } from '../use-tpl'
 
-const useTpl = () => {
-  const tplList = ref([])
-  const initTpl = () => {
-    const data = localStorage.getItem('tpl')
-    if (data) {
-      tplList.value = data
-        ? JSON.parse(data)
-        : []
-    }
-  }
-  const saveTpl = (source) => {
-    ElMessageBox.prompt('模版名称', '保存模版', {
-      inputValidator: val => !!val.trim(),
-      inputPlaceholder: '请输入模版名称',
-      inputErrorMessage: '请输入模版名称'
-    }).then(val => {
-      tplList.value.push({ name: val, source })
-      localStorage.setItem('tpl', JSON.stringify(tplList.value))
-    })
-  }
-
-  return {
-    tplList,
-    initTpl,
-    saveTpl
-  }
-}
 export default {
   setup () {
     const { get, set } = useVirtualSchema('customFormSchema')
-    const { tplList, initTpl, saveTpl } = useTpl()
+    const { tplList, initTpl, saveTpl } = useTpl('tpl')
     const schema = ref(get())
     const equipment = ref('pc')
 
