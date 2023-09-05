@@ -11,14 +11,15 @@ export default {
   inheritAttrs: false,
   props: {
     selectItem: { type: Object, default: () => ({}) },
-    data: Object
+    schema: Object
   },
-  emits: ['update:data', 'update:selectItem', 'update:tableItem'],
+  emits: ['update:selectItem'],
   setup (props, { emit }) {
     const itemConfig = computed(() => {
       const result = props.selectItem.config || {}
       result.key = props.selectItem.key
       result.id = props.selectItem.id
+      result.schema = props.schema
       return result
     })
     const getFieldComponentConfigureFieldConfigList = async (val) => {
@@ -51,6 +52,7 @@ export default {
       const selectItem = props.selectItem
       Reflect.deleteProperty(val, 'key')
       Reflect.deleteProperty(val, 'id')
+      Reflect.deleteProperty(val, 'schema')
       selectItem.config = { ...val }
       // console.log('selectItem', selectItem)
       emit('update:selectItem', selectItem)

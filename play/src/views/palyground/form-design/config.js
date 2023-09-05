@@ -45,6 +45,11 @@ export const componentsGroupList = [
             children: []
           }
         ]
+      },
+      {
+        type: 'flashFill',
+        icon: 'el-icon-edit',
+        label: '快速填充'
       }
     ]
   },
