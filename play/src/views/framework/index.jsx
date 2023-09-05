@@ -20,7 +20,7 @@ export default {
       theme={'light'}
       class={styles['cip-main']}
       navMenu={menu.value}
-      withTabs={true}
+      withTabs={false}
       hideFooter={true}
       layout={'top-left'}
       homeView={{ fullPath: '/' }}

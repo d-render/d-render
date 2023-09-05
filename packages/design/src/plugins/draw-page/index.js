@@ -1,9 +1,9 @@
 import DrawPageComponent from './component'
-export class DrawPagePlugin {
+import { DrawPlugin } from '../plugin'
+export class DrawPagePlugin extends DrawPlugin {
   constructor (options) {
-    this.type = 'draw'
+    super(options)
     this.config = { name: 'page', title: '页面' }
     this.Component = DrawPageComponent
-    this.options = options
   }
 }

@@ -35,12 +35,14 @@
   }
   &.is-hover:not(.ghost){
     outline-width: 1px;
+    outline-offset: -1px;
     outline-style: dashed;
   }
   &.is-active:not(.ghost){
     //border-style:solid;
     //border-width: 1px;
     outline-style: solid;
+    outline-offset: -2px;
     outline-width: 2px;
     > .show-focus{
       visibility: visible;

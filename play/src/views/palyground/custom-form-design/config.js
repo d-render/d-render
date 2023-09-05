@@ -75,23 +75,6 @@ export const componentsGroupList = [
           }
         ]
       },
-      // {
-      //   class: 'disabled-table',
-      //   type: 'steps',
-      //   icon: 'el-icon-s-grid',
-      //   label: '步骤条',
-      //   gutter: 0,
-      //   options: [
-      //     {
-      //       title: '步骤一',
-      //       children: []
-      //     },
-      //     {
-      //       title: '步骤二',
-      //       children: []
-      //     }
-      //   ]
-      // },
       {
         class: 'disabled-table',
         type: 'divider',

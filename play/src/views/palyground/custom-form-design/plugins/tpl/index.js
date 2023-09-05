@@ -1,11 +1,10 @@
 import TplNav from './nav'
 import { moduleConfig as tplModuleConfig } from './module-config'
-
-export class TplNavPlugin {
+import { ModulePlugin } from '@d-render/design'
+export class TplNavPlugin extends ModulePlugin {
   constructor (options) {
-    this.type = 'modules'
+    super(options)
     this.Component = TplNav
     this.config = tplModuleConfig
-    this.options = options
   }
 }

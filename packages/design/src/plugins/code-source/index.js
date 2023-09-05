@@ -1,11 +1,11 @@
 import CodeSourceComponent from './component'
 import { EditorCode } from '@/svg'
 import { h } from 'vue'
-export class CodeSourcePlugin {
+import { ModulePlugin } from '../plugin'
+export class CodeSourcePlugin extends ModulePlugin {
   constructor (options) {
-    this.type = 'modules'
+    super(options)
     this.Component = CodeSourceComponent
     this.config = { name: 'code', title: '源码', icon: h(EditorCode) }
-    this.options = options
   }
 }
