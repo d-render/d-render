@@ -77,6 +77,10 @@ export const menu = [
       {
         name: 'PlaygroundTableDesign',
         title: 'TableDesign'
+      },
+      {
+        name: 'PlaygroundPageDesign',
+        title: 'PageDesign'
       }
     ]
   },

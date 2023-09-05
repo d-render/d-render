@@ -13,5 +13,10 @@ export const routes = [
     path: '/playground/table-design',
     name: 'PlaygroundTableDesign',
     component: () => import('./table-design')
+  },
+  {
+    path: '/playground/page-design',
+    name: 'PlaygroundPageDesign',
+    component: () => import('./page-design')
   }
 ]

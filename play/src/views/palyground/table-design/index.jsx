@@ -16,22 +16,7 @@ import {
   DrawTablePlugin
 } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from '../custom-form-design/plugins/tpl'
-const useVirtualSchema = () => {
-  const fieldKey = 'formSchema'
-  const get = () => {
-    let val = localStorage.getItem(fieldKey)
-    if (isJson(val)) val = JSON.parse(val)
-    return val ?? {}
-  }
-  const set = (val) => {
-    if (typeof val === 'object') val = JSON.stringify(val)
-    return localStorage.setItem(fieldKey, val)
-  }
-  return {
-    get,
-    set
-  }
-}
+import { useVirtualSchema } from '../use-virtual-schema'
 
 const useTpl = () => {
   const tplList = ref([])
@@ -62,7 +47,7 @@ const useTpl = () => {
 }
 export default {
   setup () {
-    const { set } = useVirtualSchema()
+    const { set } = useVirtualSchema('tableDesign')
     const { tplList, initTpl, saveTpl } = useTpl()
     const schema = ref({})
     const equipment = ref('pc')

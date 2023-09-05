@@ -18,22 +18,7 @@ import {
 } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from './plugins/tpl'
 import { CssConfigurePlugin } from './plugins/css'
-const useVirtualSchema = () => {
-  const fieldKey = 'formSchema'
-  const get = () => {
-    let val = localStorage.getItem(fieldKey)
-    if (isJson(val)) val = JSON.parse(val)
-    return val ?? {}
-  }
-  const set = (val) => {
-    if (typeof val === 'object') val = JSON.stringify(val)
-    return localStorage.setItem(fieldKey, val)
-  }
-  return {
-    get,
-    set
-  }
-}
+import { useVirtualSchema } from '../use-virtual-schema'
 
 const useTpl = () => {
   const tplList = ref([])
@@ -64,7 +49,7 @@ const useTpl = () => {
 }
 export default {
   setup () {
-    const { get, set } = useVirtualSchema()
+    const { get, set } = useVirtualSchema('customFormSchema')
     const { tplList, initTpl, saveTpl } = useTpl()
     const schema = ref(get())
     const equipment = ref('pc')

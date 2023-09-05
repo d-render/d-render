@@ -4,6 +4,19 @@ import { DRender } from './d-render'
 const dRender = new DRender()
 
 // 允许有otherValue的字段
+export const twoValueComponentList = [
+  'dateRange',
+  'timeRange',
+  'numberRange',
+  'resourceFormTable',
+  'dataDictionary',
+  'staff',
+  'roleDictionary',
+  'office',
+  'formCountersignPerson',
+  'role'
+]
+export const threeValueComponentList = ['roleDictionary']
 export const generateFieldKey = (type = 'error') => {
   return `${type}_${uuid().split('-')[0]}` // ${Date.now()}${cacheKey}
 }
@@ -14,12 +27,12 @@ export const getCopyItem = (item) => {
   const sign = generateFieldKey(type)
   result.id = sign
   result.key = sign
-  // if (twoValueComponentList.includes(type)) {
-  //   result.config.otherKey = `other${toUpperFirstCase(sign)}`
-  // }
-  // if (threeValueComponentList.includes(type)) {
-  //   result.config.otherKey = [`other${toUpperFirstCase(sign)}`, `extra${toUpperFirstCase(sign)}`]
-  // }
+  if (twoValueComponentList.includes(type)) {
+    result.config.otherKey = `other${toUpperFirstCase(sign)}`
+  }
+  if (threeValueComponentList.includes(type)) {
+    result.config.otherKey = [`other${toUpperFirstCase(sign)}`, `extra${toUpperFirstCase(sign)}`]
+  }
   return result
 }
 // layout 类型的复制方式
@@ -55,11 +68,11 @@ export const getCopyRow = (row) => {
 
 export const getTableItem = (item) => {
   const result = cloneDeep(item)
-  // const type = item.config.type
+  const type = item.config.type
   result.id = item.config.key
   result.key = item.config.key
-  // if (twoValueComponentList.includes(type)) {
-  //   result.config.otherKey = `other${toUpperFirstCase(item.config.key)}`
-  // }
+  if (twoValueComponentList.includes(type)) {
+    result.config.otherKey = `other${toUpperFirstCase(item.config.key)}`
+  }
   return result
 }

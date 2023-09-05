@@ -1,4 +1,4 @@
-import { DrFormDesign } from '@d-render/design'
+import { DrPageDesign } from '@d-render/design'
 import { Promotion } from '@element-plus/icons-vue'
 import '@d-render/design/dist/index.css'
 import PlInfo from '@cip/components/page-layout/info'
@@ -10,14 +10,13 @@ import { useVirtualSchema } from './use-virtual-schema'
 
 export default {
   setup () {
-    const { get, set } = useVirtualSchema('formSchema')
+    const { get, set } = useVirtualSchema('pageSchema')
     const schema = ref(get())
     const equipment = ref('pc')
     const publish = () => {
       set(schema.value)
       CipMessage.success('发布成功')
     }
-
     const drawTypeMap = {
       table: 'tableDesign'
     }
@@ -25,7 +24,7 @@ export default {
       table: (dom) => !dom.classList.contains('disabled-table')
     }
     return () => <PlInfo hideHeader={true}>
-      <DrFormDesign
+      <DrPageDesign
         style={'background: #fff'}
         v-model:schema={schema.value}
         v-model:equipment={equipment.value}
@@ -39,7 +38,7 @@ export default {
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
           </>
         }}
-      </DrFormDesign>
+      </DrPageDesign>
     </PlInfo>
   }
 }
