@@ -186,7 +186,7 @@ export default defineComponent({
                 propertyKey = path?.length > 1 ? getPropertyKeyByPath(path, props.treeProps) : path[0]
               }
             }
-            return h(ColumnInput, {
+            const inputProps = {
               config,
               fieldKey: props.fieldKey,
               index: $index,
@@ -198,7 +198,12 @@ export default defineComponent({
               tableDependOnValues: props.dependOnValues,
               tableData: props.data,
               updateData
-            })
+            }
+            // $render的优先级高于普通的type
+            if(config.$render) {
+              return config.render({...inputProps, row, $idnex})
+            }
+            return h(ColumnInput, inputProps)
           }
         }
       })
