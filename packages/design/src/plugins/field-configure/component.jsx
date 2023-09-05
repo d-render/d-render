@@ -1,4 +1,4 @@
-import { computed, nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { CipForm } from 'd-render'
 import { getComponentConfigure } from './config'
 import {
@@ -15,12 +15,14 @@ export default {
   },
   emits: ['update:data', 'update:selectItem', 'update:tableItem'],
   setup (props, { emit }) {
-    const itemConfig = computed(() => {
-      const result = props.selectItem.config || {}
-      result.key = props.selectItem.key
-      result.id = props.selectItem.id
-      return result
-    })
+    // TODO: 通过源代码修改，修改的值无法正常的回显，因为检测不到selectItem的变化
+    const configBridge = ref({})
+    watch(() => props.selectItem, (val) => {
+      configBridge.value = val.config
+      configBridge.value.key = val.key
+      configBridge.value.id = val.id
+    }, { immediate: true, deep: true })
+
     const getFieldComponentConfigureFieldConfigList = async (val) => {
       let configure
       try {
@@ -33,7 +35,7 @@ export default {
       return generateFieldList(configure, configureOptionsFieldConfigMap)
     }
     const fieldComponentConfigureFieldConfigList = ref([])
-    watch(() => itemConfig.value.type, (val) => {
+    watch(() => configBridge.value.type, (val) => {
       if (val) {
         fieldComponentConfigureFieldConfigList.value = []
         // dependOn存在缓存问题，暂时先进行清空再赋值操作
@@ -51,14 +53,13 @@ export default {
       const selectItem = props.selectItem
       Reflect.deleteProperty(val, 'key')
       Reflect.deleteProperty(val, 'id')
-      selectItem.config = { ...val }
-      // console.log('selectItem', selectItem)
+      selectItem.config = val// { ...val }
       emit('update:selectItem', selectItem)
     }
 
     return () => <CipForm
       labelPosition="top"
-      model={itemConfig.value}
+      model={configBridge.value}
       onUpdate:model={updateSelectItem}
       fieldList={fieldComponentConfigureFieldConfigList.value}
       modelKey="id"
