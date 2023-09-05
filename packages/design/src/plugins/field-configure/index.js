@@ -1,10 +1,9 @@
 import FieldConfigure from './component'
-
-export class FieldConfigurePlugin {
+import { ConfigurePlugin } from '../plugin'
+export class FieldConfigurePlugin extends ConfigurePlugin {
   constructor (options) {
-    this.type = 'configure'
+    super(options)
     this.Component = FieldConfigure
     this.config = { name: 'field', title: '字段配置' }
-    this.options = options
   }
 }

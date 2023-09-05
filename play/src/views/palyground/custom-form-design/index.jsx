@@ -12,7 +12,8 @@ import {
   PalettePlugin,
   FieldConfigurePlugin,
   FormConfigurePlugin,
-  DrawFormPlugin
+  DrawFormPlugin,
+  FormPreviewPlugin
 } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from './plugins/tpl'
 import { CssConfigurePlugin } from './plugins/css'
@@ -46,7 +47,8 @@ export default {
       new FieldConfigurePlugin(),
       new CssConfigurePlugin(),
       new FormConfigurePlugin(),
-      new DrawFormPlugin()
+      new DrawFormPlugin(),
+      new FormPreviewPlugin()
     ]
     const drawTypeMap = {
       table: 'tableDesign'

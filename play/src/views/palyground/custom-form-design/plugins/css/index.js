@@ -1,10 +1,9 @@
 import CssConfigure from './configure'
-
-export class CssConfigurePlugin {
+import { ConfigurePlugin } from '@d-render/design'
+export class CssConfigurePlugin extends ConfigurePlugin {
   constructor (options) {
-    this.type = 'configure'
+    super(options)
     this.Component = CssConfigure
     this.config = { name: 'css', title: '外观' }
-    this.options = options
   }
 }

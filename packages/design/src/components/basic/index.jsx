@@ -31,7 +31,7 @@ export default {
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
     const ns = useNamespace('form-design')
-    const { modules, configure, draw } = usePlugins(props.plugins)
+    const { modules, configure, draw, preview } = usePlugins(props.plugins)
     console.log('draw', draw)
 
     const [currentModuleName, asideModules] = useCompose(props, {
@@ -159,22 +159,28 @@ export default {
 
            {props.equipment === 'pc' &&
            // <ElScrollbar>
-              <CipFormRender
-                style={{ padding: '20px', background: '#fff' }}
-                v-model:model={testModel.value}
-                scheme={props.schema}
-                equipment={props.equipment}
-              />
+             <div style={{ padding: '20px', background: '#fff', height: '100% ' }}>
+               <preview.Component
+                 v-model:model={testModel.value}
+                 scheme={props.schema}
+                 equipment={props.equipment}
+               />
+              {/* <CipFormRender */}
+              {/*  v-model:model={testModel.value} */}
+              {/*  scheme={props.schema} */}
+              {/*  equipment={props.equipment} */}
+              {/* /> */}
+             </div>
              // </ElScrollbar>
            }
 
            { props.equipment === 'mobile' && <IframeContainer >
             {/* <ElScrollbar> */}
-              <CipFormRender
-                v-model:model={testModel.value}
-                scheme={props.schema}
-                equipment={props.equipment}
-              />
+             <preview.Component
+               v-model:model={testModel.value}
+               scheme={props.schema}
+               equipment={props.equipment}
+             />
             {/* </ElScrollbar> */}
            </IframeContainer>}
         </DeviceContainer>

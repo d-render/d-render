@@ -1,9 +1,9 @@
 import DrawFormComponent from './component'
-export class DrawFormPlugin {
+import { DrawPlugin } from '../plugin'
+export class DrawFormPlugin extends DrawPlugin {
   constructor (options) {
-    this.type = 'draw'
+    super(options)
     this.config = { name: 'from', title: '表单' }
     this.Component = DrawFormComponent
-    this.options = options
   }
 }
