@@ -1,4 +1,5 @@
 import PluginCCI from '@cip/d-render-plugin-cci'
+import '@cip/d-render-plugin-cci/dist/index.css'
 import PluginCCIMobile from '@cip/d-render-plugin-cci-mobile'
 import '@cip/d-render-plugin-cci-mobile/dist/index.css'
 import 'vant/lib/index.css'
