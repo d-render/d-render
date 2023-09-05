@@ -84,7 +84,7 @@ export default {
     const togglePreview = () => {
       isPreview.value = !isPreview.value
     }
-    const testModel = ref({})
+    const testModel = ref()
     const breadcrumb = computed(() => depthFirstSearchTree(props.schema?.list || [], selectItemId.value, 'id') || [])
     const pageDesign = reactive({
       drawTypeMap: props.drawTypeMap,
@@ -158,30 +158,21 @@ export default {
         preview: () => <DeviceContainer type={'preview'} equipment={props.equipment} >
 
            {props.equipment === 'pc' &&
-           // <ElScrollbar>
              <div style={{ padding: '20px', background: '#fff', height: '100% ' }}>
                <preview.Component
                  v-model:model={testModel.value}
-                 scheme={props.schema}
+                 schema={props.schema}
                  equipment={props.equipment}
                />
-              {/* <CipFormRender */}
-              {/*  v-model:model={testModel.value} */}
-              {/*  scheme={props.schema} */}
-              {/*  equipment={props.equipment} */}
-              {/* /> */}
              </div>
-             // </ElScrollbar>
            }
-
+           {/* 预览组件需要使用 iframe */}
            { props.equipment === 'mobile' && <IframeContainer >
-            {/* <ElScrollbar> */}
              <preview.Component
                v-model:model={testModel.value}
-               scheme={props.schema}
+               schema={props.schema}
                equipment={props.equipment}
              />
-            {/* </ElScrollbar> */}
            </IframeContainer>}
         </DeviceContainer>
       }}

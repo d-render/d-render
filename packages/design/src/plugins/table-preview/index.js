@@ -1,8 +1,8 @@
-import { CipFormRender } from 'd-render'
+import TableRender from './component'
 import { PreviewPlugin } from '../plugin'
-export class FormPreviewPlugin extends PreviewPlugin {
+export class TablePreviewPlugin extends PreviewPlugin {
   constructor (options) {
     super(options)
-    this.Component = CipFormRender
+    this.Component = TableRender
   }
 }

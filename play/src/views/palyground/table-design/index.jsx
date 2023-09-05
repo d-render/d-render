@@ -11,7 +11,8 @@ import {
   StructurePlugin,
   PalettePlugin,
   FieldConfigurePlugin,
-  DrawTablePlugin
+  DrawTablePlugin,
+  TablePreviewPlugin
 } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from '../custom-form-design/plugins/tpl'
 import { useVirtualSchema } from '../use-virtual-schema'
@@ -44,7 +45,8 @@ export default {
       new CodeSourcePlugin(),
       tplNavPlugin,
       new FieldConfigurePlugin(),
-      new DrawTablePlugin()
+      new DrawTablePlugin(),
+      new TablePreviewPlugin()
     ]
     return () => <PlInfo hideHeader={true}>
       <DrBasicDesign
