@@ -92,7 +92,7 @@ export default {
         putStrategy={putStrategy}
       >
         {{
-          title: () => <span class={'font-20'}>CIP可视化表单编辑器</span>,
+          title: () => <span class={'font-20'}>CIP可视化《表单》编辑器</span>,
           preHandle: () => <>
              <CipButton text icon={tplNavPlugin.config.icon} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
           </>,

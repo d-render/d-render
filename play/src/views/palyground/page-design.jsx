@@ -33,7 +33,7 @@ export default {
         componentsGroupList={componentsGroupList}
       >
         {{
-          title: () => <span class={'font-20'}>CIP可视化表单编辑器</span>,
+          title: () => <span class={'font-20'}>CIP可视化《页面》编辑器</span>,
           handle: () => <>
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
           </>

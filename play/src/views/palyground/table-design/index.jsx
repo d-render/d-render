@@ -83,7 +83,7 @@ export default {
         v-model:equipment={equipment.value}
       >
         {{
-          title: () => <span class={'font-20'}>CIP可视化表格编辑器</span>,
+          title: () => <span class={'font-20'}>CIP可视化《表格》编辑器</span>,
           preHandle: () => <>
             <CipButton text icon={tplNavPlugin.config.icon} onClick={() => { saveTpl(schema.value) }}>保存模版</CipButton>
           </>,
