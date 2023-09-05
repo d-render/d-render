@@ -1,4 +1,4 @@
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch, provide } from 'vue'
 import { CipForm } from 'd-render'
 import { getComponentConfigure } from './config'
 import {
@@ -15,13 +15,14 @@ export default {
   },
   emits: ['update:selectItem'],
   setup (props, { emit }) {
+    provide('getSchema', () => props.schema)
     // TODO: 通过源代码修改，修改的值无法正常的回显，因为检测不到selectItem的变化
     const configBridge = ref({})
     watch(() => props.selectItem, (val) => {
+      if (!val?.key) return
       configBridge.value = val.config
       configBridge.value.key = val.key
       configBridge.value.id = val.id
-      configBridge.value.schema = props.schema
     }, { immediate: true, deep: true })
 
     const getFieldComponentConfigureFieldConfigList = async (val) => {
@@ -54,7 +55,6 @@ export default {
       const selectItem = props.selectItem
       Reflect.deleteProperty(val, 'key')
       Reflect.deleteProperty(val, 'id')
-      Reflect.deleteProperty(val, 'schema')
       selectItem.config = val// { ...val }
       emit('update:selectItem', selectItem)
     }
