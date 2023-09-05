@@ -1,4 +1,4 @@
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch, provide } from 'vue'
 import { CipForm } from 'd-render'
 import { getComponentConfigure } from './config'
 import {
@@ -11,13 +11,15 @@ export default {
   inheritAttrs: false,
   props: {
     selectItem: { type: Object, default: () => ({}) },
-    data: Object
+    schema: Object
   },
-  emits: ['update:data', 'update:selectItem', 'update:tableItem'],
+  emits: ['update:selectItem'],
   setup (props, { emit }) {
+    provide('getSchema', () => props.schema)
     // TODO: 通过源代码修改，修改的值无法正常的回显，因为检测不到selectItem的变化
     const configBridge = ref({})
     watch(() => props.selectItem, (val) => {
+      if (!val?.key) return
       configBridge.value = val.config
       configBridge.value.key = val.key
       configBridge.value.id = val.id

@@ -81,7 +81,7 @@ export class EffectExecutor {
         // if (!config[key]) console.log(`没有${key}全局effect`)
       }
     })
-    console.log('executeObject', executeObject)
+
     return executeObject
   }
 

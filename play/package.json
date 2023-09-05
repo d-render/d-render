@@ -23,6 +23,7 @@
     "@d-render/plugin-standard-configure": "workspace:*",
     "@d-render/shared": "workspace:*",
     "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": "^1.2.0",
     "ant-design-vue": "^3.2.20",
     "axios": "^1.4.0",
     "codemirror": "^5.65.14",
