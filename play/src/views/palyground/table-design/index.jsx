@@ -1,4 +1,4 @@
-import { DrFormDesign } from '@d-render/design'
+import { DrBasicDesign } from '@d-render/design'
 import { Promotion } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import '@d-render/design/dist/index.css'
@@ -15,7 +15,7 @@ import {
   FieldConfigurePlugin,
   DrawTablePlugin
 } from '@d-render/design/esm/plugins'
-import { TplNavPlugin } from '../form-design/plugins/tpl'
+import { TplNavPlugin } from '../custom-form-design/plugins/tpl'
 const useVirtualSchema = () => {
   const fieldKey = 'formSchema'
   const get = () => {
@@ -90,7 +90,7 @@ export default {
       new DrawTablePlugin()
     ]
     return () => <PlInfo hideHeader={true}>
-      <DrFormDesign
+      <DrBasicDesign
         drawTypeMap={drawTypeMap}
         style={'background: #fff'}
         v-model:schema={schema.value}
@@ -106,7 +106,7 @@ export default {
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
           </>
         }}
-      </DrFormDesign>
+      </DrBasicDesign>
     </PlInfo>
   }
 }

@@ -1,4 +1,4 @@
-import { DrFormDesign } from '@d-render/design'
+import { DrBasicDesign } from '@d-render/design'
 import { Promotion } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import '@d-render/design/dist/index.css'
@@ -98,7 +98,7 @@ export default {
       table: (dom) => !dom.classList.contains('disabled-table')
     }
     return () => <PlInfo hideHeader={true}>
-      <DrFormDesign
+      <DrBasicDesign
         style={'background: #fff'}
         v-model:schema={schema.value}
         v-model:equipment={equipment.value}
@@ -115,7 +115,7 @@ export default {
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
           </>
         }}
-      </DrFormDesign>
+      </DrBasicDesign>
     </PlInfo>
   }
 }

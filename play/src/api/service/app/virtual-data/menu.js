@@ -70,6 +70,11 @@ export const menu = [
         title: 'FormDesign'
       },
       {
+        name: 'PlaygroundCustomFormDesign',
+        title: 'FormDesign',
+        badge: 'custom'
+      },
+      {
         name: 'PlaygroundTableDesign',
         title: 'TableDesign'
       }
