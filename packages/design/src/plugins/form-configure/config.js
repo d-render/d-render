@@ -1,5 +1,4 @@
 import { configMapToList } from '@cip/utils/config-util'
-import { DRender } from '@d-render/shared'
 export const formConfigFieldConfigMap = {
   labelPosition: {
     type: 'radio',
@@ -40,9 +39,3 @@ export const formConfigFieldConfigMap = {
   }
 }
 export const formConfigFieldConfigList = configMapToList(formConfigFieldConfigMap)
-
-const dRender = new DRender()
-export const getComponentConfigure = async (type) => {
-  const { default: configure } = await dRender.componentDictionary[type]('/configure')()
-  return configure
-}
