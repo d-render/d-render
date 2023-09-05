@@ -12,7 +12,7 @@ import {
   PalettePlugin,
   FieldConfigurePlugin,
   FormConfigurePlugin,
-  DrawFormPlugin,
+  FormDrawPlugin,
   FormPreviewPlugin
 } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from './plugins/tpl'
@@ -47,7 +47,7 @@ export default {
       new FieldConfigurePlugin(),
       new CssConfigurePlugin(),
       new FormConfigurePlugin(),
-      new DrawFormPlugin(),
+      new FormDrawPlugin(),
       new FormPreviewPlugin()
     ]
     const drawTypeMap = {

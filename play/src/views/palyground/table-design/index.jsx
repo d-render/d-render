@@ -11,7 +11,7 @@ import {
   StructurePlugin,
   PalettePlugin,
   FieldConfigurePlugin,
-  DrawTablePlugin,
+  TableDrawPlugin,
   TablePreviewPlugin
 } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from '../custom-form-design/plugins/tpl'
@@ -45,7 +45,7 @@ export default {
       new CodeSourcePlugin(),
       tplNavPlugin,
       new FieldConfigurePlugin(),
-      new DrawTablePlugin(),
+      new TableDrawPlugin(),
       new TablePreviewPlugin()
     ]
     return () => <PlInfo hideHeader={true}>

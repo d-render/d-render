@@ -1,6 +1,5 @@
 import DeviceContainer from '@/widgets/device-container'
 import { computed, ref, watch, reactive, provide } from 'vue'
-import { CipFormRender } from 'd-render'
 import { useNamespace } from '@d-render/shared'
 import { CipButton } from '@xdp/button'
 import { View } from '@element-plus/icons-vue'
@@ -49,11 +48,7 @@ export default {
       // 进入使用designType 出来使用type
       emit('update:schema', schema)
     }
-    const updateConfig = (config) => {
-      const scheme = props.schema
-      scheme.config = config
-      emit('update:config', config)
-    }
+
     const updateList = (list) => {
       const schema = props.schema
       schema.list = list

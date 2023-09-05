@@ -5,7 +5,8 @@ import {
   PalettePlugin,
   FieldConfigurePlugin,
   FormConfigurePlugin,
-  DrawFormPlugin
+  FormDrawPlugin,
+  FormPreviewPlugin
 } from '@/plugins'
 import { ref } from 'vue'
 export default {
@@ -30,7 +31,8 @@ export default {
       new CodeSourcePlugin(),
       new FieldConfigurePlugin(),
       new FormConfigurePlugin(),
-      new DrawFormPlugin()
+      new FormDrawPlugin(),
+      new FormPreviewPlugin()
     ]
     const equipment = ref('pc')
     const pluginBridge = defaultPlugin.concat(props.plugins)

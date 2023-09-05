@@ -4,7 +4,7 @@ import {
   StructurePlugin,
   PalettePlugin,
   FieldConfigurePlugin,
-  DrawPagePlugin
+  PageDrawPlugin
 } from '@/plugins'
 import { ref } from 'vue'
 export default {
@@ -28,7 +28,7 @@ export default {
       new StructurePlugin(),
       new CodeSourcePlugin(),
       new FieldConfigurePlugin(),
-      new DrawPagePlugin()
+      new PageDrawPlugin()
     ]
     const equipment = ref('pc')
     const pluginBridge = defaultPlugin.concat(props.plugins)
