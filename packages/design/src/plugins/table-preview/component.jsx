@@ -1,12 +1,16 @@
-import {CipForm, CipFormItem, CipTable} from 'd-render'
+import { CipForm, CipFormItem, CipTable } from 'd-render'
 import { CipButtonText } from '@xdp/button'
+import Mobile from './mobile'
 import { Plus } from '@element-plus/icons-vue'
 
 export default {
   props: {
     schema: {},
-    model: {},
-    equipment: {}
+    model: {
+      default: () => []
+    },
+    equipment: {},
+    dependOnValues: {}
   },
   emits: ['update:model'],
   setup (props, { emit }) {
@@ -15,30 +19,16 @@ export default {
     const handleAdd = () => {
       emit('update:model', [...props.model, {}])
     }
-    const handleDelete = () => {
-      emit('update:model', props.model.filter((_, index) => index !== props.model.length - 1))
+    const handleDelete = (index) => {
+      emit('update:model', props.model.filter((_, idx) => index !== idx))
+    }
+    const updateModelValue = (val, index) => {
+      const data = props.model
+      data[index] = val
+      emit('update:model', data)
     }
     return () => {
-      console.log(props.model, 'props.model')
       const { list = [], ...tableConfig } = props.schema || {}
-      const mobile = () => {
-        return <CipForm fieldList={[]} readonly={true}>
-          {
-            list?.map((option, index) => <CipFormItem
-              key={index}
-              model={props.model[index]}
-              onUpdate:model={(val) => {
-                const modelList = [...props.model]
-                modelList[index] = val
-                console.log(modelList, 'modelList', val)
-                emit('update:model', modelList)
-              }}
-              config={option.config}
-              inTable={true}
-            ></CipFormItem>)
-          }
-        </CipForm>
-      }
       const pc = () => <div class={'dr-table-preview--table'}>
         <CipTable
           {...tableConfig}
@@ -50,7 +40,7 @@ export default {
             {
               $handler: () => <div class={'dr-table-preview--handler'}>
                 <CipButtonText onClick={handleAdd}>新增</CipButtonText>
-                <CipButtonText onClick={handleDelete}>删除</CipButtonText>
+                <CipButtonText onClick={(_, index) => handleDelete(index)}>删除</CipButtonText>
               </div>
             }
           }
@@ -58,7 +48,7 @@ export default {
         </CipTable>
         <CipButtonText icon={Plus} onClick={handleAdd}>添加</CipButtonText>
       </div>
-      return props.equipment === 'pc' ? pc() : mobile()
+      return props.equipment === 'pc' ? pc() : <Mobile model={props.model} schema={props.schema} onAdd={handleAdd} onDelete={handleDelete} onUpdate:model={updateModelValue}></Mobile>
     }
   }
 }
