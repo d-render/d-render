@@ -28,10 +28,11 @@ export const setValuesByKeys = (target = {}, keys = [], values = {}) => {
 const filterProperty = (object, properties) => {
   // 进行一次浅拷贝防止deleteProperty删除修改原始对象
   const newObject = { ...object }
-  const omitObject = properties.forEach((acc, key) => {
-    const v = newObject[key]
-    Reflect.deleteProperty(newObject, key)
+  const omitObject = properties.reduce((acc, key) => {
+    const v = object[key]
+    Reflect.deleteProperty(object, key)
     acc[key] = v
+    return acc
   }, {})
   return [newObject, omitObject]
 }
