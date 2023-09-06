@@ -14,7 +14,6 @@ export default {
     const {
       // securityConfig,
       proxyValue,
-      updateStream,
       proxyOtherValue
     } = useFormInput(props, ctx, { maxOtherKey: 3 })
 

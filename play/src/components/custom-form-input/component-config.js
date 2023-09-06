@@ -10,11 +10,11 @@
 // }
 
 export default {
-  searchForm: () => () => import('./search-form/index'),
   flashFill: {
     component: (mode) => () => import(`./flash-fill${mode}`)
   },
   fieldMapping: {
     component: (mode) => () => import(`./field-mapping${mode}`)
-  }
+  },
+  optionsConfigure: () => () => import('./options-configure/index')
 }

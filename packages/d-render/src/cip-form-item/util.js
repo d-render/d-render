@@ -1,5 +1,5 @@
 import { unref } from 'vue'
-import { getFieldValue, isNotEmpty, setFieldValue, DRender } from '@d-render/shared'
+import { getFieldValue, isNotEmpty, setFieldValue, DRender, cloneDeep } from '@d-render/shared'
 
 export const getValuesByKeys = (data = {}, keys = []) => {
   const result = {}
@@ -23,6 +23,24 @@ export const setValuesByKeys = (target = {}, keys = [], values = {}) => {
       setFieldValue(target, key, getFieldValue(values, key), true)
     }
   })
+}
+// 去除对象的指定属性后返回去除属性的集合仅适用于单层对象
+const filterProperty = (object, properties) => {
+  // 进行一次浅拷贝防止deleteProperty删除修改原始对象
+  const newObject = { ...object }
+  const omitObject = properties.forEach((acc, key) => {
+    const v = newObject[key]
+    Reflect.deleteProperty(newObject, key)
+    acc[key] = v
+  }, {})
+  return [newObject, omitObject]
+}
+// 深克隆非指定属性
+export const cloneDeepConfig = (config) => {
+  const fixedKeys = ['dependOn', 'changeConfig', 'changeValue', 'changeValueByOld', 'outDependOn', 'asyncOptions', '$render']
+  const [volatileConfig, fixedConfig] = filterProperty(config, fixedKeys)
+  const newConfig = cloneDeep(volatileConfig)
+  return Object.assign(newConfig, fixedConfig)
 }
 
 export const isHideLabel = (config) => {
@@ -68,6 +86,7 @@ export const secureNewFn = (...params) => {
     return () => {}
   }
 }
+
 export const judgeUseFn = (key, config, effect) => {
   // console.log(key, config, effect);
   // eslint-disable-next-line no-new-func
@@ -129,7 +148,6 @@ export class UpdateModelQueue {
     this.updateModel(model)
   }
 }
-
 const dRender = new DRender()
 export const getInputComponent = (type) => {
   return dRender.getComponent(type)
