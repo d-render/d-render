@@ -1,6 +1,6 @@
 {
   "name": "@d-render/design",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "./esm/main.js",
   "scripts": {
@@ -12,11 +12,10 @@
     "@xdp/button": "^1.1.2",
     "element-plus": "2.2.22",
     "vuedraggable": "^4.1.0"
-
   },
   "peerDependencies": {
     "@cip/code-mirror": "^1.0.4",
-    "@d-render/shared": "workspace:>=1.2.2",
+    "@d-render/shared": "workspace:>=1.2.3",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": "^1.1.2",
     "element-plus": "2.2.22",
