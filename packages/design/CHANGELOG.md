@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.1
+
+### Patch Changes
+
+- fix(design): 修复对 d-render 的引用错误
+
 ## 1.1.0
 
 ### Minor Changes
