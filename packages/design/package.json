@@ -19,6 +19,7 @@
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": "^1.1.2",
     "element-plus": "2.2.22",
+    "d-render": "workspace: >=2.1.14",
     "vuedraggable": "^4.1.0",
     "vue": "^3.3.2"
   },
