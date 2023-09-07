@@ -20,9 +20,9 @@ import { useTpl } from '../use-tpl'
 
 export default {
   setup () {
-    const { set } = useVirtualSchema('tableDesign')
+    const { set, get } = useVirtualSchema('tableDesign')
     const { tplList, initTpl, saveTpl } = useTpl('tableTpl')
-    const schema = ref({})
+    const schema = ref(get())
     const equipment = ref('pc')
 
     initTpl()
