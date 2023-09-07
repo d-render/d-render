@@ -5,7 +5,7 @@
   //border: 1px dashed #999;
   &__item--empty {
     height: 100%;
-    border: 1px dashed #ddd;
+    border: 1px dashed var(--el-border-color);
 //    background: #fff;
     min-height: 50px;
     background: rgb(240,240,240);
@@ -16,7 +16,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #999;
+      color: var(--el-text-color-disabled);
     }
   }
   &.is-hover:not(.ghost){

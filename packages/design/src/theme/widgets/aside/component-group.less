@@ -1,7 +1,7 @@
 .dr-component-group{
   &__label{
     font-size: 13px;
-    color: rgb(102, 102, 102);
+    color: var(--el-text-color-primary); //rgb(102, 102, 102);
     padding: 8px 12px;
   }
   ul{
@@ -32,7 +32,7 @@
   overflow: hidden;
   margin:1%;
   color: #333;
-  border: 1px solid #f4f6fc;
+  border: 1px solid var(--el-fill-color);
   user-select: none;
   &:hover{
     color: @primary;
@@ -45,7 +45,7 @@
   > a {
     display: block;
     cursor: move;
-    background-color: #f4f6fc;
+    background-color: var(--el-fill-color);
     color: @font_regular; //--el-text-color-regular
   }
 }

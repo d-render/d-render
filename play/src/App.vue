@@ -8,5 +8,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
+  color: var(--el-text-color-primary);
 }
 </style>

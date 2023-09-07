@@ -26,7 +26,6 @@ export default {
     }
     return () => <PlInfo hideHeader={true}>
       <DrFormDesign
-        style={'background: #fff'}
         v-model:schema={schema.value}
         v-model:equipment={equipment.value}
         drawTypeMap={drawTypeMap}
