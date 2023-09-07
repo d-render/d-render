@@ -37,7 +37,7 @@ export default {
     const equipment = ref('pc')
     const pluginBridge = defaultPlugin.concat(props.plugins)
     return () => {
-      const { plugins, ...designProps } = props
+      const { plugins, componentsGroupList, ...designProps } = props
       return <BasicDesign
         {...designProps}
         v-model:equipment={equipment.value}
