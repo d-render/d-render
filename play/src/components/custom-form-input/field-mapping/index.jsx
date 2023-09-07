@@ -23,12 +23,6 @@ export default {
     const fieldKeyOptions = ref([])
     const getList = () => {
       const schema = getSchema()
-      if (!proxyValue.value?.length) {
-        proxyValue.value = [{
-          fieldKey: '',
-          sourceKey: ''
-        }]
-      }
       fieldKeyOptions.value = schema.list.map(item => {
         return {
           fieldKey: item.key,
@@ -44,11 +38,16 @@ export default {
     }, { immediate: true })
 
     const visible = ref(false)
+    const list = ref([])
     const open = () => {
       if (!proxyOtherValue[1].value) {
         CipMessage.warning('请先选择数据源')
         return
       }
+      list.value = proxyValue.value ?? [{
+        fieldKey: '',
+        sourceKey: ''
+      }]
       visible.value = true
     }
 
@@ -56,7 +55,7 @@ export default {
       try {
         const ret = []
         const selectedKeys = []
-        proxyValue.value.forEach(item => {
+        list.value.forEach(item => {
           if (item.fieldKey && item.sourceKey) {
             ret.push(item)
             selectedKeys.push(item.fieldKey)
@@ -72,15 +71,15 @@ export default {
     }
 
     const addOne = () => {
-      proxyValue.value.push({
+      list.value.push({
         fieldKey: '',
         sourceKey: ''
       })
     }
     const deleteItem = (index) => {
-      proxyValue.value.splice(index, 1)
+      list.value.splice(index, 1)
     }
-    const disabled = computed(() => proxyValue.value.length >= fieldKeyOptions.value.length)
+    const disabled = computed(() => list.value.length >= fieldKeyOptions.value.length)
 
     return () => <>
       <CipButtonText onClick={open}>配置</CipButtonText>
@@ -90,7 +89,7 @@ export default {
         onConfirm={onConfirm}
       >
         {
-          proxyValue.value.map((item, index) => {
+          list.value.map((item, index) => {
             return <div key={index} class="mapping-item">
               <CipSelect
                 v-model={item.fieldKey}
