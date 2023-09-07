@@ -11,6 +11,7 @@ export default {
       model={props.model}
       onUpdate:model={(val) => emit('update:model', val)}
       schema={props.schema}
+      equipment={props.equipment}
     />
   }
 }
