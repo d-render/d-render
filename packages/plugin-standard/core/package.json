@@ -1,6 +1,7 @@
 {
   "name": "@d-render/plugin-standard",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "module": "./esm/main.js",
   "scripts": {

@@ -1,25 +1,27 @@
-import { computed, ref } from 'vue'
-import { cloneDeep, getFieldValue } from '@d-render/shared'
+import { computed, shallowRef } from 'vue'
+// cloneDeep,
+import { getFieldValue } from '@d-render/shared'
 import { EffectExecutor } from '../effect-executor'
 import { useFieldChange } from './use-field-change'
-import { secureNewFn } from '../util'
+import { secureNewFn, cloneDeepConfig } from '../util'
 export const useWatchFieldDepend = (props, context, { updateModelValue, updateOtherValue, clearValues }) => {
   const securityConfig = computed(() => props.config ?? {})
   // 运行中的config
-  const runningConfig = ref() // 运行时的config
+  // [PERF]: 6.1.x 使用shallowRef优化对config的相应
+  const runningConfig = shallowRef() // 运行时的config
   // 各类型自己的执行器
+  // [PERF]: 6.1.x初步优化cloneDeep的性能不在对一些特殊的属性进行深度复制
   // [FEAT]: 6.0.x changeConfig、changeValue支持流式处理
   // [REFACTOR]: 执行条件提升到执行器配置中
   const changeConfigExecutor = async (values, outValues, effects) => {
     // [PERF]: cloneDeep较为消耗性能如何优化
-    let config = cloneDeep(securityConfig.value)
+    let config = cloneDeepConfig(securityConfig.value)
     for (let [changeConfigCb] of effects) {
       if (typeof changeConfigCb === 'string') {
         changeConfigCb = secureNewFn('config', 'values', 'outValues', changeConfigCb)
       }
       config = await changeConfigCb(config, values, outValues)
     }
-    // 将不可修改的熟悉写入
     runningConfig.value = config
   }
   const changeValueExecutor = async (values, outValues, effects) => {

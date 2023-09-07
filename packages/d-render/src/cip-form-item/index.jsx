@@ -193,9 +193,6 @@ export default {
           updateModelValue
         })
       }
-      const type = props.isDesign
-        ? props.drawType || formItemConfig.value.type || 'default'
-        : formItemConfig.value.type || 'default'
       const componentProps = {
         key: props.componentKey,
         id: props.fieldKey,
@@ -222,6 +219,13 @@ export default {
         },
         onSearch: props.onSearch
       }
+
+      if (formItemConfig.value.$render) {
+        return formItemConfig.value.$render(componentProps)
+      }
+      const type = props.isDesign
+        ? props.drawType || formItemConfig.value.type || 'default'
+        : formItemConfig.value.type || 'default'
       if (status.value === 'read-write') {
         const inputComponentProps = {
           ...componentProps,

@@ -1,0 +1,66 @@
+.dr-draw-table--container{
+  display: flex;
+  padding: 10px;
+  background: #fff;
+  overflow: auto;
+  align-items: center;
+  .dr-draw-table--seq {
+    width: 50px;
+    align-self: stretch;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    &__title {
+      height: 40px;
+      line-height: 40px;
+      background: #ededed;
+      border: 1px solid #ddd;
+      border-bottom: 1px solid transparent;
+    }
+    &__number {
+      border: 1px solid #ddd;
+      border-top: 1px solid transparent;
+      line-height: 50px;
+      flex: 1;
+      height: 100%;
+    }
+  }
+  .dr-draw-table--content {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    overflow: auto;
+    .dr-design-draw-content__layout__item {
+      display: flex;
+      width: 100%;
+    }
+  }
+  .dr-design-drawing-content__wrapper {
+    padding: 0px;
+    column-gap: 0!important;
+    display: flex!important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    .dr-design-draw-content__item {
+      border: 1px solid #ededed;
+      width: 100%;
+      .el-form-item {
+        display: flex;
+        flex-direction: column;
+        .el-form-item__label {
+          height: 40px;
+          width: 100%;
+          line-height: 40px;
+          background: #ededed;
+          .cip-form-item__label {
+            justify-content: center;
+          }
+        }
+        .el-form-item__content {
+          width: 100%;
+          padding: 10px;
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,17 @@
 # @d-render/shared
 
+## 1.2.3
+
+### Patch Changes
+
+- refactor(shared): [form-content-copy]不在对copy table做特殊处理
+
 ## 1.2.2
 
 ### Patch Changes
 
 - docs(shared): [types]完善 useFormInput 内属性的类型
--  feat(shared): [use-form-input]useOptions 支持关闭自动获取 options
+- feat(shared): [use-form-input]useOptions 支持关闭自动获取 options
 
 ## 1.2.1
 

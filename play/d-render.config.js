@@ -11,7 +11,10 @@ import { insertConfig } from '@d-render/shared'
 const completePluginStandard = insertConfig(PluginStandard, PluginStandardConfigure, 'configure')
 export default {
   plugins: [
-    insertConfig(insertConfig(PluginCCI, { text: PluginStandardConfigure.text }, 'configure'), PluginCCIMobile, 'mobile'),
+    insertConfig(insertConfig(PluginCCI, {
+      text: PluginStandardConfigure.text,
+      select: PluginStandardConfigure.select
+    }, 'configure'), PluginCCIMobile, 'mobile'),
     {
       input: insertConfig(completePluginStandard, { input: PluginCCIMobile.input }, 'mobile').input
     },

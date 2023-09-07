@@ -1,5 +1,12 @@
 # d-render
 
+## 2.1.14
+
+### Patch Changes
+
+- perf(cip-form-item): 优化deepClone config的逻辑
+
+
 ## 2.1.13
 
 ### Patch Changes

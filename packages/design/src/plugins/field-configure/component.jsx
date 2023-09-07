@@ -53,6 +53,7 @@ export default {
 
     const updateSelectItem = (val) => {
       const selectItem = props.selectItem
+      selectItem.key = val.key
       Reflect.deleteProperty(val, 'key')
       Reflect.deleteProperty(val, 'id')
       selectItem.config = val// { ...val }
