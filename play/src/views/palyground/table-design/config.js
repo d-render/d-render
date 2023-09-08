@@ -29,76 +29,11 @@ export const componentsGroupList = [
       { type: 'formImage', icon: 'el-icon-picture-outline', label: '图片' },
       { type: 'editor', icon: 'el-icon-edit-outline', label: '编辑器' },
       { type: 'editorReadonly', icon: 'el-icon-edit-outline', label: '编辑器(只读)' },
-      { type: 'signature', icon: 'el-icon-edit', label: '签章' },
       { type: 'formwork', icon: 'el-icon-folder', label: '模板渲染' },
       { type: 'dataDictionary', icon: 'el-icon-data-analysis', label: '数据字典' },
       { type: 'roleDictionary', icon: 'el-icon-data-analysis', label: '角色' },
       { type: 'staff', icon: 'el-icon-user', label: '人员' },
-      { type: 'office', icon: 'el-icon-office-building', label: '机构' },
-      {
-        type: 'table',
-        icon: 'el-icon-menu',
-        label: '子表单',
-        hideLabel: true,
-        options: [
-          {
-            key: 'default',
-            children: []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    groupName: 'layout',
-    label: '布局字段',
-
-    components: [
-      {
-        class: 'disabled-table',
-        type: 'grid',
-        icon: 'el-icon-s-grid',
-        label: '栅格布局',
-        gutter: 0,
-        options: [
-          {
-            span: 12,
-            children: []
-          },
-          {
-            span: 12,
-            children: []
-          }
-        ]
-      },
-      {
-        class: 'disabled-table',
-        type: 'steps',
-        icon: 'el-icon-s-grid',
-        label: '步骤条',
-        gutter: 0,
-        options: [
-          {
-            title: '步骤一',
-            children: []
-          },
-          {
-            title: '步骤二',
-            children: []
-          }
-        ]
-      },
-      {
-        class: 'disabled-table',
-        type: 'divider',
-        icon: 'el-icon-minus',
-        label: '分割线',
-        width: '100%',
-        contentPosition: 'center',
-        dividerColor: '#ddd',
-        textColor: '#333',
-        hideLabel: true
-      }
+      { type: 'office', icon: 'el-icon-office-building', label: '机构' }
     ]
   }
 ]

@@ -10,5 +10,6 @@ export { FormPreviewPlugin } from './form-preview'
 // table
 export { TableDrawPlugin } from './table-draw'
 export { TablePreviewPlugin } from './table-preview'
+export { TableConfigurePlugin } from './table-configure'
 // page
 export { PageDrawPlugin } from './page-draw'

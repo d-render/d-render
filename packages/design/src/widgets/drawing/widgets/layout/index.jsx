@@ -11,7 +11,6 @@ export default {
   emits: ['delete', 'copy', 'selectItem', 'update:config'],
   setup (props, { emit }) {
     const { computedConfig, drawType, putStrategy } = useFieldDrawingItem({ props, emit })
-    console.log(drawType.value, 'drawType')
     const ns = useNamespace('design-draw-content__layout')
     const updateConfig = (val) => {
       emit('update:config', val)

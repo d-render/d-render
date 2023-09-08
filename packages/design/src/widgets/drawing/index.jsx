@@ -104,6 +104,7 @@ export default {
                 labelPosition={props.data.labelPosition}
                 labelSuffix={props.data.labelSuffix}
                 equipment={props.equipment}
+                schema={props.data}
               >
                 <VueDraggable
                   modelValue={list.value}
