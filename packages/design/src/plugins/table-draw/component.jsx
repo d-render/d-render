@@ -1,5 +1,4 @@
 import { CipForm } from 'd-render'
-import {computed} from 'vue'
 
 export default {
   props: {

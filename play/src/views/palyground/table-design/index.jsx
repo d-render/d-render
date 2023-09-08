@@ -41,7 +41,6 @@ export default {
     return () => <PlInfo hideHeader={true}>
       <DrTableDesign
         drawTypeMap={drawTypeMap}
-        style={'background: #fff'}
         v-model:schema={schema.value}
         componentsGroupList={componentsGroupList}
         plugins={plugins}

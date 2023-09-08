@@ -15,17 +15,27 @@ export const formConfigFieldConfigMap = {
     label: '是否显示汇总',
     defaultValue: false
   },
-  height: {
-    label: '表格高度',
-    type: 'number',
-    defaultValue: 400
+  hideBorder: {
+    type: 'switch',
+    label: '是否显示边框',
+    defaultValue: true
+  },
+  stripe: {
+    type: 'switch',
+    label: '是否显示斑马纹',
+    defaultValue: true
   },
   tableColumnStatus: {
     type: 'switch',
     label: '是否只读',
-    defaultValue: 'writable',
+    defaultValue: 'readable',
     activeValue: 'writeable',
     inactiveValue: 'readable'
+  },
+  height: {
+    label: '表格高度',
+    type: 'number',
+    defaultValue: 400
   }
 }
 export const formConfigFieldConfigList = configMapToList(formConfigFieldConfigMap)

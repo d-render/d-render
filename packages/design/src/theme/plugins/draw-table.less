@@ -1,7 +1,7 @@
 .dr-draw-table--container{
   display: flex;
   padding: 10px;
-  background: #fff;
+  background: var(--el-bg-color);
   overflow: auto;
   align-items: center;
   .dr-draw-table--seq {
@@ -13,12 +13,12 @@
     &__title {
       height: 40px;
       line-height: 40px;
-      background: #ededed;
-      border: 1px solid #ddd;
+      background: var(--el-color-info-light-9);
+      border: 1px solid var(--el-border-color);
       border-bottom: 1px solid transparent;
     }
     &__number {
-      border: 1px solid #ddd;
+      border: 1px solid var(--el-border-color);
       border-top: 1px solid transparent;
       line-height: 50px;
       flex: 1;
@@ -42,7 +42,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     .dr-design-draw-content__item {
-      border: 1px solid #ededed;
+      border: 1px solid var(--el-border-color);
       width: 100%;
       .el-form-item {
         display: flex;
@@ -51,7 +51,7 @@
           height: 40px;
           width: 100%;
           line-height: 40px;
-          background: #ededed;
+          background: var(--el-color-info-light-9);
           .cip-form-item__label {
             justify-content: center;
           }
