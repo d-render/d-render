@@ -21,7 +21,6 @@ export default {
       const tableProps = {
         modelValue: props.model,
         config: {
-          tableColumnStatus: props.schema.tableColumnStatus,
           ...config.value,
           options: props.equipment === 'pc' ? [{
             key: 'default',

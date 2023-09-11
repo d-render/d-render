@@ -29,7 +29,7 @@ export const formConfigFieldConfigMap = {
     type: 'switch',
     label: '是否只读',
     defaultValue: 'readable',
-    activeValue: 'writeable',
+    activeValue: 'writable',
     inactiveValue: 'readable'
   },
   height: {
