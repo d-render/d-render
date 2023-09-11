@@ -12,7 +12,7 @@
     "@cip/code-mirror": "^1.0.4",
     "@cip/components": "6.0.32",
     "@cip/d-render-plugin-cci": "^2.0.9",
-    "@cip/d-render-plugin-cci-mobile": "^1.0.2",
+    "@cip/d-render-plugin-cci-mobile": "1.0.3-beta.1",
     "@cip/hooks": "^5.0.1",
     "@cip/request": "^5.0.4",
     "@cip/styles": "^6.0.6",

@@ -1,4 +1,4 @@
-import { DrBasicDesign } from '@d-render/design'
+import { DrTableDesign } from '@d-render/design'
 import { Promotion } from '@element-plus/icons-vue'
 import '@d-render/design/dist/index.css'
 import PlInfo from '@cip/components/page-layout/info'
@@ -7,10 +7,6 @@ import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
 import { ref } from 'vue'
 import {
-  CodeSourcePlugin,
-  StructurePlugin,
-  PalettePlugin,
-  FieldConfigurePlugin,
   TableDrawPlugin,
   TablePreviewPlugin
 } from '@d-render/design/esm/plugins'
@@ -38,21 +34,15 @@ export default {
       data: tplList.value
     })
     const plugins = [
-      new PalettePlugin({
-        data: componentsGroupList
-      }),
-      new StructurePlugin(),
-      new CodeSourcePlugin(),
       tplNavPlugin,
-      new FieldConfigurePlugin(),
       new TableDrawPlugin(),
       new TablePreviewPlugin()
     ]
     return () => <PlInfo hideHeader={true}>
-      <DrBasicDesign
+      <DrTableDesign
         drawTypeMap={drawTypeMap}
-        style={'background: #fff'}
         v-model:schema={schema.value}
+        componentsGroupList={componentsGroupList}
         plugins={plugins}
         v-model:equipment={equipment.value}
       >
@@ -65,7 +55,7 @@ export default {
             <CipButton type={'success'} icon={Promotion} onClick={() => { publish() }}>发布</CipButton>
           </>
         }}
-      </DrBasicDesign>
+      </DrTableDesign>
     </PlInfo>
   }
 }
