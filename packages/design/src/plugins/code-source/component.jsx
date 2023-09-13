@@ -9,10 +9,9 @@ export default {
   setup (props, { emit }) {
     return () => <CipCodeMirror
       height={'100%'}
-      modelValue={JSON.stringify(props.schema)}
+      modelValue={JSON.stringify(props.schema, null, 2)}
       onUpdate:modelValue={(v) => {
         if (isJson(v)) emit('update:schema', JSON.parse(v))
-        console.log('code', JSON.parse(v))
       }}
     />
   }
