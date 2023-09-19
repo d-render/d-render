@@ -1,10 +1,16 @@
 # @d-render/shared
 
+## 1.2.4-beta.0
+
+### Patch Changes
+
+- 41b9141: js->ts
+
 ## 1.2.3
 
 ### Patch Changes
 
-- refactor(shared): [form-content-copy]不在对copy table做特殊处理
+- refactor(shared): [form-content-copy]不在对 copy table 做特殊处理
 
 ## 1.2.2
 

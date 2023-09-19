@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "2.1.14",
+  "version": "2.1.15-beta.0",
   "description": "数据渲染库 - form、table、search-form",
   "main": "./esm/main.js",
   "module": "./esm/main.js",
@@ -56,7 +56,7 @@
     "type": "git"
   },
   "dependencies": {
-    "@d-render/shared": "workspace:>=1.2.3",
+    "@d-render/shared": "workspace:>=1.2.4-beta.0",
     "@element-plus/icons-vue": "^2.1.0",
     "@vue/eslint-config-typescript": "^9.1.0",
     "@xdp/button": ">= 1.0.1",
@@ -64,7 +64,7 @@
     "element-plus": "2.2.22"
   },
   "peerDependencies": {
-    "@d-render/shared": "workspace:>=1.2.3",
+    "@d-render/shared": "workspace:>=1.2.4-beta.0",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1",
     "@xdp/config": ">= 1.0.1",

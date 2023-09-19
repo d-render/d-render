@@ -1,11 +1,18 @@
 # d-render
 
+## 2.1.15-beta.0
+
+### Patch Changes
+
+- 41b9141: js->ts
+- Updated dependencies [41b9141]
+  - @d-render/shared@1.2.4-beta.0
+
 ## 2.1.14
 
 ### Patch Changes
 
-- perf(cip-form-item): 优化deepClone config的逻辑
-
+- perf(cip-form-item): 优化 deepClone config 的逻辑
 
 ## 2.1.13
 

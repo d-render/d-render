@@ -1,5 +1,14 @@
 # @d-render/design
 
+## 1.1.2-beta.2
+
+### Patch Changes
+
+- 41b9141: js->ts
+- Updated dependencies [41b9141]
+  - d-render@2.1.15-beta.0
+  - @d-render/shared@1.2.4-beta.0
+
 ## 1.1.1
 
 ### Patch Changes

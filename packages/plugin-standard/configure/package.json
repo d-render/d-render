@@ -1,6 +1,6 @@
 {
   "name": "@d-render/plugin-standard-configure",
-  "version": "1.0.0",
+  "version": "1.0.1-beta.0",
   "private": true,
   "description": "",
   "module": "./esm/main.js",
@@ -15,10 +15,10 @@
     "@xdp/button": ">= 1.0.1"
   },
   "peerDependencies": {
-    "@d-render/shared": "workspace:>= 1.0.2",
+    "@d-render/shared": "workspace:>=1.2.4-beta.0",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1",
-    "d-render": "workspace: *",
+    "d-render": "workspace:2.1.15-beta.0",
     "element-plus": "2.2.22",
     "vue": "^3.2.47"
   }
