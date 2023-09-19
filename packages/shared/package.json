@@ -5,9 +5,6 @@
   "main": "./esm/main.js",
   "module": "./esm/main.js",
   "types": "./types/main.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "d-render",
     "shared",
