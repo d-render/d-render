@@ -11,6 +11,7 @@
     "play": "0.1.1"
   },
   "changesets": [
-    "large-kings-attend"
+    "large-kings-attend",
+    "nervous-beers-kneel"
   ]
 }

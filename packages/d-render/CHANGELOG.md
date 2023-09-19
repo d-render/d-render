@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.2
+
+### Patch Changes
+
+- fix(d-render): [cip-table]修复 fieldKey 的配置错误
+
 ## 2.1.15-beta.1
 
 ### Patch Changes
