@@ -22,7 +22,7 @@ export default {
 
     const list = ref([])
     const visible = ref(false)
-    const update = async (p) => {
+    const update = async () => {
       // 数据源api -> securityConfig.value.api
       // TODO: 根据api调接口获取数据源数据
       const { data } = await new Promise((resolve) => {

@@ -4,7 +4,7 @@ import { buildDirResolve } from '../utils/path.js'
 import { join } from 'node:path'
 import alias from '../rollup-plugins/rullip-plugin-alias.js'
 export function getAllComponentDirs (inputDir, ignore = []) {
-  return fg.sync(`${inputDir}/**/*.(jsx|js|mjs|vue)`, {
+  return fg.sync(`${inputDir}/**/*.(tsx|ts|jsx|js|mjs|vue)`, {
     ignore
   })
 }
@@ -18,7 +18,7 @@ export function getRollupOptions (
   externals
 ) {
   return files.reduce((acc, input) => {
-    const output = input.replace(inputDir, '').replace(/\.(js(x)|vue)/, '.js')
+    const output = input.replace(inputDir, '').replace(/\.(ts(x)?|jsx|vue)/, '.js')
     return [
       ...acc,
       getConfig(

@@ -1,6 +1,6 @@
 // import { menuService } from './menu'
 class PageSchemeService {
-  info ({ id }) {
+  info () {
     return Promise.resolve(JSON.parse(JSON.stringify({
       data: {
         id: 'xx',

@@ -5,7 +5,7 @@ export default {
   name: 'ExampleBlockWrapper',
   setup (props, { slots }) {
     const showCode = ref(false)
-    const toggleCode = (val) => {
+    const toggleCode = () => {
       showCode.value = !showCode.value
     }
     return () => <div class={styles.wrapper}>

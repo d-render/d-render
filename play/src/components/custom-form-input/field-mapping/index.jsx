@@ -33,7 +33,7 @@ export default {
     getList()
 
     const ds = ref(['name', 'age', 'id', 'gender'])
-    watch(() => proxyOtherValue[1].value, val => {
+    watch(() => proxyOtherValue[1].value, () => {
       // TODO: 根据数据源获取字段数据
     }, { immediate: true })
 

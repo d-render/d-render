@@ -1,9 +1,12 @@
 .cip-main{
+  --cip-main-bg: var(--el-bg-color-page);
+  --cip-main-color: var(--el-text-color-primary);
+  --cip-main-top-menu-color: var(--el-text-color-regular);
   :global(.main-framework__header){
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--el-broder-color);
   }
   &:global(.cip-main-framework){
-    --cip-main-header-bg: #fff;
+    --cip-main-header-bg: var(--el-bg-color);
   }
   :global(.main-framework--top__nav){
     //text-align: right;
@@ -13,15 +16,17 @@
   :global(.main-framework__aside){
     //margin-top: 1px;\
     box-shadow: none;
-    border-right: 1px solid rgb(245,245,245);
+    border-right: 1px solid var(--cip-main-bg);
+    background: var(--el-bg-color);
+    --cip-menu-bg: var(--el-bg-color);
   }
   :global(.header-bar){
     margin-left: 30px;
     :global(.el-link){
-      color: #333;
+      color: var(--el-text-color-primary);
     }
     :global(.el-link:hover){
-      color: #333;
+      color: var(--el-text-color-primary);
     }
   }
 }

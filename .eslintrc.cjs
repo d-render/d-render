@@ -8,13 +8,15 @@ module.exports = {
   root: true,
   extends: [
     'plugin:vue/vue3-essential',
-    '@vue/eslint-config-standard'
+    '@vue/standard',
+    '@vue/typescript/recommended'
   ],
   rules: {
     'vue/multi-word-component-names': 0,
+    '@typescript-eslint/ban-ts-comment': 0,
     'import/extensions': 0
   },
   parserOptions: {
-    ecmaVersion: 12
+    ecmaVersion: 2020
   }
 }
