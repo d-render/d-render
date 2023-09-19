@@ -3,7 +3,7 @@ import { IAnyObject, IRenderConfig } from '../../utils'
 const commonAttrProps = {
   fieldKey: { type: String },
   modelValue: {},
-  otherValue: { type: Object as PropType<IAnyObject> },
+  otherValue: { },
   values: { type: Array as PropType<Array<unknown>>, default: () => [] },
   dependOnValues: Object as PropType<IAnyObject>,
   outDependOnValues: Object as PropType<IAnyObject>,
