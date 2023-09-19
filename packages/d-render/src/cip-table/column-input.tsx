@@ -5,7 +5,7 @@ export default defineComponent({
   name: 'ColumnInput',
   props: {
     config: { type: Object as PropType<IRenderConfig>, required: true },
-    fieldKey: { type: String, required: true },
+    fieldKey: { type: String },
     columnKey: String,
     index: { type: Number, required: true },
     model: Object as PropType<IAnyObject>,

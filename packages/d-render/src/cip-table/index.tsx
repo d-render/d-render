@@ -25,6 +25,7 @@ import {
   useCipConfig,
   useCipPageConfig, IAnyObject, ITableColumnConfig
 } from '@d-render/shared'
+// @ts-ignore
 import { CipButtonCollapse } from '@xdp/button'
 import { tableProps } from './table-props'
 import ColumnInput from './column-input'
@@ -213,7 +214,7 @@ export default defineComponent({
             }
             const inputProps = {
               config,
-              fieldKey: props.fieldKey!,
+              fieldKey: props.fieldKey,
               index: $index,
               model: row,
               key,
