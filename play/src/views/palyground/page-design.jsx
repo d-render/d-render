@@ -1,7 +1,7 @@
 import { DrPageDesign } from '@d-render/design'
 import { Promotion } from '@element-plus/icons-vue'
 import '@d-render/design/dist/index.css'
-import PlInfo from '@cip/components/page-layout/info'
+import PlInfo from '@cip/page-layout/info'
 import { componentsGroupList } from './custom-form-design/config'
 import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
@@ -25,7 +25,6 @@ export default {
     }
     return () => <PlInfo hideHeader={true}>
       <DrPageDesign
-        style={'background: #fff'}
         v-model:schema={schema.value}
         v-model:equipment={equipment.value}
         drawTypeMap={drawTypeMap}

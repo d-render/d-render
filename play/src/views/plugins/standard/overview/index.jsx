@@ -1,5 +1,5 @@
 import { elFormFieldConfig } from './config'
-import CipPageLayoutInfo from '@cip/components/page-layout/info'
+import CipPageLayoutInfo from '@cip/page-layout/info'
 import { CipForm } from 'd-render'
 import { ref } from 'vue'
 import styles from './index.module.less'

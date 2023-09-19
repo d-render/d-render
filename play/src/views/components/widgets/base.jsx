@@ -1,4 +1,4 @@
-import CipPageLayoutInfo from '@cip/components/page-layout/info'
+import CipPageLayoutInfo from '@cip/page-layout/info'
 import { CipForm } from 'd-render'
 import { infoFieldList } from './config'
 export default {
@@ -6,7 +6,7 @@ export default {
     info: {}
   },
   setup (props) {
-    return () => <CipPageLayoutInfo theme={'dg'} >
+    return () => <CipPageLayoutInfo>
       <CipForm model={props.info} fieldList={infoFieldList} border={false} showOnly={true}/>
     </CipPageLayoutInfo>
   }

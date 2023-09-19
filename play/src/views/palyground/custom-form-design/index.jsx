@@ -1,7 +1,7 @@
 import { DrBasicDesign } from '@d-render/design'
 import { Promotion } from '@element-plus/icons-vue'
 import '@d-render/design/dist/index.css'
-import PlInfo from '@cip/components/page-layout/info'
+import PlInfo from '@cip/page-layout/info'
 import { componentsGroupList } from './config'
 import CipButton from '@cip/components/cip-button'
 import CipMessage from '@cip/components/cip-message'
@@ -58,7 +58,6 @@ export default {
     }
     return () => <PlInfo hideHeader={true}>
       <DrBasicDesign
-        style={'background: #fff'}
         v-model:schema={schema.value}
         v-model:equipment={equipment.value}
         drawTypeMap={drawTypeMap}

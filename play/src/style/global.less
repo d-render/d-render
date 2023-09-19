@@ -22,3 +22,13 @@ body,html{
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(0, 0, 0, 0.6);
 }
+
+html.dark{
+  .markdown-wrapper, .markdown-body{
+    background: var(--el-bg-color);
+    color: var(--el-text-color-regular);
+  }
+  h1, h2, h3, h4, h5, h6{
+    color: var(--el-text-color-primary);
+  }
+}

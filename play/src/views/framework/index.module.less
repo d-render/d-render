@@ -1,12 +1,15 @@
 .cip-main{
-  --cip-main-bg: var(--el-bg-color-page);
+  --cip-main-bg: var(--el-bg-color-overlay);
   --cip-main-color: var(--el-text-color-primary);
   --cip-main-top-menu-color: var(--el-text-color-regular);
+  :global(.main-framework--top-left__xx){
+    background: var(--cip-main-bg);
+  }
   :global(.main-framework__header){
     border-bottom: 1px solid var(--el-broder-color);
   }
   &:global(.cip-main-framework){
-    --cip-main-header-bg: var(--el-bg-color);
+    --cip-main-header-bg: var(--el-bg-color-overlay);
   }
   :global(.main-framework--top__nav){
     //text-align: right;
@@ -17,8 +20,8 @@
     //margin-top: 1px;\
     box-shadow: none;
     border-right: 1px solid var(--cip-main-bg);
-    background: var(--el-bg-color);
-    --cip-menu-bg: var(--el-bg-color);
+    background: var(--cip-main-bg);
+    --cip-menu-bg: var(--cip-main-bg);
   }
   :global(.header-bar){
     margin-left: 30px;
@@ -28,5 +31,14 @@
     :global(.el-link:hover){
       color: var(--el-text-color-primary);
     }
+  }
+  :global(.cip-page-layout-handle__breadcrumb){
+    background: var(--el-bg-color);
+  }
+  :global(.cip-page-layout--supergravity){
+    --content-bg: var(--el-bg-color);
+  }
+  :global(.cip-page-layout--standard){
+    --content-bg: var(--el-bg-color);
   }
 }

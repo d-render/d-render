@@ -1,7 +1,7 @@
 import { CipForm } from 'd-render'
 import { ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-import CipPageLayoutInfo from '@cip/components/page-layout/info'
+import CipPageLayoutInfo from '@cip/page-layout/info'
 export default {
   name: 'standardInput',
   setup () {

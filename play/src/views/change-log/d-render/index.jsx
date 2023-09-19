@@ -1,6 +1,6 @@
 import changeLog from 'd-render/CHANGELOG.md'
 import MarkdownRender from '@/components/markdown-render'
-import CipPageLayoutInfo from '@cip/components/page-layout/info'
+import CipPageLayoutInfo from '@cip/page-layout/info'
 export default {
   name: 'DRenderChangelog',
   setup () {

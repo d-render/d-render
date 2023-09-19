@@ -17,10 +17,11 @@ export default {
     store.dispatch('setAccountInfo', { userName: 'admin' })
     initMenu()
     return () => <CipMain
-      theme={'light'}
+      theme={'standard'}
       class={styles['cip-main']}
       navMenu={menu.value}
       withTabs={false}
+      withBreadcrumb={false}
       hideFooter={true}
       layout={'top-left'}
       homeView={{ fullPath: '/' }}
