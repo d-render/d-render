@@ -1,10 +1,10 @@
 # @d-render/shared
 
-## 1.2.4-beta.0
+## 1.2.4-beta.1
 
 ### Patch Changes
 
-- 41b9141: js->ts
+- refactor(d-render&shared): 使用 typescript 重写
 
 ## 1.2.3
 

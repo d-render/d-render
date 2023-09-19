@@ -1,12 +1,12 @@
 # d-render
 
-## 2.1.15-beta.0
+## 2.1.15-beta.1
 
 ### Patch Changes
 
-- 41b9141: js->ts
-- Updated dependencies [41b9141]
-  - @d-render/shared@1.2.4-beta.0
+- refactor(d-render&shared): 使用 typescript 重写
+- Updated dependencies
+  - @d-render/shared@1.2.4-beta.1
 
 ## 2.1.14
 
