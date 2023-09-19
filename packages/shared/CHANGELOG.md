@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.2.4-beta.2
+
+### Patch Changes
+
+- fix(shared): [form-input-prop]修复 otherValue 的类型
+
 ## 1.2.4-beta.1
 
 ### Patch Changes
