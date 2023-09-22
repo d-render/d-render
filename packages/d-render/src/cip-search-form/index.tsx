@@ -43,12 +43,14 @@ export default defineComponent({
     const searchFormProps = useComponentProps(props, 'searchForm', searchFormPropsKey, [cipPageConfig])
     // 保留原始兼容性
     const gridBridge = computed(() => {
-      return getUsingConfig(
+      const result = getUsingConfig(
         props.grid,
         getFieldValue(cipPageConfig, 'searchForm.grid'),
         getFieldValue(cipConfig, 'searchForm.grid'),
-        getFieldValue(cipConfig, 'searchGrid')
-      ) as number
+        getFieldValue(cipConfig, 'searchGrid') // 此值可能为true需要转为0
+      ) as number| true | undefined
+      if (result === true || result === undefined) return 0
+      return result
     })
     const searchResetBridge = computed(() => {
       return getUsingConfig(
