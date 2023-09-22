@@ -2,6 +2,7 @@ import { h, defineComponent, computed, ref } from 'vue'
 import type { Ref } from 'vue'
 import { ElForm, ElFormItem } from 'element-plus'
 import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
+// @ts-ignore
 import { CipButton } from '@xdp/button'
 import {
   debounce,
