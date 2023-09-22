@@ -11,6 +11,7 @@
     "play": "0.1.1"
   },
   "changesets": [
+    "calm-penguins-invite",
     "large-kings-attend",
     "nervous-beers-kneel",
     "thin-spiders-wave"

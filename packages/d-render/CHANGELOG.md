@@ -1,5 +1,13 @@
 # d-render
 
+## 2.1.15-beta.3
+
+### Patch Changes
+
+- fix(d-render&shared): 补充历史版本中存在的 ts 类型
+- Updated dependencies
+  - @d-render/shared@1.2.4-beta.3
+
 ## 2.1.15-beta.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.2.4-beta.3
+
+### Patch Changes
+
+- fix(d-render&shared): 补充历史版本中存在的 ts 类型
+
 ## 1.2.4-beta.2
 
 ### Patch Changes
