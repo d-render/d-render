@@ -46,11 +46,11 @@ export const menu = [
           {
             name: 'commonChangeValue',
             title: 'changeValue'
+          },
+          {
+            name: 'commonChangeConfig',
+            title: 'changeConfig'
           }
-          // {
-          //   name: 'commonChangeConfig',
-          //   title: 'changeConfig'
-          // },
           // {
           //   name: 'commonChangeEffect',
           //   title: 'changeEffect'
