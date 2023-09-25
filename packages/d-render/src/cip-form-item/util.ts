@@ -49,10 +49,10 @@ const filterProperty = (object: IAnyObject, properties: Array<string>) => {
 }
 // 深克隆非指定属性
 export const cloneDeepConfig = (config: IRenderConfig) => {
-  const fixedKeys = ['dependOn', 'changeConfig', 'changeValue', 'changeValueByOld', 'outDependOn', 'asyncOptions', '$render']
-  const [volatileConfig, fixedConfig] = filterProperty(config, fixedKeys)
-  const newConfig = cloneDeep(volatileConfig)
-  return Object.assign(newConfig, fixedConfig)
+  // const fixedKeys = ['dependOn', 'changeConfig', 'changeValue', 'changeValueByOld', 'outDependOn', 'asyncOptions', '$render']
+  // const [volatileConfig, fixedConfig] = filterProperty(config, fixedKeys)
+  // const newConfig =
+  return cloneDeep(config)
 }
 
 export const isHideLabel = (config: IRenderConfig) => {
