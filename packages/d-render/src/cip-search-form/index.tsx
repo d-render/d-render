@@ -82,7 +82,13 @@ export default defineComponent({
       emit('update:model', val)
     }
     // 触发搜索
-    const emitSearch = debounce((type?: string) => { emit('search', type) }, 200, false) as (type?: string)=> void
+    const emitSearch = debounce((type?: string) => {
+      cipSearchForm.value?.validate((valid) => {
+        if (valid) {
+          emit('search', type)
+        }
+      })
+    }, 200, false) as (type?: string)=> void
 
     const resetSearch = () => {
       // 重置的时候载入默认model
@@ -188,6 +194,7 @@ export default defineComponent({
       // labelPosition: _labelPosition.value,
       size: 'default',
       style: { gridTemplateColumns: `repeat(${gridCount.value}, 1fr)` },
+      model: formModel.value,
       onSubmit: (e: Event) => {
         e.preventDefault()
         emitSearch()
