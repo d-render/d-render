@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.5
+
+### Patch Changes
+
+- feat(cip-search-form): 支持搜索前数据验证
+
 ## 2.1.15-beta.4
 
 ### Patch Changes
