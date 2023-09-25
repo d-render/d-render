@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.4
+
+### Patch Changes
+
+- fix(d-render): [dependOn]修复副作用只能出发一次的问题
+
 ## 2.1.15-beta.3
 
 ### Patch Changes
