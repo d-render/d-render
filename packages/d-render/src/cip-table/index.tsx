@@ -26,7 +26,7 @@ import {
   useCipPageConfig, IAnyObject, ITableColumnConfig
 } from '@d-render/shared'
 // @ts-ignore
-import { CipButtonCollapse } from '@xdp/button'
+import { CipButtonCollapse, CipButtonText } from '@xdp/button'
 import { tableProps } from './table-props'
 import ColumnInput from './column-input'
 import { EmptyStatus } from './icons-vue'
@@ -42,7 +42,7 @@ export default defineComponent({
   name: 'CipTable',
   inheritAttrs: false,
   props: tableProps,
-  emits: ['sort', 'update:data', 'update:selectColumns'],
+  emits: ['sort', 'update:data', 'update:selectColumns', 'mainFieldClick'],
   setup (props, context) {
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
@@ -181,6 +181,7 @@ export default defineComponent({
           label={config.label}
         />
       }
+
       return h(ElTableColumn, {
         prop: key,
         align: config.type === 'number' ? 'right' : '', // 针对数字类型进行居右优化
@@ -213,7 +214,7 @@ export default defineComponent({
               }
             }
             const inputProps = {
-              config,
+              config, // 去除$render
               fieldKey: props.fieldKey,
               index: $index,
               model: row,
@@ -226,8 +227,15 @@ export default defineComponent({
               updateData
             }
             // $render的优先级高于普通的type
-            if (config.$render) {
+            if (typeof config.$render === 'function') {
               return config.$render({ ...inputProps, row, $index })
+            }
+            if (columnType === 'mainField') {
+              return h(CipButtonText, {
+                onClick: () => {
+                  context.emit('mainFieldClick', { row, $index })
+                }
+              }, h(ColumnInput, inputProps))
             }
             return h(ColumnInput, inputProps)
           }
