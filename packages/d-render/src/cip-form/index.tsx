@@ -273,6 +273,7 @@ export default defineComponent({
       style: { gridTemplateColumns: `repeat(${grid.value},1fr)` },
       size: 'default',
       // labelPosition: _labelPosition.value,
+      labelWidth: props.labelWidth,
       scrollToError: formProps.value.scrollToError,
       onSubmit: (ev:Event) => { ev.preventDefault() }
     }, { default: () => [getFormDefaultSlots(), context.slots.default?.()] })
