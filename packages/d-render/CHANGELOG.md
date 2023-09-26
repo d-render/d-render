@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.8
+
+### Patch Changes
+
+- fix(cip-form-item): 修复 useModleChange 在更新多值时的 bug
+
 ## 2.1.15-beta.7
 
 ### Patch Changes
