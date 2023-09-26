@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.6
+
+### Patch Changes
+
+- fix(cip-form): 支持 label-width
+
 ## 2.1.15-beta.5
 
 ### Patch Changes
