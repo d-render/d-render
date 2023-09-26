@@ -56,9 +56,9 @@ export const useSteamUpdateValues = (
   changeEffect: ComputedRef<IRenderConfig['changeEffect']>
 ) => {
   const keys = computed(() => {
-    const result = ([] as Array<string>).concat(fieldKey.value)
+    let result = ([] as Array<string>).concat(fieldKey.value)
     if (otherKey.value !== undefined) {
-      result.concat(otherKey.value)
+      result = result.concat(otherKey.value)
     }
     return result
   })
