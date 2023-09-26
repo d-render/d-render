@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.7
+
+### Patch Changes
+
+- feat(cip-table): 扩展功能，新增 columnType: mainField 及 onMainFieldClick 事件
+
 ## 2.1.15-beta.6
 
 ### Patch Changes
