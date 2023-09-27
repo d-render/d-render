@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.9
+
+### Patch Changes
+
+- pref(cip-table): 优化 mainField 的时组件的使用方式
+
 ## 2.1.15-beta.8
 
 ### Patch Changes
