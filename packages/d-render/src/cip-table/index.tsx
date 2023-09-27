@@ -235,7 +235,7 @@ export default defineComponent({
                 onClick: () => {
                   context.emit('mainFieldClick', { row, $index })
                 }
-              }, h(ColumnInput, inputProps))
+              }, () => h(ColumnInput, inputProps))
             }
             return h(ColumnInput, inputProps)
           }
