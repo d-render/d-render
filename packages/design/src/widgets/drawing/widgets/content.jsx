@@ -38,7 +38,8 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
-    grid: Number
+    grid: Number,
+    Component: {}
   },
   emits: ['changeHoverId'],
   setup (props, { attrs, emit }) {
@@ -111,10 +112,14 @@ export default defineComponent({
         <Rank/>
       </ElIcon>
       {/* <i class={'el-icon-rank show-focus handle-icon move-icon'} /> */}
-      <div class="right-bottom show-focus">
+      <div class="right-bottom show-focus handle-icon">
+        { props.Component && props.Component.map(icon => <icon.Component onClick={(e) => {
+            e.stopPropagation()
+            icon?.callback(props.element, e)
+            }
+          }/>)
+        }
         {formContentProps.value.showCopy && <ElIcon
-          size={22}
-          class={'handle-icon'}
           onClick={(e) => {
             e.stopPropagation()
             formContentProps.value.onCopy(e)
@@ -122,8 +127,6 @@ export default defineComponent({
           <DocumentCopy />
         </ElIcon> }
         <ElIcon
-          class="handle-icon"
-          size={22}
           onClick={(e) => {
             e.stopPropagation()
             formContentProps.value.onDelete(e)

@@ -30,8 +30,7 @@ export default {
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
     const ns = useNamespace('form-design')
-    const { modules, configure, draw, preview } = usePlugins(props.plugins)
-    console.log('draw', draw)
+    const { modules, configure, draw, preview, icon } = usePlugins(props.plugins)
 
     const [currentModuleName, asideModules] = useCompose(props, {
       activeKey: 'defaultModule',
@@ -124,6 +123,7 @@ export default {
         }
           <Drawing
             Component={draw.Component}
+            handleIconComponent={icon}
             equipment={props.equipment}
             data={props.schema}
             selectId={selectItemId.value}
