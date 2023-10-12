@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.2-beta.2
+
+### Patch Changes
+
+- dd9732c: feat(plugins): 添加 icon 插件
+
 ## 1.1.1
 
 ### Patch Changes

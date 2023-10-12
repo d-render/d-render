@@ -11,6 +11,7 @@
     "play": "0.1.1"
   },
   "changesets": [
+    "blue-feet-share",
     "calm-penguins-invite",
     "curvy-squids-buy",
     "large-kings-attend",
