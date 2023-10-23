@@ -5,7 +5,6 @@ export default {
   props: layoutProps,
   setup (props, context) {
     const { componentSlots } = useComponentSlots(props, context)
-    console.log(componentSlots, 'componentSlots')
     // fieldList 存放地址 options.value[0].children
     const Table = new TableDrawPlugin()
     return () => <Table.Component config={props.config}>
