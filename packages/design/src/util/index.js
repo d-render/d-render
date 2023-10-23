@@ -78,18 +78,24 @@ export const getTableItem = (item) => {
   return result
 }
 
-export const depthFirstSearchTree = (list, value, key) => {
+export const depthFirstSearchTree = (list, value, key, drawTypeMap = {}) => {
   const searchTree = (tree, value, key) => {
     if (!tree) return
     if (getFieldValue(tree, key) === value) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { children, ...useObject } = tree
       return [useObject]
     }
-    const _children = isLayoutType(tree?.config?.type) ? (tree.config?.children || tree.config?.options) : (tree.children || tree.options)
+    const configType = tree.config?.type
+    const type = drawTypeMap[configType] ?? configType
+    const _children = isLayoutType(type)
+      ? (tree.config.children || tree.config.options)
+      : (tree.children || tree.options)
     if (!_children) return
     for (let i = 0, loop = _children.length; i < loop; i++) {
       const result = searchTree(_children[i], value, key)
       if (result) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { children, ...useObject } = tree
         result.unshift(useObject)
         return result

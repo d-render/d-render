@@ -79,7 +79,8 @@ export default {
       isPreview.value = !isPreview.value
     }
     const testModel = ref()
-    const breadcrumb = computed(() => depthFirstSearchTree(props.schema?.list || [], selectItemId.value, 'id') || [])
+    const breadcrumb = computed(() => depthFirstSearchTree(
+      props.schema?.list || [], selectItemId.value, 'id', props.drawTypeMap) || [])
     const pageDesign = reactive({
       drawTypeMap: props.drawTypeMap,
       putStrategy: props.putStrategy
