@@ -71,6 +71,7 @@
     "rollup": "^3.21.7",
     "rollup-plugin-esbuild": "^5.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
+    "typescript": "^5.2.2",
     "vite": "^4.3.5",
     "vue": "^3.2.47"
   },

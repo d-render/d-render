@@ -18,7 +18,7 @@ export function getRollupOptions (
   externals
 ) {
   return files.reduce((acc, input) => {
-    const output = input.replace(inputDir, '').replace(/\.(ts(x)?|jsx|vue)/, '.mjs')
+    const output = input.replace(inputDir, '').replace(/\.(ts(x)?|jsx|vue)/, '.js')
     return [
       ...acc,
       getConfig(
