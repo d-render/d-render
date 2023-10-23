@@ -154,7 +154,7 @@ export default {
         preview: () => <DeviceContainer type={'preview'} equipment={props.equipment} >
 
            {props.equipment === 'pc' &&
-             <div style={{ padding: '20px', background: '#fff', height: '100% ' }}>
+             <div class={ns.e('preview')} style={{ }}>
                <preview.Component
                  v-model:model={testModel.value}
                  schema={props.schema}
