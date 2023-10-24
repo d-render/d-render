@@ -3,7 +3,6 @@ export const formConfigFieldConfigMap = {
   hideIndex: {
     type: 'switch',
     label: '是否显示序号',
-    activeValue: true,
     defaultValue: false
   },
   indexFixed: {
