@@ -35,7 +35,6 @@ export const componentsGroupList = [
       { type: 'office', icon: 'el-icon-office-building', label: '机构' },
       {
         type: 'table',
-        class: 'disabled-table',
         icon: 'el-icon-menu',
         label: '子表单',
         hideLabel: true,

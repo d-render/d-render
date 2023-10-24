@@ -26,6 +26,7 @@ export default defineComponent({
   emits: ['update:model'],
   setup (props, { emit, expose }) {
     const schemaBridge = computed(() => {
+      console.log(props.schema ?? props.scheme)
       return props.schema ?? props.scheme
     })
     const cipFormRef = ref(null)

@@ -8,12 +8,17 @@ export default {
   },
   setup (props, { slots }) {
     const tableConfig = computed(() => {
-      return props.schema || props.config
+      const _schema = props.schema || props.config
+      console.log(_schema, '_schema')
+      _schema?.list?.forEach(item => {
+        item.config.writable = true
+      }) || []
+      return _schema
     })
     return () => <CipForm labelPosition={'top'} class="dr-draw-table--form ">
-      <div class={`dr-draw-table--container ${tableConfig.value.indexFixed ? 'is-index-fixed' : ''}`}>
+      <div class={`dr-draw-table--container ${!!tableConfig.value.indexFixed ? 'is-index-fixed' : ''}`}>
         {
-          !tableConfig.value.hideIndex && <div class="dr-draw-table--seq">
+          !!tableConfig.value.hideIndex && <div class="dr-draw-table--seq">
             <div class="dr-draw-table--seq__title">序号</div>
             <div class="dr-draw-table--seq__number">1</div>
           </div>

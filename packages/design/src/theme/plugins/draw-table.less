@@ -3,8 +3,8 @@
   .dr-draw-table--container{
     &.is-index-fixed {
       .dr-draw-table--content {
-        width: auto!important;
-        flex: 0 0 auto!important;
+        //width: auto!important;
+        //flex: 0 0 auto!important;
       }
       .dr-draw-table--seq {
         flex: 0 0 50px!important;
@@ -74,11 +74,15 @@
       }
     }
     .dr-design-drawing-content__wrapper {
-      padding: 0px;
+      padding: 0;
       column-gap: 0!important;
       display: flex!important;
       overflow-x: auto;
       overflow-y: hidden;
+      .dr-design-draw-content__item {
+        flex: 0 0 auto;
+        width: 200px;
+      }
     }
   }
   .dr-draw-table--summary {

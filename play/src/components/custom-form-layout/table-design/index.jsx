@@ -7,7 +7,7 @@ export default {
     const { componentSlots } = useComponentSlots(props, context)
     // fieldList 存放地址 options.value[0].children
     const Table = new TableDrawPlugin()
-    return () => <Table.Component config={props.config}>
+    return () => <Table.Component {...props } >
       {componentSlots.value.default?.()}
     </Table.Component>
   }
