@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.10
+
+### Patch Changes
+
+- polish(表单设计): 修改子表单样式
+
 ## 2.1.15-beta.9
 
 ### Patch Changes
