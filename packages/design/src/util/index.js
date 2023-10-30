@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import { cloneDeep, toUpperFirstCase, getFieldValue } from '@d-render/shared'
 import { DRender } from 'd-render'
+
 export const isLayoutType = (type) => {
   return new DRender().isLayoutType(type)
 }
