@@ -1,9 +1,9 @@
-interface IPropScheme{
-  attr?: boolean
-  type?: unknown
-  default?: unknown
-  options?: Array<unknown>
-  validate?: (val: unknown)=> boolean
+interface IPropScheme {
+  attr?: boolean;
+  type?: unknown;
+  default?: unknown;
+  options?: Array<unknown>;
+  validate?: ((val: unknown) => boolean) | boolean;
 }
 interface IEventSchema{
 
