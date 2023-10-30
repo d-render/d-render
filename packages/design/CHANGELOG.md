@@ -1,5 +1,17 @@
 # @d-render/design
 
+## 1.1.2-beta.5
+
+### Patch Changes
+
+- polish(@d-render/design): 解决打包时出现本地路径的问题
+
+## 1.1.2-beta.4
+
+### Patch Changes
+
+- polish(@d-render/design): 解决打包时出现本地路径的问题
+
 ## 1.1.2-beta.3
 
 ### Patch Changes
