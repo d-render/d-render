@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.2.4-beta.4
+
+### Patch Changes
+
+- @d-render/shared 修改 IPropScheme 类型
+
 ## 1.2.4-beta.3
 
 ### Patch Changes
