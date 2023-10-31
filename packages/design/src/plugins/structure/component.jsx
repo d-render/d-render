@@ -2,7 +2,7 @@ import { DRender } from 'd-render'
 import { inject, ref, provide, reactive, computed } from 'vue'
 import { ElIcon, ElTag } from 'element-plus'
 import { CaretRight } from '@element-plus/icons-vue'
-
+import { DR_DESIGN_KEY } from '@/constant'
 const dRender = new DRender()
 const isLayoutType = (type) => dRender.isLayoutType(type)
 const CustomTree = {
@@ -12,7 +12,7 @@ const CustomTree = {
     isSub: Boolean
   },
   setup (props) {
-    const pageDesign = inject('pageDesign', {})
+    const pageDesign = inject(DR_DESIGN_KEY, {})
     return () => <div class={{ 'structure-tree': !props.isSub, 'structure-sub-tree': props.isSub }}>{props.list?.map(item => {
       const isLayout = isLayoutType(pageDesign?.drawTypeMap?.[item.config.type] ?? item.config.type)
       if (isLayout) {

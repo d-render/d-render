@@ -3,6 +3,7 @@ import { Rank, DocumentCopy, Delete } from '@element-plus/icons-vue'
 import { ElIcon } from 'element-plus'
 import { isLayoutType } from '@/util'
 import { useNamespace } from '@d-render/shared'
+import { DR_DESIGN_KEY } from '@/constant'
 // import './content.less'
 export default defineComponent({
   props: {
@@ -41,17 +42,16 @@ export default defineComponent({
     grid: Number,
     Component: {}
   },
-  emits: ['changeHoverId'],
-  setup (props, { attrs, emit }) {
+  setup (props, { attrs }) {
     const ns = useNamespace('design-draw-content')
     // 获取渲染所需要的组件
     const getFormContentComponent = (type) => {
       return defineAsyncComponent(() => import(`./${type}`))
     }
-    const pageDeisgn = inject('pageDesign', {})
+    const drDesign = inject(DR_DESIGN_KEY, {})
     const getComponentType = (element) => {
       const { config: { type } } = element
-      const usingType = pageDeisgn.drawTypeMap?.[type] || type
+      const usingType = drDesign.drawTypeMap?.[type] || type
       if (isLayoutType(usingType)) {
         return 'layout'
       } else {

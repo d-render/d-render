@@ -16,7 +16,7 @@ import { useCompose } from '@/hooks/use-compose'
 import { usePlugins } from '@/hooks/use-plugins'
 import { depthFirstSearchTree } from '@/util'
 import Breadcrumb from './breadcrumb'
-
+import { DR_DESIGN_KEY } from '@/constant'
 export default {
   props: {
     schema: {},
@@ -81,11 +81,13 @@ export default {
     const testModel = ref()
     const breadcrumb = computed(() => depthFirstSearchTree(
       props.schema?.list || [], selectItemId.value, 'id', props.drawTypeMap) || [])
-    const pageDesign = reactive({
-      drawTypeMap: props.drawTypeMap,
-      putStrategy: props.putStrategy
+    const drDesign = reactive({
+      drawTypeMap: props.drawTypeMap, // 渲染组件转换对象
+      schema: props.schema, // 渲染配置
+      putStrategy: props.putStrategy, // 拖入配置
+      path: breadcrumb // 当前组件路径
     })
-    provide('pageDesign', pageDesign)
+    provide(DR_DESIGN_KEY, drDesign)
     return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]} preview={isPreview.value}>
       {{
         title: () => slots.title?.(),
