@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.2-beta.6
+
+### Patch Changes
+
+- refactor(@d-render/design): 主要 provide key 修改为变量，并导出该变量
+
 ## 1.1.2-beta.5
 
 ### Patch Changes
