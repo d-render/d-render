@@ -3,8 +3,8 @@
   .dr-draw-table--container{
     &.is-index-fixed {
       .dr-draw-table--content {
-        width: auto!important;
-        flex: 0 0 auto!important;
+        //width: auto!important;
+        //flex: 0 0 auto!important;
       }
       .dr-draw-table--seq {
         flex: 0 0 50px!important;
@@ -38,8 +38,10 @@
     .dr-draw-table--content {
       width: 100%;
       flex: 1;
+      height: 110px;
       display: flex;
       overflow: auto;
+      border: 1px solid var(--el-border-color);
       .dr-design-draw-content__layout__item {
         display: flex;
         width: 100%;
@@ -49,13 +51,6 @@
           border: none!important;
         }
       }
-    }
-    .dr-design-drawing-content__wrapper {
-      padding: 0px;
-      column-gap: 0!important;
-      display: flex!important;
-      overflow-x: auto;
-      overflow-y: hidden;
       .dr-design-draw-content__item {
         border: 1px solid var(--el-border-color);
         width: 100%;
@@ -76,6 +71,17 @@
             padding: 10px;
           }
         }
+      }
+    }
+    .dr-design-drawing-content__wrapper {
+      padding: 0;
+      column-gap: 0!important;
+      display: flex!important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      .dr-design-draw-content__item {
+        flex: 0 0 auto;
+        width: 200px;
       }
     }
   }

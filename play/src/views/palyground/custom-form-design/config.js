@@ -39,6 +39,7 @@ export const componentsGroupList = [
         icon: 'el-icon-menu',
         label: '子表单',
         hideLabel: true,
+        hideBorder: false,
         options: [
           {
             key: 'default',

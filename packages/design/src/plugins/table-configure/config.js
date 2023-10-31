@@ -3,7 +3,7 @@ export const formConfigFieldConfigMap = {
   hideIndex: {
     type: 'switch',
     label: '是否显示序号',
-    defaultValue: true
+    defaultValue: false
   },
   indexFixed: {
     type: 'switch',
@@ -17,7 +17,7 @@ export const formConfigFieldConfigMap = {
   },
   hideBorder: {
     type: 'switch',
-    label: '是否显示边框',
+    label: '是否隐藏边框',
     defaultValue: true
   },
   stripe: {
