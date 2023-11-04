@@ -133,7 +133,7 @@ export default defineComponent({
         model: formModel.value,
         fieldKey: key,
         config,
-        grid: true,
+        grid: gridCount.value,
         labelPosition: searchFormProps.value.labelPosition,
         onKeyup: (e: KeyboardEvent) => {
           const { keyCode } = e
