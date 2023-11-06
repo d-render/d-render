@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.2-beta.8
+
+### Patch Changes
+
+- polish: 构建后重新发布包
+
 ## 1.1.2-beta.7
 
 ### Patch Changes
