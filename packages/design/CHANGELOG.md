@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.2-beta.7
+
+### Patch Changes
+
+- feat(basic): 新增变量用以控制按钮的问题
+
 ## 1.1.2-beta.6
 
 ### Patch Changes
