@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.11
+
+### Patch Changes
+
+- fix(cip-form): 修复`labelSuffix`属性不生效的问题
+
 ## 2.1.15-beta.10
 
 ### Patch Changes

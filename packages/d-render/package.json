@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "2.1.15-beta.10",
+  "version": "2.1.15-beta.11",
   "description": "数据渲染库 - form、table、search-form",
   "main": "./esm/main.js",
   "module": "./esm/main.js",
