@@ -25,7 +25,9 @@ export default {
     defaultModule: {},
     defaultConfigure: {},
     putStrategy: {},
-    plugins: { type: Array, default: () => [] }
+    plugins: { type: Array, default: () => [] },
+    previewText: { type: String, default: '预览' },
+    editText: { type: String, default: '编辑' }
   },
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
@@ -95,11 +97,11 @@ export default {
         handle: () => <>
           {!isPreview.value && <>
             {slots.preHandle?.()}
-            <CipButton type={'primary'} icon={View} onClick={() => { togglePreview() }}>预览</CipButton>
+            <CipButton type={'primary'} icon={View} onClick={() => { togglePreview() }}>{props.previewText}</CipButton>
             {slots.handle?.()}
           </>}
           {
-            isPreview.value && <CipButton type={'primary'} onClick={() => { togglePreview() }}>编辑</CipButton>
+            isPreview.value && <CipButton type={'primary'} onClick={() => { togglePreview() }}>{props.editText}</CipButton>
           }
         </>,
         modules: () => <DesignModules
