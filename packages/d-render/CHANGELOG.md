@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.12
+
+### Patch Changes
+
+- chore(d-render): 修改版本号后重新发布
+
 ## 2.1.15-beta.11
 
 ### Patch Changes
