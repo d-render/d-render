@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.2-beta.9
+
+### Patch Changes
+
+- fix: 预览移动端时样式一场的问题
+
 ## 1.1.2-beta.8
 
 ### Patch Changes
