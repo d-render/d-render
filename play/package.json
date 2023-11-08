@@ -8,10 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@antv/x6": "^2.15.1",
     "@cip/cci-standard-theme": "^0.1.1",
     "@cip/code-mirror": "^1.0.4",
     "@cip/components": "6.0.32",
     "@cip/d-render-plugin-cci": "^2.0.9",
+    "@cip/d-render-plugin-cci-configure": "^1.0.2",
     "@cip/d-render-plugin-cci-mobile": "1.0.3-beta.1",
     "@cip/hooks": "^5.0.1",
     "@cip/page-layout": "^1.0.2",
@@ -31,7 +33,7 @@
     "axios": "^1.4.0",
     "codemirror": "^5.65.14",
     "core-js": "^3.8.3",
-    "d-render": "workspace:2.1.15-beta.2",
+    "d-render": "2.1.15-beta.10",
     "dayjs": "^1.11.7",
     "element-plus": "2.2.22",
     "github-markdown-css": "^5.2.0",
