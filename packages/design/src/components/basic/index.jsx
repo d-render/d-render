@@ -16,7 +16,7 @@ import { useCompose } from '@/hooks/use-compose'
 import { usePlugins } from '@/hooks/use-plugins'
 import { depthFirstSearchTree } from '@/util'
 import Breadcrumb from './breadcrumb'
-
+import { DR_DESIGN_KEY } from '@/constant'
 export default {
   props: {
     schema: {},
@@ -25,13 +25,14 @@ export default {
     defaultModule: {},
     defaultConfigure: {},
     putStrategy: {},
-    plugins: { type: Array, default: () => [] }
+    plugins: { type: Array, default: () => [] },
+    previewText: { type: String, default: '预览' },
+    editText: { type: String, default: '编辑' }
   },
   emits: ['update:schema', 'update:config', 'update:equipment'],
   setup (props, { emit, slots }) {
     const ns = useNamespace('form-design')
-    const { modules, configure, draw, preview } = usePlugins(props.plugins)
-    console.log('draw', draw)
+    const { modules, configure, draw, preview, icon } = usePlugins(props.plugins)
 
     const [currentModuleName, asideModules] = useCompose(props, {
       activeKey: 'defaultModule',
@@ -80,12 +81,15 @@ export default {
       isPreview.value = !isPreview.value
     }
     const testModel = ref()
-    const breadcrumb = computed(() => depthFirstSearchTree(props.schema?.list || [], selectItemId.value, 'id') || [])
-    const pageDesign = reactive({
-      drawTypeMap: props.drawTypeMap,
-      putStrategy: props.putStrategy
+    const breadcrumb = computed(() => depthFirstSearchTree(
+      props.schema?.list || [], selectItemId.value, 'id', props.drawTypeMap) || [])
+    const drDesign = reactive({
+      drawTypeMap: props.drawTypeMap, // 渲染组件转换对象
+      schema: props.schema, // 渲染配置
+      putStrategy: props.putStrategy, // 拖入配置
+      path: breadcrumb // 当前组件路径
     })
-    provide('pageDesign', pageDesign)
+    provide(DR_DESIGN_KEY, drDesign)
     return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]} preview={isPreview.value}>
       {{
         title: () => slots.title?.(),
@@ -93,11 +97,11 @@ export default {
         handle: () => <>
           {!isPreview.value && <>
             {slots.preHandle?.()}
-            <CipButton type={'primary'} icon={View} onClick={() => { togglePreview() }}>预览</CipButton>
+            <CipButton type={'primary'} icon={View} onClick={() => { togglePreview() }}>{props.previewText}</CipButton>
             {slots.handle?.()}
           </>}
           {
-            isPreview.value && <CipButton type={'primary'} onClick={() => { togglePreview() }}>编辑</CipButton>
+            isPreview.value && <CipButton type={'primary'} onClick={() => { togglePreview() }}>{props.editText}</CipButton>
           }
         </>,
         modules: () => <DesignModules
@@ -124,6 +128,7 @@ export default {
         }
           <Drawing
             Component={draw.Component}
+            handleIconComponent={icon}
             equipment={props.equipment}
             data={props.schema}
             selectId={selectItemId.value}
@@ -153,7 +158,7 @@ export default {
         preview: () => <DeviceContainer type={'preview'} equipment={props.equipment} >
 
            {props.equipment === 'pc' &&
-             <div style={{ padding: '20px', background: '#fff', height: '100% ' }}>
+             <div class={ns.e('preview')} style={{ }}>
                <preview.Component
                  v-model:model={testModel.value}
                  schema={props.schema}

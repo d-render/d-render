@@ -1,5 +1,49 @@
 # @d-render/design
 
+## 1.1.2-beta.8
+
+### Patch Changes
+
+- polish: 构建后重新发布包
+
+## 1.1.2-beta.7
+
+### Patch Changes
+
+- feat(basic): 新增变量用以控制按钮的问题
+
+## 1.1.2-beta.6
+
+### Patch Changes
+
+- refactor(@d-render/design): 主要 provide key 修改为变量，并导出该变量
+
+## 1.1.2-beta.5
+
+### Patch Changes
+
+- polish(@d-render/design): 解决打包时出现本地路径的问题
+
+## 1.1.2-beta.4
+
+### Patch Changes
+
+- polish(@d-render/design): 解决打包时出现本地路径的问题
+
+## 1.1.2-beta.3
+
+### Patch Changes
+
+- polish(表单设计): 修改子表单样式
+- Updated dependencies
+  - d-render@2.1.15-beta.10
+
+## 1.1.2-beta.2
+
+### Patch Changes
+
+- dd9732c: feat(plugins): 添加 icon 插件
+
 ## 1.1.1
 
 ### Patch Changes

@@ -2,7 +2,8 @@ export const PLUGIN_ENUM = {
   MODULE: 1,
   DRAW: 2,
   CONFIGURE: 3,
-  PREVIEW: 4
+  PREVIEW: 4,
+  ICON_HANDLE: 5
 }
 class Plugin {
   constructor (options) {
@@ -32,5 +33,12 @@ export class PreviewPlugin extends Plugin {
   constructor (options) {
     super(options)
     this.type = PLUGIN_ENUM.PREVIEW
+  }
+}
+
+export class IconHandlePlugin extends Plugin {
+  constructor (options) {
+    super(options)
+    this.type = PLUGIN_ENUM.ICON_HANDLE
   }
 }

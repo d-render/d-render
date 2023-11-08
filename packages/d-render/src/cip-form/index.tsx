@@ -274,6 +274,7 @@ export default defineComponent({
       size: 'default',
       // labelPosition: _labelPosition.value,
       labelWidth: props.labelWidth,
+      labelSuffix: props.labelSuffix,
       scrollToError: formProps.value.scrollToError,
       onSubmit: (ev:Event) => { ev.preventDefault() }
     }, { default: () => [getFormDefaultSlots(), context.slots.default?.()] })

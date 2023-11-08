@@ -1,7 +1,8 @@
 import { computed, inject } from 'vue'
+import { DR_DESIGN_KEY } from '@/constant'
 export const useFieldDrawingItem = ({ props, emit }) => {
   // FEAT: drawType优先级高于type
-  const pageDesign = inject('pageDesign', {})
+  const pageDesign = inject(DR_DESIGN_KEY, {})
   const computedConfig = computed(() => {
     let result = props.config || {}
     if (result.drawType) {

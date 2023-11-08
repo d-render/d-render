@@ -12,7 +12,8 @@ export default {
     equipment: { type: String },
     selectId: [Number, String],
     deviceType: {},
-    Component: {}
+    Component: {},
+    handleIconComponent: {}
   },
   emits: ['updateList', 'select'],
   setup (props, context) {
@@ -64,6 +65,7 @@ export default {
         element,
         index,
         formLabelPosition: props.data.formLabelPosition,
+        Component: props.handleIconComponent,
         onUpdateConfig: (val) => {
           updateConfig(element, val)
         },

@@ -16,6 +16,7 @@ import {
   FormPreviewPlugin
 } from '@d-render/design/esm/plugins'
 import { TplNavPlugin } from './plugins/tpl'
+import { IconPlugin } from './plugins/icon'
 import { CssConfigurePlugin } from './plugins/css'
 import { useVirtualSchema } from '../use-virtual-schema'
 import { useTpl } from '../use-tpl'
@@ -36,7 +37,9 @@ export default {
     const tplNavPlugin = new TplNavPlugin({
       data: tplList.value
     })
-
+    const handleClick = (params) => {
+      console.log('handleClick', params)
+    }
     const plugins = [
       new PalettePlugin({
         data: componentsGroupList
@@ -48,7 +51,10 @@ export default {
       new CssConfigurePlugin(),
       new FormConfigurePlugin(),
       new FormDrawPlugin(),
-      new FormPreviewPlugin()
+      new FormPreviewPlugin(),
+      new IconPlugin({
+        callback: handleClick
+      })
     ]
     const drawTypeMap = {
       table: 'tableDesign'

@@ -3,6 +3,7 @@ import { h } from 'vue'
 export const usePlugins = (plugins) => {
   const modules = []
   const configure = []
+  const icon = []
   let draw = { Component: {} }
   let preview = { Component: h('div') }
   plugins.forEach(plugin => {
@@ -13,6 +14,9 @@ export const usePlugins = (plugins) => {
         break
       case PLUGIN_ENUM.DRAW:
         draw = plugin
+        break
+      case PLUGIN_ENUM.ICON_HANDLE:
+        icon.push(plugin)
         break
       case PLUGIN_ENUM.CONFIGURE:
         configure.push(plugin)
@@ -26,6 +30,7 @@ export const usePlugins = (plugins) => {
     modules,
     configure,
     draw,
-    preview
+    preview,
+    icon
   }
 }

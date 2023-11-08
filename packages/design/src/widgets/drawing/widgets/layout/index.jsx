@@ -45,6 +45,7 @@ export default {
     }
     return () => (
       <CipFormLayout
+        fieldKey={props.fieldKey}
         config={computedConfig.value}
         drawType={drawType.value}
         isDesign={true}

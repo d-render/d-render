@@ -3,6 +3,7 @@ import { Rank, DocumentCopy, Delete } from '@element-plus/icons-vue'
 import { ElIcon } from 'element-plus'
 import { isLayoutType } from '@/util'
 import { useNamespace } from '@d-render/shared'
+import { DR_DESIGN_KEY } from '@/constant'
 // import './content.less'
 export default defineComponent({
   props: {
@@ -38,19 +39,19 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
-    grid: Number
+    grid: Number,
+    Component: {}
   },
-  emits: ['changeHoverId'],
-  setup (props, { attrs, emit }) {
+  setup (props, { attrs }) {
     const ns = useNamespace('design-draw-content')
     // 获取渲染所需要的组件
     const getFormContentComponent = (type) => {
       return defineAsyncComponent(() => import(`./${type}`))
     }
-    const pageDeisgn = inject('pageDesign', {})
+    const drDesign = inject(DR_DESIGN_KEY, {})
     const getComponentType = (element) => {
       const { config: { type } } = element
-      const usingType = pageDeisgn.drawTypeMap?.[type] || type
+      const usingType = drDesign.drawTypeMap?.[type] || type
       if (isLayoutType(usingType)) {
         return 'layout'
       } else {
@@ -111,10 +112,14 @@ export default defineComponent({
         <Rank/>
       </ElIcon>
       {/* <i class={'el-icon-rank show-focus handle-icon move-icon'} /> */}
-      <div class="right-bottom show-focus">
+      <div class="right-bottom show-focus handle-icon">
+        { props.Component && props.Component.map(icon => <icon.Component onClick={(e) => {
+            e.stopPropagation()
+            icon?.callback(props.element, e)
+            }
+          }/>)
+        }
         {formContentProps.value.showCopy && <ElIcon
-          size={22}
-          class={'handle-icon'}
           onClick={(e) => {
             e.stopPropagation()
             formContentProps.value.onCopy(e)
@@ -122,8 +127,6 @@ export default defineComponent({
           <DocumentCopy />
         </ElIcon> }
         <ElIcon
-          class="handle-icon"
-          size={22}
           onClick={(e) => {
             e.stopPropagation()
             formContentProps.value.onDelete(e)
