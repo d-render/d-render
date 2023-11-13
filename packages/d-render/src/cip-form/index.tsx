@@ -56,7 +56,8 @@ export default defineComponent({
     },
     dataBus: Function as PropType<(key: string, val: unknown) => void>,
     border: { type: Boolean, default: undefined }, // showOnly + border 将出现边框
-    enterHandler: Function // 回车触发回调
+    // 回车触发回调
+    enterHandler: Function
   },
   emits: ['update:model', 'submit', 'cancel'],
   slots: Object as SlotsType<{
@@ -119,8 +120,8 @@ export default defineComponent({
       }
     }
     // 获取layout及item组件需要的props
-    const getComponentProps = (key: string, config: IRenderConfig) => {
-      const componentKey = generateComponentKey(key)
+    const getComponentProps = (key: string, config: IRenderConfig, id?: string) => {
+      const componentKey = generateComponentKey(id || key)
       const componentProps: IInputProps = {
         key: componentKey,
         componentKey,
@@ -133,7 +134,7 @@ export default defineComponent({
         formLabelPosition: labelPositionBridge.value,
         labelPosition: labelPositionBridge.value,
         'onUpdate:model': (val: IAnyObject) => {
-          if (componentKey === generateComponentKey(key)) {
+          if (componentKey === generateComponentKey(id || key)) {
             updateModel(val)
           }
         }
@@ -172,14 +173,14 @@ export default defineComponent({
       return h(CipFormItem, componentProps)
     }
     // 渲染单个字段
-    const getFormDefaultSlot = ({ key, config }: IFormConfig = { key: '', config: {} }, isShow?: boolean) => {
+    const getFormDefaultSlot = ({ key, id, config }: IFormConfig = { key: '', config: {} }, isShow?: boolean) => {
       // 若存在字段key值的插槽覆盖则配置整个ElFormItem
       config._isGrid = grid.value
       config._isShow = isShow
       if (context.slots[key]) {
         return context.slots[key]({ key, config })
       }
-      const componentProps = getComponentProps(key, config)
+      const componentProps = getComponentProps(key, config, id)
       // 若存在字段key值+Input的插槽覆盖则配置ElFormItem内的Input
       if (context.slots[`${key}Input`]) {
         return h(CipFormItem, {

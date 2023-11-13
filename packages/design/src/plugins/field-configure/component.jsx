@@ -19,7 +19,7 @@ export default {
     // TODO: 通过源代码修改，修改的值无法正常的回显，因为检测不到selectItem的变化
     const configBridge = ref({})
     watch(() => props.selectItem, (val) => {
-      if (!val?.key) return
+      if (!val?.id || !val?.key) return
       configBridge.value = val.config
       configBridge.value.key = val.key
       configBridge.value.id = val.id
@@ -54,8 +54,8 @@ export default {
     const updateSelectItem = (val) => {
       const selectItem = props.selectItem
       selectItem.key = val.key
-      Reflect.deleteProperty(val, 'key')
-      Reflect.deleteProperty(val, 'id')
+      // Reflect.deleteProperty(val, 'key')
+      // Reflect.deleteProperty(val, 'id')
       selectItem.config = val// { ...val }
       emit('update:selectItem', selectItem)
     }

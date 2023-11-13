@@ -170,6 +170,7 @@ export interface IEntityConfig {
 }
 export interface IFormConfig<T = Record<string, unknown>> {
   key: keyof T
+  id?: string
   config: IRenderConfig
 }
 export interface ITableColumnConfig {
