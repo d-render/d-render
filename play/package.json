@@ -8,10 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@antv/x6": "^2.15.1",
     "@cip/cci-standard-theme": "^0.1.1",
     "@cip/code-mirror": "^1.0.4",
     "@cip/components": "6.0.32",
     "@cip/d-render-plugin-cci": "^2.0.9",
+    "@cip/d-render-plugin-cci-configure": "^1.0.2",
     "@cip/d-render-plugin-cci-mobile": "1.0.3-beta.1",
     "@cip/hooks": "^5.0.1",
     "@cip/page-layout": "^1.0.2",

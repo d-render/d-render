@@ -16,5 +16,11 @@ export default {
   fieldMapping: {
     component: (mode) => () => import(`./field-mapping${mode}`)
   },
-  optionsConfigure: () => () => import('./options-configure/index')
+  optionsConfigure: () => () => import('./options-configure/index'),
+  changeAction: {
+    component: (mode) => () => import(`./change-action${mode}`)
+  },
+  expression: {
+    component: (mode) => () => import(`./expression${mode}`)
+  }
 }

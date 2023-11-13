@@ -14,7 +14,9 @@ module.exports = {
   rules: {
     'vue/multi-word-component-names': 0,
     '@typescript-eslint/ban-ts-comment': 0,
-    'import/extensions': 0
+    'import/extensions': 0,
+    'no-unused-vars': 1,
+    '@typescript-eslint/no-unused-vars': 1
   },
   parserOptions: {
     ecmaVersion: 2020
