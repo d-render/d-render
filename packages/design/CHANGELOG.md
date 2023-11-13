@@ -1,5 +1,14 @@
 # @d-render/design
 
+## 1.1.2-beta.10
+
+### Patch Changes
+
+- fix(design): 修复设计器的字段配置清空后再输入第一个值后会失焦的问题
+- Updated dependencies
+  - d-render@2.1.15-beta.13
+  - @d-render/shared@1.2.4-beta.5
+
 ## 1.1.2-beta.9
 
 ### Patch Changes
