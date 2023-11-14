@@ -228,7 +228,7 @@ export default defineComponent({
             }
             // $render的优先级高于普通的type
             if (typeof config.__render === 'function') {
-              return config.__render({ ...inputProps, row, $index })
+              return config.__render({ ...inputProps, row, $index, $position: 'table' })
             }
             if (columnType === 'mainField') {
               return h(CipButtonText, {
