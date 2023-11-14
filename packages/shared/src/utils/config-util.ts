@@ -1,4 +1,4 @@
-import type { Slot, CSSProperties } from 'vue'
+import type { Slot, CSSProperties, VNode } from 'vue'
 import type { IAnyObject } from './util'
 /**
  * 合并字段配置Map
@@ -115,7 +115,22 @@ export interface IRenderConfig{
   $render?: Slot<IAnyObject>
   [propname: string]: unknown
 }
-
+interface ITableRenderProps {
+  // eslint-disable-next-line no-use-before-define
+  config: ITableRenderConfig | IRenderConfig
+  fieldKey: string
+  index: number
+  model: IAnyObject
+  key: string
+  tableRuleKey: string
+  propertyKey: string
+  columnKey: string
+  tableDependOnValues: IAnyObject
+  tableData: Array<IAnyObject>
+  updateData: (val: IAnyObject, index: number) => void
+  $index: number
+  $position: 'table'
+}
 // table特有
 export interface ITableRenderConfig {
   columnType?: 'checkbox'
@@ -124,6 +139,7 @@ export interface ITableRenderConfig {
    */
   showOverflowTooltip?: boolean
   dynamic?: boolean // dependOn是否生效
+  __render?: (props: ITableRenderProps) => VNode
   fixed?: boolean | 'left' | 'right'
   /**
    * 当前表单项最小宽度
@@ -175,13 +191,13 @@ export interface IFormConfig<T = Record<string, unknown>> {
 }
 export interface ITableColumnConfig {
   key: string
-  config: IRenderConfig & ITableRenderConfig & {children: Array<ITableColumnConfig>}
+  config: IRenderConfig | ITableRenderConfig | {children: Array<ITableColumnConfig>}
 }
 
 export type IFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig>
-export type IFormFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & IBaseFormRenderConfig & IFormRenderConfig>
-export type ISearchFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & IBaseFormRenderConfig & ISearchRenderConfig>
-export type ITableFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & ITableRenderConfig>
+export type IFormFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig | IBaseFormRenderConfig | IFormRenderConfig>
+export type ISearchFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig | IBaseFormRenderConfig | ISearchRenderConfig>
+export type ITableFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig | ITableRenderConfig>
 
 // configMapToList即mergeFieldConfig联合使用
 export const generateFieldList = <T extends Record<string, unknown>>(configMap: IFieldConfig<T>, ...source: Array<Record<keyof T, IEntityConfig>|IFieldConfig<T>>) => configMapToList(mergeFieldConfig(configMap, ...source)) as IFormConfig<T>[]
