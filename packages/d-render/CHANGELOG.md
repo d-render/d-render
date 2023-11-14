@@ -1,5 +1,13 @@
 # d-render
 
+## 2.1.15-beta.14
+
+### Patch Changes
+
+- feat(cip-table): columns[number].config 中支持\_\_render 用于自定义渲染
+- Updated dependencies
+  - @d-render/shared@1.2.4-beta.6
+
 ## 2.1.15-beta.13
 
 ### Patch Changes

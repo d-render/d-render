@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.2.4-beta.6
+
+### Patch Changes
+
+- fix(config-util): 修复类型定义
+
 ## 1.2.4-beta.5
 
 ### Patch Changes
