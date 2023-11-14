@@ -26,6 +26,7 @@ export default {
     defaultConfigure: {},
     putStrategy: {},
     plugins: { type: Array, default: () => [] },
+    withPreview: { type: Boolean, default: true },
     previewText: { type: String, default: '预览' },
     editText: { type: String, default: '编辑' }
   },
@@ -95,7 +96,7 @@ export default {
         title: () => slots.title?.(),
         equipment: () => <EquipmentRadio modelValue={props.equipment} onUpdate:modelValue={updateEquipment}/>,
         handle: () => <>
-          {!isPreview.value && <>
+          {props.withPreview && !isPreview.value && <>
             {slots.preHandle?.()}
             <CipButton type={'primary'} icon={View} onClick={() => { togglePreview() }}>{props.previewText}</CipButton>
             {slots.handle?.()}
