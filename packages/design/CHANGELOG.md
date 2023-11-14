@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.2-beta.11
+
+### Patch Changes
+
+- fix(preview-form): 修复 form 设计器预览时 defaultValue 加载异常的问题
+
 ## 1.1.2-beta.10
 
 ### Patch Changes
