@@ -6,7 +6,7 @@ export default {
     const iframe$ = ref()
     onMounted(() => {
       iframe$.value.onload = () => {
-        Array.from(document.head.childNodes).filter(v => v.nodeName === 'STYLE' || v.nodeName === 'LINK')
+        Array.from(document.head.childNodes).filter(v => ['STYLE', 'LINK', 'SCRIPT'].includes(v.nodeName))
           .forEach(style => {
             iframe$.value.contentDocument.head.appendChild(style.cloneNode(true))
           })

@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.2-beta.12
+
+### Patch Changes
+
+- fix(design): 解决手机端预览文件上传方法找不到的问题
+
 ## 1.1.2-beta.10
 
 ### Patch Changes
