@@ -1,4 +1,4 @@
-import { h, toRef, computed, ref, unref, onErrorCaptured, defineComponent } from 'vue'
+import {h, toRef, computed, ref, unref, onErrorCaptured, defineComponent, onMounted} from 'vue'
 import type { PropType, ExtractPropTypes, Ref, ComputedRef, VNode } from 'vue'
 import { ElFormItem, ElTooltip, ElIcon } from 'element-plus'
 import { InfoFilled, WarningFilled } from '@element-plus/icons-vue'
@@ -71,7 +71,7 @@ export default defineComponent({
     const equipment = computed(() => {
       return unref(cipForm?.equipment) || 'pc'
     })
-
+    const formItemRef = ref()
     // 一般处于cip-table直接使用的情况下
     const notInForm = computed(() => {
       return isEmptyObject(elForm)
@@ -144,7 +144,7 @@ export default defineComponent({
       if (formItemConfig.value.description) {
         const effect = getUsingConfig(formItemConfig.value.descriptionEffect, getFieldValue(cipConfig, 'tooltip.effect'), 'light') as string
         const descriptionComp = (
-          <ElTooltip effect={effect} placement={'top'}>
+          <ElTooltip effect={effect} placement={'top'} appendTo={formItemRef.value}>
             {{
               content: () => formItemConfig.value.description,
               default: () => <ElIcon style={'margin-left:2px;line-height: inherit;'}><InfoFilled/></ElIcon>
@@ -177,9 +177,9 @@ export default defineComponent({
     const errorMessageNode = ({ error }: {error: string}) => {
       if (!inlineErrorMessage.value) return null
       return (
-        <ElTooltip content={error}>
+        <ElTooltip content={error} appendTo={formItemRef.value}>
           <ElIcon class={'cip-danger-color '} style={{ outline: 'none', border: 'none' }}>
-            <WarningFilled />
+            <WarningFilled/>
           </ElIcon>
         </ElTooltip>
       )
@@ -305,6 +305,7 @@ export default defineComponent({
       return (
         <div
           style={cipFormStyle.value}
+          ref={formItemRef}
           class={[
             'cip-form-item',
             'el-form-item__wrapper',
