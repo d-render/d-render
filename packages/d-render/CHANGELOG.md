@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.15
+
+### Patch Changes
+
+- fix(@d-render/design): 解决 tooltip 在手机端预览时偏移的问题
+
 ## 2.1.15-beta.14
 
 ### Patch Changes
