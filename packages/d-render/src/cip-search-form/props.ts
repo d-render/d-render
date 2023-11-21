@@ -15,7 +15,8 @@ export const cipSearchFormProps = {
   equipment: String,
   labelPosition: String,
   completeRow: Boolean, // 是否为完整的一行
-  defaultModel: Object as PropType<IAnyObject> // 重置后载入默认设置model
+  defaultModel: Object as PropType<IAnyObject>, // 重置后载入默认设置model
+  quirks: { type: Boolean, default: undefined } // 是否开启怪异模式
 }
 
 export type TSearchFormProps = ExtractPropTypes<typeof cipSearchFormProps>

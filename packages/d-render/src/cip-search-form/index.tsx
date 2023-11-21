@@ -21,6 +21,7 @@ import CipFormItem from '../cip-form-item'
 import { useExpand } from './use-expand'
 import { cipSearchFormProps } from './props'
 // cip-search-form 强制开启grid模式
+// [2023-11-21] 新增一个怪异模式quirks
 export default defineComponent({
   name: 'CipSearchForm',
   props: cipSearchFormProps,
@@ -29,14 +30,15 @@ export default defineComponent({
     useFormProvide(props)
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
-    const cipSearchForm: Ref<InstanceType<typeof ElForm>|null> = ref(null)
+    const cipSearchForm: Ref<InstanceType<typeof ElForm> | null> = ref(null)
     const contentWidth = ref(1000)
 
     const searchFormPropsKey = [
       ['collapse', true],
       'labelPosition',
       // 'grid',
-      'searchButtonText'
+      'searchButtonText',
+      'quirks' // tips:开启怪异模式后行为会变得奇怪
       // 'searchReset'
     ]
 
@@ -48,7 +50,7 @@ export default defineComponent({
         getFieldValue(cipPageConfig, 'searchForm.grid'),
         getFieldValue(cipConfig, 'searchForm.grid'),
         getFieldValue(cipConfig, 'searchGrid') // 此值可能为true需要转为0
-      ) as number| true | undefined
+      ) as number | true | undefined
       if (result === true || result === undefined) return 0
       return result
     })
@@ -88,11 +90,11 @@ export default defineComponent({
           emit('search', type)
         }
       })
-    }, 200, false) as (type?: string)=> void
+    }, 200, false) as (type?: string) => void
 
     const resetSearch = () => {
       // 重置的时候载入默认model
-      updateModel({ })
+      updateModel({})
       emitSearch('reset')
     }
 
@@ -101,7 +103,12 @@ export default defineComponent({
       const grid = gridBridge.value // = getUsingConfig(props.grid, cipConfig.searchGrid)
       if (isNumber(grid) && grid > 0) return grid // 过滤grid为数字且grid>0 则使用固定的列
       const cellWidth = searchFormProps.value.labelPosition === 'top' ? 268 : 335
-      return Math.max(2, Math.floor(contentWidth.value / cellWidth)) // contentWidth.value < 1300 ? 3 : (contentWidth.value > 1900 ? 5 : 4)
+      let count = Math.max(2, Math.floor(contentWidth.value / cellWidth))
+      if (searchFormProps.value.quirks) {
+        if (count === 5) count = 4
+        if (count > 6) count = 6
+      }
+      return count // contentWidth.value < 1300 ? 3 : (contentWidth.value > 1900 ? 5 : 4)
     })
 
     const {
@@ -177,10 +184,10 @@ export default defineComponent({
           }}
         >
           <CipButton buttonType={'search'} onClick={() => emitSearch()}>
-            {{ default: ({ text }: {text: string}) => props.searchButtonText ?? text }}
+            {{ default: ({ text }: { text: string }) => props.searchButtonText ?? text }}
           </CipButton>
-          {showResetButton.value && <CipButton buttonType={'reset'} onClick={() => resetSearch()}/>}
-          {haveExpand.value && <CipButton square={true} icon={arrowIcon.value} onClick={() => toggleExpand()}/>}
+          {showResetButton.value && <CipButton buttonType={'reset'} onClick={() => resetSearch()} />}
+          {haveExpand.value && <CipButton square={true} icon={arrowIcon.value} onClick={() => toggleExpand()} />}
         </ElFormItem>
         slots.push(buttonList)
       }
