@@ -1,4 +1,4 @@
-import {h, toRef, computed, ref, unref, onErrorCaptured, defineComponent, onMounted} from 'vue'
+import { h, toRef, computed, ref, unref, onErrorCaptured, defineComponent, onMounted } from 'vue'
 import type { PropType, ExtractPropTypes, Ref, ComputedRef, VNode } from 'vue'
 import { ElFormItem, ElTooltip, ElIcon } from 'element-plus'
 import { InfoFilled, WarningFilled } from '@element-plus/icons-vue'
@@ -40,7 +40,7 @@ const formItemProps = {
   },
   componentKey: String,
   grid: {
-    type: [Number, Boolean],
+    type: Number,
     default: undefined
   },
   tableData: Array as PropType<Array<IAnyObject>>,
