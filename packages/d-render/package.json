@@ -59,8 +59,8 @@
     "@d-render/shared": "workspace:>=1.2.4",
     "@element-plus/icons-vue": "^2.1.0",
     "@vue/eslint-config-typescript": "^9.1.0",
-    "@xdp/button": ">= 1.0.1",
-    "@xdp/config": ">= 1.0.1",
+    "@xdp/button": "^1.2.1",
+    "@xdp/config": "^1.0.2",
     "element-plus": "2.2.22"
   },
   "peerDependencies": {
