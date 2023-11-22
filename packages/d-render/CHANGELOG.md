@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.15-beta.16
+
+### Patch Changes
+
+- feat(cip-form-item): 新增 inParent、parentDependOnValues 属性
+
 ## 2.1.15-beta.15
 
 ### Patch Changes
