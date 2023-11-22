@@ -1,5 +1,16 @@
 # @d-render/shared
 
+## 1.2.4
+
+### Patch Changes
+
+- dd9594f: fix(d-render&shared): 补充历史版本中存在的 ts 类型
+- 9cffcf3: refactor(d-render&shared): 使用 typescript 重写
+- 4ff59dd: fix(design): 修复设计器的字段配置清空后再输入第一个值后会失焦的问题
+- 53fcd96: fix(shared): [form-input-prop]修复 otherValue 的类型
+- 78b3acc: fix(config-util): 修复类型定义
+- 2dbc067: @d-render/shared 修改 IPropScheme 类型
+
 ## 1.2.4-beta.6
 
 ### Patch Changes

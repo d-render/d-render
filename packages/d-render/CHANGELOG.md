@@ -1,5 +1,33 @@
 # d-render
 
+## 2.1.15
+
+### Patch Changes
+
+- dd9594f: fix(d-render&shared): 补充历史版本中存在的 ts 类型
+- c4b9191: fix(cip-form): 支持 label-width
+- 78b3acc: feat(cip-table): columns[number].config 中支持\_\_render 用于自定义渲染
+- b383391: fix(cip-form): 修复`labelSuffix`属性不生效的问题
+- 3a42787: polish(表单设计): 修改子表单样式
+- 9cffcf3: refactor(d-render&shared): 使用 typescript 重写
+- cb26e67: fix(cip-form-item): 修复 useModleChange 在更新多值时的 bug
+- 1f0361c: fix(@d-render/design): 解决 tooltip 在手机端预览时偏移的问题
+- bb37322: chore(d-render): 修改版本号后重新发布
+- a820c6e: feat(cip-table): 扩展功能，新增 columnType: mainField 及 onMainFieldClick 事件
+- 63ac231: fix(d-render): [cip-table]修复 fieldKey 的配置错误
+- 17508f1: pref(cip-table): 优化 mainField 的时组件的使用方式
+- 4ff59dd: fix(design): 修复设计器的字段配置清空后再输入第一个值后会失焦的问题
+- a30ad30: feat(cip-form-item): 新增 inParent、parentDependOnValues 属性
+- 8ee6e2c: feat(cip-search-form): 支持搜索前数据验证
+- 0d064aa: fix(d-render): [dependOn]修复副作用只能出发一次的问题
+- Updated dependencies [dd9594f]
+- Updated dependencies [9cffcf3]
+- Updated dependencies [4ff59dd]
+- Updated dependencies [53fcd96]
+- Updated dependencies [78b3acc]
+- Updated dependencies [2dbc067]
+  - @d-render/shared@1.2.4
+
 ## 2.1.15-beta.16
 
 ### Patch Changes
