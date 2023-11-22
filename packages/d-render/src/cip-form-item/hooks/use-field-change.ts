@@ -13,15 +13,20 @@ export const useFieldChange = (props: FormItemProps,
   const dependOnValues:Ref<IAnyObject> = ref({})
   const outDependOnValues:Ref<IAnyObject> = ref({})
   const tableDependOnValues = toRef(props, 'tableDependOnValues') as Ref<IAnyObject>
+  const parentDependOnValues = toRef(props, 'parentDependOnValues') as Ref<IAnyObject>
   const model = toRef(props, 'model')
   const dependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.dependOn || [])
   const outDependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.outDependOn || [])
-  const depend = props.inTable ? dependOn.value.concat(outDependOn.value) : dependOn.value
+  const depend = props.inTable || props.inParent ? dependOn.value.concat(outDependOn.value) : dependOn.value
 
   const generateWatchValue = () => {
     let result = watchValue(model, dependOn.value)
+    // inTable将逐渐放弃
     if (props.inTable) {
       result = result.concat(watchValue(tableDependOnValues, outDependOn.value))
+    }
+    if (props.inParent) {
+      result = result.concat(watchValue(parentDependOnValues, outDependOn.value))
     }
     return result
   }
@@ -48,7 +53,14 @@ export const useFieldChange = (props: FormItemProps,
   }
   const collectDependInfo = () => {
     const values = getValuesByKeys(model.value, dependOn.value)
-    const outValues = getValuesByKeys(tableDependOnValues.value, outDependOn.value)
+    // const outValues = getValuesByKeys(tableDependOnValues.value, outDependOn.value)
+    let outValues = {}
+    if (props.inTable) {
+      outValues = getValuesByKeys(tableDependOnValues.value, outDependOn.value)
+    }
+    if (props.inParent) {
+      outValues = getValuesByKeys(parentDependOnValues.value, outDependOn.value)
+    }
     dependOnValues.value = values
     outDependOnValues.value = outValues
   }

@@ -38,6 +38,9 @@ const formItemProps = {
     type: Boolean,
     default: false
   },
+  parentDependOnValues: Object as PropType<IAnyObject>,
+  inParent: Boolean,
+  // 是否处于同类组件下？CipForm CipSearchForm CipTable
   componentKey: String,
   grid: {
     type: Number,
@@ -52,7 +55,7 @@ const formItemProps = {
   isDesign: Boolean, // 是否设计模式
   drawType: String, // 需要开启设计模式后优先级高于config.type 一般仅用于拖拽设计时使用， 平时无效果
   dataBus: Function
-}
+} as const
 export type FormItemProps = ExtractPropTypes<typeof formItemProps>
 export default defineComponent({
   name: 'CipFormItem',

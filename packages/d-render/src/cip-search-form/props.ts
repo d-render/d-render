@@ -16,7 +16,12 @@ export const cipSearchFormProps = {
   labelPosition: String,
   completeRow: Boolean, // 是否为完整的一行
   defaultModel: Object as PropType<IAnyObject>, // 重置后载入默认设置model
-  quirks: { type: Boolean, default: undefined } // 是否开启怪异模式
+  quirks: { type: Boolean, default: undefined }, // 是否开启怪异模式
+  // form下的特殊模式
+  inForm: { type: Boolean }, // 是否在form内
+  // fieldKey: String, // form下使用时的data所在的键值
+  // ruleKey: String, // form下当前data的检验规则key, 此处为空时使用fieldKey
+  dependOnValues: Object as PropType<IAnyObject>// form 下对外部数据的依赖
 }
 
 export type TSearchFormProps = ExtractPropTypes<typeof cipSearchFormProps>

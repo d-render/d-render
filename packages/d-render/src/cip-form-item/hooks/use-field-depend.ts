@@ -3,7 +3,7 @@ import { computed, ComputedRef, ShallowRef, shallowRef } from 'vue'
 import { getFieldValue, IAnyObject, IRenderConfig } from '@d-render/shared'
 import { EffectExecutor, IEffectExecutorConfigs, IExecutor, IEffects } from '../effect-executor'
 import { useFieldChange } from './use-field-change'
-import { secureNewFn, cloneDeepConfig, IKey, IObjectKey } from '../util'
+import { secureNewFn, cloneDeepConfig, IKey, IObjectKey, getValuesByKeys } from '../util'
 import type { FormItemProps } from '../index'
 
 export const useWatchFieldDepend = (
@@ -45,7 +45,8 @@ export const useWatchFieldDepend = (
     outValues: Parameters<IExecutor>['1'],
     effects: Parameters<IExecutor>['2']
   ) => {
-    let data
+    const otherKey = ([] as string[]).concat(props.config?.otherKey as string)
+    let data = { value: getFieldValue(props.model, props.fieldKey), otherValue:  getValuesByKeys(props.model, otherKey)  }
     for (let [changeValueCb] of effects) {
       if (typeof changeValueCb === 'string') {
         changeValueCb = secureNewFn('values', 'outValues', changeValueCb) as ()=> Promise<{ value: unknown, otherValue?: unknown } | undefined>
@@ -71,13 +72,13 @@ export const useWatchFieldDepend = (
       keys = ([] as Array<string>).concat(keys)
       oldValues = ([]as Array<unknown>).concat(oldValues)
       if (
-        !(keys.length === 1 && keys[0] === props.fieldKey) && // 不能只有自己变了变了
+        !(keys.length === 1 && keys[0] === props.fieldKey),  && // 不能只有自己变了变了
         oldValues.some(val => val !== undefined) // 存在变更的依赖原始值不为undefined [1,undefined]  true [undefined,undefined] false
         // executeChangeValueEffect // 此条件提升至执行器配置中
       ) {
         if ((resetValueCb === true) ||
           (typeof resetValueCb === 'function' &&
-            resetValueCb(getFieldValue(props.model, props.fieldKey!), values, outValues)
+            resetValueCb(getFieldValue(props.model, props.fieldKey!, ), values, outValues)
           )
         ) {
           // 清空值只需要执行一次, 由于异步执行的关系，其执行顺序有可能在changeValue后导致他们同时运行时可能出现不一致的问题
@@ -171,7 +172,7 @@ export const useWatchFieldDepend = (
       oldValues: changeOldValues,
       executeChangeValueEffect
     })
-    effectExecutor.executeAll(props.fieldKey as string)
+    effectExecutor.executeAll(props.fieldKey , as string)
   }
   // 收集变化的依赖
   const { changeCount, dependOnValues, outDependOnValues } = useFieldChange(props, securityConfig, dependOnWatchCb)

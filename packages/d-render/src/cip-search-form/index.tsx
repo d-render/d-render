@@ -142,6 +142,8 @@ export default defineComponent({
         config,
         grid: gridCount.value,
         labelPosition: searchFormProps.value.labelPosition,
+        parentDependOnValues: props.dependOnValues,
+        inParent: props.inForm,
         onKeyup: (e: KeyboardEvent) => {
           const { keyCode } = e
           if (keyCode === 13) {
@@ -156,6 +158,7 @@ export default defineComponent({
           // 值变更时立即搜索
           if (isImmediateSearch(config)) emitSearch()
         }
+
       })
     }
 
