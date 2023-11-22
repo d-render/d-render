@@ -32,13 +32,15 @@ export default defineComponent({
     const cipPageConfig = useCipPageConfig()
     const cipSearchForm: Ref<InstanceType<typeof ElForm> | null> = ref(null)
     const contentWidth = ref(1000)
-
+    const quirks = computed(() => {
+      return cipConfig?.quirks
+    })
     const searchFormPropsKey = [
       ['collapse', true],
       'labelPosition',
       // 'grid',
-      'searchButtonText',
-      'quirks' // tips:开启怪异模式后行为会变得奇怪
+      'searchButtonText'
+      // 'quirks' // tips:开启怪异模式后行为会变得奇怪
       // 'searchReset'
     ]
 
@@ -104,7 +106,7 @@ export default defineComponent({
       if (isNumber(grid) && grid > 0) return grid // 过滤grid为数字且grid>0 则使用固定的列
       const cellWidth = searchFormProps.value.labelPosition === 'top' ? 268 : 335
       let count = Math.max(2, Math.floor(contentWidth.value / cellWidth))
-      if (searchFormProps.value.quirks) {
+      if (quirks.value) {
         if (count === 5) count = 4
         if (count > 6) count = 6
       }
