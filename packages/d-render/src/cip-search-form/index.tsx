@@ -32,6 +32,7 @@ export default defineComponent({
     const cipPageConfig = useCipPageConfig()
     const cipSearchForm: Ref<InstanceType<typeof ElForm> | null> = ref(null)
     const contentWidth = ref(1000)
+    // tips:开启怪异模式后行为会变得奇怪
     const quirks = computed(() => {
       return cipConfig?.quirks
     })
@@ -40,7 +41,6 @@ export default defineComponent({
       'labelPosition',
       // 'grid',
       'searchButtonText'
-      // 'quirks' // tips:开启怪异模式后行为会变得奇怪
       // 'searchReset'
     ]
 
