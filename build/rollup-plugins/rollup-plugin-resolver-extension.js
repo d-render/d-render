@@ -1,6 +1,6 @@
 import { sep } from 'node:path'
 
-const mayBeSubFileExtension = ['index.js', 'index.vue', 'index.jsx']
+const mayBeSubFileExtension = ['index.js', 'index.jsx', 'index.vue']
 const mayBeFileExtension = ['.js', '.jsx', '.vue']
 
 async function findResolution (

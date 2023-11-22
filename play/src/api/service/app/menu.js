@@ -1,7 +1,9 @@
 import { menu } from './virtual-data/menu'
 class MenuService {
-  tree () {
-    return Promise.resolve({ data: menu })
+  tree (searchFilter) {
+    let data = menu
+    if (searchFilter) data = data.filter(v => v.name.indexOf(searchFilter.name) > -1)
+    return Promise.resolve({ data })
   }
 }
 

@@ -1,0 +1,41 @@
+.dr-design-drawing {
+
+    &__container {
+        position: relative;
+        box-sizing: border-box;
+        height: 100%;
+        //padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+        overflow-x: hidden;
+    }
+
+    &--pc {
+        width: 100%;
+        height: 100%;
+        background: var(--el-bg-color-overlay);// rgb(240,240,240);
+    }
+    &--pc &-content__wrapper{
+        padding: 20px;
+    }
+
+    &--mobile {
+        width: 100%;
+        height: 100%;
+
+    }
+
+
+
+    &-content__wrapper {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 100%;
+        //border: 1px dashed #333;
+        background: var(--el-bg-color);
+    }
+}
+
+@import "./content";

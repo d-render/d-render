@@ -7,12 +7,16 @@ export const formFieldList = generateFieldList(defineFormFieldConfig({
   },
   b: {
     label: 'B',
-    dependOn: ['a'],
-    changeValue ({ a }) {
-      console.log('props execute B changeValue', a)
-      return {
-        value: a + '1'
+    dependOn: [{
+      key: 'a',
+      effect: {
+        changeValue ({ a }) {
+          console.log('props execute B changeValue', a)
+          return {
+            value: a + '1'
+          }
+        }
       }
-    }
+    }]
   }
 }))

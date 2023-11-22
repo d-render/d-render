@@ -1,0 +1,23 @@
+.dr-equipment-radio{
+  display: inline-flex;
+  background: var(--el-border-color-light);
+  border-radius: 4px;
+  padding: 4px;
+  &__option{
+    font-size: 20px;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--el-color-black);
+    &.is-active{
+      background: @primary;
+      color: var(--el-color-white);
+    }
+    &+&{
+      margin-left: 8px;
+    }
+  }
+}

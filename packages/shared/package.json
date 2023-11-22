@@ -1,12 +1,11 @@
 {
   "name": "@d-render/shared",
-  "version": "1.0.7",
+  "version": "1.2.4",
   "description": "d-render部分共享utils hooks helper",
+  "sideEffects": false,
+  "main": "./esm/main.js",
   "module": "./esm/main.js",
   "types": "./types/main.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "d-render",
     "shared",
@@ -14,7 +13,12 @@
     "hooks",
     "helper"
   ],
-  "files": ["esm", "types", "src"],
+  "files": [
+    "esm",
+    "types",
+    "src",
+    "CHANGELOG.md"
+  ],
   "exports": {
     ".": {
       "import": "./esm/main.js",
@@ -32,16 +36,25 @@
   "author": "xmf",
   "license": "MIT",
   "peerDependencies": {
-    "lodash-es": "4.17.x",
     "element-plus": "2.2.22",
+    "dayjs": "^1.11.9",
+    "lodash-es": "4.17.x",
     "uuid": "8.3.x",
     "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@types/uuid": "8.3.x",
+    "element-plus": "2.2.22",
+    "dayjs": "^1.11.9",
+    "lodash-es": "4.17.x",
+    "uuid": "8.3.x",
+    "typescript": "^4.0.0"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@types/lodash-es": "^4.17.9"
   }
 }
-
-
-

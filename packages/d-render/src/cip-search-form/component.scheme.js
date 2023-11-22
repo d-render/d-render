@@ -1,11 +1,13 @@
 export const propsScheme = {
   model: {
     type: Object,
-    default: ()=> ({})
+    default: () => ({}),
+    required: true
   },
   fieldList: {
     type: Array,
-    tsType: 'import(\'@d-render/shared\').IFormConfig'
+    tsType: 'import(\'@d-render/shared\').IFormConfig',
+    required: true
   },
   hideSearch: {
     type: Boolean
@@ -40,7 +42,7 @@ export const propsScheme = {
   },
   defaultModel: {
     type: Boolean,
-    default:  ()=> ({})
+    default: () => ({})
   }
 }
 export const eventsScheme = {
@@ -55,5 +57,5 @@ export const componentScheme = {
   propsScheme,
   eventsScheme,
   slotsScheme,
-  name: "CipSearchForm"
+  name: 'CipSearchForm'
 }

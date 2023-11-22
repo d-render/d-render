@@ -1,10 +1,31 @@
 {
   "name": "@d-render/design",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "1.1.2",
+  "description": "d-render中cip-form-render、cip-table-render渲染器schema的设计器",
+  "sideEffects": [
+    "dist/*"
+  ],
+  "main": "./esm/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@cip/code-mirror": "^1.0.4",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": "^1.1.2",
+    "element-plus": "2.2.22",
+    "vuedraggable": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@cip/code-mirror": "^1.0.4",
+    "@d-render/shared": "workspace:>=1.2.4",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": "^1.1.2",
+    "d-render": "workspace:2.1.15",
+    "element-plus": "2.2.22",
+    "uuid": "^8.3.x",
+    "vue": "^3.3.2",
+    "vuedraggable": "^4.1.0"
   },
   "keywords": [],
   "author": "",

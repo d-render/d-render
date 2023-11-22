@@ -8,13 +8,13 @@ export const propsScheme = {
   },
   config: {
     type: Object,
-    tsType: 'import("@vue/shared").IRenderConfig'
+    tsType: 'import("@d-render/shared").IRenderConfig'
   },
   readonly: {
-    type: Boolean,
+    type: Boolean
   },
   customSlots: {
-    type: Function,
+    type: Function
   },
   showTemplate: {
     type: Boolean,
@@ -31,7 +31,7 @@ export const propsScheme = {
     type: String
   },
   grid: {
-    type:  [Number, Boolean]
+    type: [Number, Boolean]
   },
   tableData: {
     type: Array
@@ -39,7 +39,7 @@ export const propsScheme = {
   labelPosition: {
     type: String,
     options: ['top', 'right', 'left'],
-    tsType: 'top'|'right'|'left'
+    tsType: 'top' | 'right' | 'left'
   },
   onSearch: {
     type: Function
@@ -57,5 +57,5 @@ export const componentScheme = {
   propsScheme,
   eventsScheme,
   slotsScheme,
-  name: "CipFormItem"
+  name: 'CipFormItem'
 }

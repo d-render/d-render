@@ -1,0 +1,51 @@
+.dr-component-group{
+  &__label{
+    font-size: 13px;
+    color: var(--el-text-color-primary); //rgb(102, 102, 102);
+    padding: 8px 12px;
+  }
+  ul{
+    margin:0;
+    padding: 0 10px 10px;
+    overflow: hidden;
+    position: relative;
+  }
+}
+
+.ghost.dr-component-group-item{
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border-top: 4px solid @danger;
+  overflow: hidden;
+}
+.dr-component-group-item{
+  box-sizing: border-box;
+  display: block;
+  font-size: 12px;
+  width: 48%;
+  float: left;
+  line-height: 26px;
+  list-style: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin:1%;
+  color: #333;
+  border: 1px solid var(--el-fill-color);
+  user-select: none;
+  &:hover{
+    color: @primary;
+    border-style: dashed;
+    border-color: @primary;
+  }
+  &__icon{
+    margin: 0 6px 0 8px;
+  }
+  > a {
+    display: block;
+    cursor: move;
+    background-color: var(--el-fill-color);
+    color: @font_regular; //--el-text-color-regular
+  }
+}

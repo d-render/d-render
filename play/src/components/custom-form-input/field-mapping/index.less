@@ -1,0 +1,31 @@
+.mapping-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+
+  &-sign{
+    width: 80px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  &-delete{
+    width: 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    margin-left: 10px;
+    &:hover{
+      color: var(--el-color-primary);
+    }
+  }
+}
+.btn-add{
+  text-align: center;
+  margin-top: 20px;
+  .el-button span{
+    margin-left: 0 !important;
+  }
+}

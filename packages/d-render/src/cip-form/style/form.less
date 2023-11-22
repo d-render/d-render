@@ -1,110 +1,137 @@
 // 不同状态下label content颜色控制
 // 默认
 // readonly
-.cip-form--readonly{
-  --cip-form-label-color: var(--el-text-color-primary);
-}
-// 优先级高于readonly
-.cip-form--border.cip-form--readonly{
-  --cip-form-label-color: var(--el-text-color-regular);
-  --cip-form-label-font-weight: normal;
-  --cip-form-content-color: var(--el-text-color-primary);
-  margin-top: 1px;
-}
-.@{elNamespace}-form--inline.cip-form{
-  //width: 100%;
-  display: flex;
-  flex-wrap: wrap;
+html.dark {
+    --cip-form-border-label-bg: var(~'--@{elNamespace}-bg-color');
 }
 
-.cip-form--grid{
-  display: grid !important;
-  grid-column-gap: 12px;
+.cip-form--readonly {
+    --cip-form-label-color: var(--el-text-color-primary);
 }
-.cip-form--readonly{
-  .cip-form-item{
-    .@{elNamespace}-form-item{
-      margin-bottom: unset;
+
+// 优先级高于readonly
+.cip-form--border.cip-form--readonly {
+    --cip-form-label-color: var(--el-text-color-regular);
+    --cip-form-label-font-weight: normal;
+    --cip-form-content-color: var(--el-text-color-primary);
+    margin-top: 1px;
+}
+
+.@{elNamespace}-form--inline.cip-form {
+    //width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cip-form--grid {
+    display: grid !important;
+    grid-column-gap: 12px;
+}
+
+.cip-form--readonly {
+    .cip-form-item {
+        .@{elNamespace}-form-item {
+            margin-bottom: unset;
+        }
     }
-  }
 }
-.cip-form--border{
-  grid-gap: 0;
-  position: relative;
-  @border-color: var(~'--@{elNamespace}-border-color-lighter');
-  //border-top: 1px solid @border-color;
-  // cip-form-layout/classify会使用grid样式
-  &.cip-form--grid{
+
+.cip-form--border {
     grid-gap: 0;
-  }
-  .cip-form--grid{
-    grid-gap: 0;
-  }
-  .cip-form-item.cip-form-item--border + .cip-form-item:not(.cip-form-item--border){
-    margin-top: 16px;
-  }
-  .cip-form-item:not(.cip-form-item--border){
-    margin-bottom: 16px;
-  }
-  .cip-form-item.cip-form-item--border{
-    width: 100%;
-    margin-top: -1px;
-    border: 1px solid @border-color;
-    box-sizing: border-box;
-    .@{elNamespace}-form-item{
-      margin-bottom: 0;
+    position: relative;
+    @border-color: var(~'--@{elNamespace}-border-color-lighter');
+    // border-top: 1px solid @border-color;
+    // cip-form-layout/classify会使用grid样式
+    &.cip-form--grid {
+        grid-gap: 0;
     }
-    .@{elNamespace}-form-item__label{
-      background: #FAFAFA;
-      padding: 4px 8px;
-      border-right: 1px solid @border-color;
-      //font-weight: 500;
-      text-align: left;
-      justify-content: flex-start; // el-form-item__label默认开启flex导致text-align无效
-      height: 100%;
+
+    .cip-form--grid {
+        grid-gap: 0;
     }
-    .@{elNamespace}-form-item__content{
-      padding: 4px 8px;
-      .cip-form-item__input{
-        word-break: break-all;
-      }
+
+    .cip-form-item.cip-form-item--border + .cip-form-item:not(.cip-form-item--border) {
+        margin-top: 16px;
     }
-  }
+
+    .cip-form-item:not(.cip-form-item--border) {
+        margin-bottom: 16px;
+    }
+
+    .cip-form-item.cip-form-item--border {
+        width: 100%;
+        margin-top: -1px;
+        border: 1px solid @border-color;
+        box-sizing: border-box;
+
+        .@{elNamespace}-form-item {
+            margin-bottom: 0;
+        }
+
+        .@{elNamespace}-form-item__label {
+            background: var(--cip-form-border-label-bg, #FAFAFA);
+            padding: 4px 8px;
+            border-right: 1px solid @border-color;
+            // font-weight: 500;
+            text-align: left;
+            justify-content: flex-start; // el-form-item__label默认开启flex导致text-align无效
+            height: 100%;
+        }
+
+        .@{elNamespace}-form-item__content {
+            padding: 4px 8px;
+
+            .cip-form-item__input {
+                word-break: break-all;
+            }
+        }
+    }
 }
+
 // only模式下去除form-item的margin-bottom
 
-.cip-form.cip-form--mobile{
-  border-radius: 12px;
-  background: #fff;
-  padding: 12px;
-  box-sizing: border-box;
-  .cip-form-item {
-    padding: 10px 0;
-    box-sizing: border-box;
-    .van-cell{
-      padding: 0;
-      --van-cell-line-height: var(--cip-form-item-line-height, 32px);
-      &:after{
-        border: none;
-      }
-    }
-    &+.cip-form-item{
+.cip-form{
+  &-item, &-layout{
+    .cip-form.cip-form--mobile & + & {
       border-top: 1px solid #ddd;
-    }
-    .@{elNamespace}-form-item{
-      margin-bottom: 0;
     }
   }
 }
 
-.cip-form{
-  &.@{elNamespace}-form--label-top{
-    .@{elNamespace}-form-item{
-      flex-wrap: wrap;
-      .@{elNamespace}-form-item__content{
-        width: 100% !important;
-        min-width: 100% !important;
-      }
+.cip-form.cip-form--mobile {
+    border-radius: 12px;
+    background: var(~'--@{elNamespace}-bg-color');
+    padding: 12px;
+    box-sizing: border-box;
+
+    .cip-form-item {
+        padding: 10px 0;
+        box-sizing: border-box;
+
+        .van-cell {
+            padding: 0;
+            --van-cell-line-height: var(--cip-form-item-line-height, 32px);
+
+            &:after {
+                border: none;
+            }
+        }
+
+        .@{elNamespace}-form-item {
+            margin-bottom: 0;
+        }
     }
-  }
+}
+
+.cip-form {
+    &.@{elNamespace}-form--label-top {
+        .@{elNamespace}-form-item {
+            flex-wrap: wrap;
+
+            .@{elNamespace}-form-item__content {
+                width: 100% !important;
+                min-width: 100% !important;
+            }
+        }
+    }
 }

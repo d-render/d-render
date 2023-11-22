@@ -1,0 +1,32 @@
+&__layout {
+  min-height: 30px;
+  //background-color: fade(@warning, 10%);
+  //background-color: var(~"--@{elNamespace}-color-warning-light-9");
+  //border: 1px dashed #999;
+  &__item--empty {
+    height: 100%;
+    border: 1px dashed var(--el-border-color);
+//    background: #fff;
+    min-height: 50px;
+    background: rgb(240,240,240);
+    position: relative;
+    &:after{
+      content: '内容区';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--el-text-color-disabled);
+    }
+  }
+  &.is-hover:not(.ghost){
+    outline-color: @warning;
+  }
+  &.is-active:not(.ghost) {
+    //border-color: @warning;
+    outline-color: @warning;
+    .handle-icon {
+      background-color: @warning;
+    }
+  }
+}

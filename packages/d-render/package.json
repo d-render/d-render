@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "1.1.15",
+  "version": "2.1.15",
   "description": "数据渲染库 - form、table、search-form",
   "main": "./esm/main.js",
   "module": "./esm/main.js",
@@ -16,7 +16,13 @@
     "searchForm"
   ],
   "homepage": "https://docs.d-render.x-develop.cn/",
-  "files": ["esm", "types", "dist", "src"],
+  "files": [
+    "esm",
+    "types",
+    "dist",
+    "src",
+    "CHANGELOG.md"
+  ],
   "exports": {
     ".": {
       "import": "./esm/main.js",
@@ -27,7 +33,8 @@
       "import": "./esm/*.js",
       "types": "./types/*.d.ts"
     },
-    "./*":  {
+    "./CHANGELOG.md": "./CHANGELOG.md",
+    "./*": {
       "import": [
         "./esm/*.js",
         "./esm/*/index.js",
@@ -49,15 +56,22 @@
     "type": "git"
   },
   "dependencies": {
-    "@d-render/shared": "workspace:>= 1.0.2",
+    "@d-render/shared": "workspace:>=1.2.4",
     "@element-plus/icons-vue": "^2.1.0",
-    "@xdp/button": ">= 1.0.1"
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "@xdp/button": ">= 1.0.1",
+    "@xdp/config": ">= 1.0.1",
+    "element-plus": "2.2.22"
   },
   "peerDependencies": {
-    "@d-render/shared": "workspace:>= 1.0.2",
+    "@d-render/shared": "workspace:>=1.2.4",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1",
+    "@xdp/config": ">= 1.0.1",
     "element-plus": "2.2.22",
     "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
   }
 }

@@ -8,7 +8,7 @@ const tableCommonConfig = {
     dependOn: ['isLink'],
     dynamic: true,
     changeConfig: (config, { isLink }) => {
-      config.type = isLink ? 'c-link' : 'default'
+      config.type = isLink ? 'link' : 'default'
       config.otherKey = 'text'
       return config
     }
@@ -23,7 +23,7 @@ const attrTitleStyle = {
 }
 export const infoFieldList = generateFieldList(defineFormFieldConfig({
   subTitle: {
-    type: 'c-text',
+    type: 'text',
     border: false
   },
   propsTitle: {
@@ -33,7 +33,7 @@ export const infoFieldList = generateFieldList(defineFormFieldConfig({
     border: false
   },
   props: {
-    type: 'c-table',
+    type: 'table',
     border: false,
     hideIndex: true,
     options: generateFieldList(defineTableFieldConfig({
@@ -55,7 +55,7 @@ export const infoFieldList = generateFieldList(defineFormFieldConfig({
     }
   },
   events: {
-    type: 'c-table',
+    type: 'table',
     border: false,
     hideIndex: true,
     hideOnEmpty: true,
@@ -77,7 +77,7 @@ export const infoFieldList = generateFieldList(defineFormFieldConfig({
     }
   },
   exposes: {
-    type: 'c-table',
+    type: 'table',
     border: false,
     hideIndex: true,
     hideOnEmpty: true,

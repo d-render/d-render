@@ -1,7 +1,8 @@
 export const propsScheme = {
   data: {
     type: Array,
-    default: () => []
+    default: () => [],
+    required: true
   },
   size: {
     type: String,
@@ -10,9 +11,10 @@ export const propsScheme = {
   border: { type: Boolean, default: undefined },
   columns: {
     type: Array,
-    tsType: 'Array<import(\'@d-render/shared\').IRenderConfig>'
+    tsType: 'Array<import(\'@d-render/shared\').IRenderConfig>',
+    required: true
   },
-  offset: { type: Number},
+  offset: { type: Number },
   hideIndex: { type: Boolean },
   indexFixed: { type: Boolean },
   height: { type: String },
@@ -46,12 +48,12 @@ export const eventsScheme = {
   }
 }
 export const slotsScheme = {
-  'default': `{}`
+  default: '{}'
 }
 
 export const componentScheme = {
   propsScheme,
   eventsScheme,
   slotsScheme,
-  name: "CipTable"
+  name: 'CipTable'
 }

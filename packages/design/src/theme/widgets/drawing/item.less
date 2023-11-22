@@ -1,0 +1,25 @@
+&__item, &__layout{
+  .dr-design-drawing--mobile & + &{
+    border-top: 1px solid var(--el-border-color);
+  }
+}
+&__item{
+  &__mask{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+  &.is-hover:not(.ghost){
+    outline-color: @primary;
+  }
+  &.is-active:not(.ghost){
+    //border-color: @primary ;
+    outline-color: @primary;
+    .handle-icon{
+      background-color: @primary;
+    }
+  }
+}

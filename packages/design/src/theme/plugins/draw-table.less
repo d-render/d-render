@@ -1,0 +1,94 @@
+.dr-draw-table--form {
+  background: var(--el-bg-color);
+  .dr-draw-table--container{
+    &.is-index-fixed {
+      .dr-draw-table--content {
+        //width: auto!important;
+        //flex: 0 0 auto!important;
+      }
+      .dr-draw-table--seq {
+        flex: 0 0 50px!important;
+      }
+    }
+    display: flex;
+    padding: 10px;
+    overflow: auto;
+    align-items: center;
+    .dr-draw-table--seq {
+      width: 50px;
+      align-self: stretch;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      &__title {
+        height: 40px;
+        line-height: 40px;
+        background: var(--el-color-info-light-9);
+        border: 1px solid var(--el-border-color);
+        border-bottom: 1px solid transparent;
+      }
+      &__number {
+        border: 1px solid var(--el-border-color);
+        border-top: 1px solid transparent;
+        line-height: 50px;
+        flex: 1;
+        height: 100%;
+      }
+    }
+    .dr-draw-table--content {
+      width: 100%;
+      flex: 1;
+      height: 110px;
+      display: flex;
+      overflow: auto;
+      border: 1px solid var(--el-border-color);
+      .dr-design-draw-content__layout__item {
+        display: flex;
+        width: 100%;
+      }
+      &.is-hide-border {
+        .dr-design-draw-content__item {
+          border: none!important;
+        }
+      }
+      .dr-design-draw-content__item {
+        border: 1px solid var(--el-border-color);
+        width: 100%;
+        .el-form-item {
+          display: flex;
+          flex-direction: column;
+          .el-form-item__label {
+            height: 40px;
+            width: 100%;
+            line-height: 40px;
+            background: var(--el-color-info-light-9);
+            .cip-form-item__label {
+              justify-content: center;
+            }
+          }
+          .el-form-item__content {
+            width: 100%;
+            padding: 10px;
+          }
+        }
+      }
+    }
+    .dr-design-drawing-content__wrapper {
+      padding: 0;
+      column-gap: 0!important;
+      display: flex!important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      .dr-design-draw-content__item {
+        flex: 0 0 auto;
+        width: 200px;
+      }
+    }
+  }
+  .dr-draw-table--summary {
+    height: 46px;
+    border-top: var(--el-border-color);
+    padding: 8px 10px;
+    background: var(--el-color-info-light-9);
+  }
+}

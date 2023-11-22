@@ -1,0 +1,88 @@
+.common-style() {
+    background: #cdcdcd;
+    border-radius: 3px;
+    position: absolute;
+    z-index: 100;
+}
+//.cip-form {
+//    background: #fff;
+//    border-radius: 0;
+//    pointer-events: auto;
+//    overflow: auto;
+//}
+&-container--design &--ip6{
+    .cip-form {
+        height: 100%;
+        overflow: auto;
+    }
+}
+&-container--preview &--ip6{
+    font-size: 0;
+}
+
+&--ip6{
+    width: 419px;
+    height: 798px;
+    position: relative;
+    background: transparent;
+    margin: 0 auto;
+    border-radius: 40px;
+    border-color: #ddd;
+    pointer-events: none;
+    border-style: solid;
+    border-width: 64px 22px;
+}
+
+&__sound {
+    .common-style();
+    height: 6px;
+    left: 142px;
+    top: -35px;
+    width: 58px;
+}
+
+&__receiver {
+    .common-style();
+    display: block;
+    border-radius: 5px;
+    height: 10px;
+    left: 224px;
+    top: -37px;
+    width: 10px;
+}
+
+&__left-btn {
+    height: 50px;
+    left: -27px;
+    top: 162px;
+    width: 6px;
+    .common-style();
+}
+
+&__right-btn {
+    height: 100px;
+    right: -27px;
+    top: 61px;
+    width: 6px;
+    .common-style();
+}
+
+&__open-btn {
+    .common-style();
+    height: 50px;
+    right: -27px;
+    top: 211px;
+    width: 6px;
+}
+&__screen{
+    height: 100%;
+    overflow: auto;
+    pointer-events: all;
+    &:after{
+        content: '';
+        visibility: hidden;
+        display: block;
+        height: 0;
+        clear: both;
+    }
+}
