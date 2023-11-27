@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.3
+
+### Patch Changes
+
+- polish(style): 使设计器显得更美观
+
 ## 1.1.2
 
 ### Patch Changes
