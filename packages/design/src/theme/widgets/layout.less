@@ -4,6 +4,7 @@
   --dr-design-header-height: 48px;
   --dr-design-border-color: var(--el-border-color);
   --dr-design-border: 1px solid var(--dr-design-border-color);
+  --dr-design-tabs-height: 44px;
   * {
     box-sizing: border-box;
   }
@@ -63,7 +64,7 @@
     height: calc(100% - 48px);
     border-right: var(--dr-design-border);
     .dr-breadcrumb--container {
-      height: 48px;
+      height: var(--dr-design-tabs-height);
       display: flex;
       align-items: center;
       padding: 0 8px;

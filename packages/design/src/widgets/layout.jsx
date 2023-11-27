@@ -18,9 +18,9 @@ export default {
           {slots.modules?.()}
         </div>
         <div class={ns.e('nav')}>
-          <div class={ns.e('nav__title')}>
+          {props.navTitle && <div class={ns.e('nav__title')}>
             {props.navTitle}
-          </div>
+          </div>}
           <div class={ns.e('nav__content')}>
             <ElScrollbar>
               {slots.nav?.()}
