@@ -7,7 +7,7 @@ export default {
   name: 'standardOverview',
   setup () {
     const model = ref({})
-    return () => <CipPageLayoutInfo theme={'dg'}>
+    return () => <CipPageLayoutInfo >
       <div class={styles.wrapper}>
         <div class={styles.item}>
           <CipForm

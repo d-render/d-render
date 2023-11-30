@@ -24,7 +24,7 @@ export default {
         return {
           key,
           config: {
-            type: 'input',
+            type: 'standard-input',
             label: `config-${key}`,
             maxlength: 50,
             description: `${key}:${typeof v === 'object' ? '' : v}`,
@@ -34,8 +34,8 @@ export default {
       })
     }).flat(1)
     const model = ref({})
-    return () => <CipPageLayoutInfo theme={'dg'} title={'INPUT'}>
-      <div style={'padding: 20px; box-sizing: border-box; background:#fff'}>
+    return () => <CipPageLayoutInfo title={'INPUT'}>
+      <div style={'padding: 20px; box-sizing: border-box;'}>
         <CipForm
           grid={3}
           v-model:model={model.value}
