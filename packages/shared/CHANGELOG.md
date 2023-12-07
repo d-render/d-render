@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.2.5
+
+### Patch Changes
+
+- chore: 重新打包发布
+
 ## 1.2.4
 
 ### Patch Changes
