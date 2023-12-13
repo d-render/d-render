@@ -17,7 +17,7 @@ export const useFieldChange = (props: FormItemProps,
   const model = toRef(props, 'model')
   const dependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.dependOn || [])
   const outDependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.outDependOn || [])
-  const depend = props.inTable || props.inParent ? dependOn.value.concat(outDependOn.value) : dependOn.value
+  const depend = (props.inTable || props.inParent) ? dependOn.value.concat(outDependOn.value) : dependOn.value
 
   const generateWatchValue = () => {
     let result = watchValue(model, dependOn.value)
