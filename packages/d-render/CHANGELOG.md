@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.16
+
+### Patch Changes
+
+- fix(form-item): 修复 dependOn 收集逻辑错误导致 outDependOn 无法正常执行的问题
+
 ## 2.1.15
 
 ### Patch Changes
