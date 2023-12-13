@@ -18,5 +18,23 @@ export const formFieldList = generateFieldList(defineFormFieldConfig({
       config.hideItem = a === 1
       return config
     }
+  },
+  ta: {
+    type: 'table',
+    dependOn: ['a'],
+    options: [
+      {
+        key: 'aa',
+        config: {
+          type: 'input',
+          writable: true,
+          outDependOn: ['a'],
+          changeConfig: (config, values, outValues) => {
+            console.log(config, values, outValues)
+            return config
+          }
+        }
+      }
+    ]
   }
 }))

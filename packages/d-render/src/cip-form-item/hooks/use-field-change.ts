@@ -17,11 +17,21 @@ export const useFieldChange = (props: FormItemProps,
   const model = toRef(props, 'model')
   const dependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.dependOn || [])
   const outDependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.outDependOn || [])
-  const depend = (props.inTable || props.inParent) ? dependOn.value.concat(outDependOn.value) : dependOn.value
-
+  const filterSelf = (dependOn: Array<IKey>) => {
+    return dependOn.filter(key => {
+      if (typeof key === 'object') key = key.key
+      return key !== props.fieldKey
+    })
+  }
+  // 保持depend和generateWatchValue中的key一致
+  // 2023-12-13 仅过滤dependOn对自己的依赖
+  const depend = (props.inTable || props.inParent)
+    ? filterSelf(dependOn.value).concat(outDependOn.value)
+    : filterSelf(dependOn.value)
   const generateWatchValue = () => {
-    let result = watchValue(model, dependOn.value)
+    let result = watchValue(model, filterSelf(dependOn.value))
     // inTable将逐渐放弃
+    // [FIX]: 2023-12-13修复outDepend无法依赖与自己一样key的数据
     if (props.inTable) {
       result = result.concat(watchValue(tableDependOnValues, outDependOn.value))
     }
@@ -31,18 +41,10 @@ export const useFieldChange = (props: FormItemProps,
     return result
   }
 
-  const filterSelf = (dependOn: Array<IKey>) => {
-    return dependOn.filter(key => {
-      if (typeof key === 'object') key = key.key
-      return key !== props.fieldKey
-    })
-  }
-
-  const watchValue = (target: Ref<IAnyObject>, dependOn: Array<IKey>) => filterSelf(dependOn)
-    .map(key => {
-      if (typeof key === 'object') key = key.key
-      return () => getFieldValue(target.value, key as string)
-    })
+  const watchValue = (target: Ref<IAnyObject>, dependOn: Array<IKey>) => dependOn.map(key => {
+    if (typeof key === 'object') key = key.key
+    return () => getFieldValue(target.value, key as string)
+  })
 
   const getChange = (values: Array<unknown>, oldValues: Array<unknown>, depend: Array<IKey>) => { // 转为纯函数
     const changeIndex = getChangeIndex(values, oldValues)
@@ -72,8 +74,7 @@ export const useFieldChange = (props: FormItemProps,
     }, { deep: false, immediate: true })
     // 监听时需要排除掉自己
     watch(generateWatchValue(), (values, oldValues) => {
-      // 如果不过滤自己的话获取到的changeKeys可能存在错位的问题
-      const change = getChange(values, oldValues, filterSelf(depend))
+      const change = getChange(values, oldValues, depend)
       // 相同的对象 判断存在数据变化才触发依赖值更新
       collectDependInfo() // 此处需要获取所有的数据
       dependOnWatchCb(change, {
