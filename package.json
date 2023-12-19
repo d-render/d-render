@@ -14,7 +14,7 @@
     "build-typescript": "node ./build/tasks/typescript.js",
     "dev:shared": "cross-env ENTRY_MODULE=shared pnpm run dev-js",
     "build:shared": "cross-env ENTRY_MODULE=shared pnpm run '/^(build-js|build-typescript)$/'",
-    "dev:d-render": "cross-env ENTRY_MODULE=d-render pnpm run dev-js",
+    "dev:d-render": "cross-env ENTRY_MODULE=d-render pnpm run '/^(dev-js|dev-styles)$/'",
     "build:d-render": "cross-env ENTRY_MODULE=d-render pnpm run '/^(build-js|build-styles|build-typescript)$/'",
     "dev:plugin-standard:core": "cross-env ENTRY_MODULE=plugin-standard/core pnpm run '/^(dev-js|dev-styles)$/'",
     "build:plugin-standard:core": "cross-env ENTRY_MODULE=plugin-standard/core pnpm run '/^(build-js|build-styles)$/'",
