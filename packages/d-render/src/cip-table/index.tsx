@@ -29,7 +29,7 @@ import {
 import { CipButtonCollapse, CipButtonText } from '@xdp/button'
 import { tableProps } from './table-props'
 import ColumnInput from './column-input'
-import { EmptyStatus } from './icons-vue'
+import { EmptyStatus, Hint } from './icons-vue'
 import { dateColumnWidthMap, handleColumnWidthMap, SizeCellConfigKey } from './config'
 import { analyseData, getPropertyKeyByPath, calculateCurrentWidth } from './util'
 type TComponentSize = 'small' | 'default' | 'large'
@@ -143,15 +143,15 @@ export default defineComponent({
         if (config.slots?.header) {
           return config.slots.header({ column, $index, config, key })
         }
-        const result = [h('span', {}, [config.label])]
+        const result = [config.label]
         // 存在说明
         if (config.description) {
           const descriptionComp = (
             <ElTooltip effect={config.descriptionEffect as string || 'light'} placement={'top'}>
               {{
                 content: () => config.description,
-                default: () => <ElIcon style={'margin-left:2px'}>
-                  <InfoFilled />
+                default: () => <ElIcon style={''} class={'cip-table__header-hint'}>
+                  <Hint/>
                 </ElIcon>
               }}
             </ElTooltip>
@@ -163,7 +163,7 @@ export default defineComponent({
           const requiredAsterisk = (<span class={['cip-danger-color']} style={{ marginRight: '4px' }}>*</span>)
           result.unshift(requiredAsterisk)
         }
-        return result
+        return <div class={'cip-table__header-cell'}>{result}</div>
       }
       let dataIndexed: Record<number, Array<number>>
       if (props.rowKey) {

@@ -37,7 +37,7 @@ export const infoFieldList = generateFieldList(defineFormFieldConfig({
     border: false,
     hideIndex: true,
     options: generateFieldList(defineTableFieldConfig({
-      prop: { width: '200px' },
+      prop: { width: '200px', description: 'test' },
       type: { width: '200px' },
       default: { width: '90px' },
       description: { }
