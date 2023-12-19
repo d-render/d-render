@@ -1,11 +1,17 @@
 # d-render
 
+## 2.1.18
+
+### Patch Changes
+
+- fix(table): 修复 thead 的中 icon 与文字的对齐问题
+
 ## 2.1.17
 
 ### Patch Changes
 
 - fix(table): 修复表头中的提示图标
-- fix(form-item): 修复outDependOn中的字段也判断是否和当前字段一样的问题
+- fix(form-item): 修复 outDependOn 中的字段也判断是否和当前字段一样的问题
 
 ## 2.1.16
 
