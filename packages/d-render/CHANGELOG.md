@@ -1,5 +1,12 @@
 # d-render
 
+## 2.1.17
+
+### Patch Changes
+
+- fix(table): 修复表头中的提示图标
+- fix(form-item): 修复outDependOn中的字段也判断是否和当前字段一样的问题
+
 ## 2.1.16
 
 ### Patch Changes
