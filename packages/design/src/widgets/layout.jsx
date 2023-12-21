@@ -17,7 +17,12 @@ export default {
         <div class={ns.e('modules')}>
           {slots.modules?.()}
         </div>
-        <div class={ns.e('nav')}>
+        <div class={
+          [
+            ns.e('nav'),
+            { [ns.em('nav', 'custom')]: !props.navTitle }
+          ]
+        }>
           {props.navTitle && <div class={ns.e('nav__title')}>
             {props.navTitle}
           </div>}

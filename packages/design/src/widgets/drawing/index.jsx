@@ -1,6 +1,5 @@
 import { h, watch, ref, provide, computed } from 'vue'
 import VueDraggable from 'vuedraggable'
-import { CipForm } from 'd-render'
 import { isNotEmpty, useNamespace } from '@d-render/shared'
 import { useFieldDrawing, useList } from './use-field-drawing'
 import FormDrawingContent from './widgets/content'

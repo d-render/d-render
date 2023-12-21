@@ -16,6 +16,7 @@
     align-items: center;
     padding: 0 12px;
   }
+
   &__title{
     flex: 1;
   }
@@ -41,6 +42,11 @@
     border-right: var(--dr-design-border);
     padding: 20px 0;
   }
+  &__nav--custom{
+    .dr-design-layout__nav__content{
+      height: 100%;
+    }
+  }
   &__nav{
     flex-shrink: 0;
     width: var(--dr-design-nav-width, 255px);
@@ -60,8 +66,9 @@
   &__content{
     flex-grow: 2;
     width: 0;
-    //height: 100%;
-    height: calc(100% - 48px);
+    box-sizing: border-box;
+    height: 100%;
+    //height: calc(100% - 44px);
     border-right: var(--dr-design-border);
     .dr-breadcrumb--container {
       height: var(--dr-design-tabs-height);
