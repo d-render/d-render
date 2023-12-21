@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.4
+
+### Patch Changes
+
+- fix(style): 修复一下样式上的问题
+
 ## 1.1.3
 
 ### Patch Changes
