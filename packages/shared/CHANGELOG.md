@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 1.3.0
+
+### Minor Changes
+
+- feat(hooks): 扩展 useOptions 的功能时 options 支持树形数据
+
 ## 1.2.5
 
 ### Patch Changes
