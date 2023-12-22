@@ -1,0 +1,18 @@
+.wrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  column-gap: 20px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px 0;
+  overflow: auto;
+  .item{
+    flex-grow: 2;
+    width: calc(50% - 10px);
+    flex-shrink: 0;
+    background: var(--el-bg-color);
+    padding: 20px;
+  }
+}

@@ -1,15 +1,29 @@
 import { generateFieldList, defineFormFieldConfig, cloneDeep } from '@d-render/shared'
 import { h } from 'vue'
 import { ElTag } from 'element-plus'
-const transformToStandard = (configMaps) => {
-  return Object.keys(configMaps).reduce((acc, key) => {
-    const newConfig = configMaps[key]
-    newConfig.type = `standard-${newConfig.type}`
-    acc[key] = newConfig
-    return acc
-  }, {})
-}
-const base = defineFormFieldConfig(transformToStandard({
+const treeOptions = [
+  {
+    value: '1',
+    label: 'level_1',
+    children: [
+      { value: '1-1', label: 'level_1-1' },
+      { value: '1-2', label: 'level_1-2' }
+    ]
+  },
+  {
+    value: '2',
+    label: 'level_2',
+    children: [
+      { value: '2-1', label: 'level_2-1' },
+      { value: '2-2', label: 'level_2-2' }
+    ]
+  },
+  {
+    value: '3',
+    label: 'level_3'
+  }
+]
+const base = defineFormFieldConfig({
   default: { type: 'default', label: '默认', required: true },
   autocomplete: {
     type: 'autocomplete',
@@ -29,23 +43,9 @@ const base = defineFormFieldConfig(transformToStandard({
     type: 'cascader',
     label: 'cascader',
     required: true,
-    options: [
-      {
-        label: 'level-1',
-        value: '1',
-        children: [
-          {
-            label: 'level-1_1',
-            value: '1_1'
-          },
-          {
-            label: 'level-1_2',
-            value: '1_2'
-          }
-        ]
-      }
-    ]
+    options: treeOptions
   },
+
   checkbox: {
     type: 'checkbox',
     label: 'checkbox',
@@ -106,16 +106,33 @@ const base = defineFormFieldConfig(transformToStandard({
     span: 12
   },
   rate: { type: 'rate', label: 'rate', required: true },
-  select: { type: 'select', label: 'select', required: true },
   slider: { type: 'slider', label: 'slider', required: true },
   switch: { type: 'switch', label: 'switch', required: true },
   time: { type: 'time', label: 'time picker', required: true },
   timeSelect: { type: 'timeSelect', label: 'time select', required: true },
   transfer: { type: 'transfer', label: 'transfer', required: true },
   tree: { type: 'tree', label: 'tree', required: true },
-  treeSelect: { type: 'treeSelect', label: 'tree select', required: true },
+  select: {
+    type: 'select',
+    label: 'select',
+    realArray: true,
+    multiple: true,
+    otherKey: ['selectLabel', 'selectObject'],
+    required: true,
+    options: treeOptions
+  },
+  treeSelect: {
+    type: 'selectTreeV2',
+    // eslint-disable-next-line no-sparse-arrays
+    // otherKey: [, , 'treeSelectPath'],
+    label: 'tree select',
+    options: treeOptions,
+    multiple: true,
+    showCheckbox: true,
+    required: true
+  },
   upload: { type: 'upload', label: 'upload', required: true }
-}))
+})
 export const elFormFieldConfig = generateFieldList(cloneDeep(base)).map(fieldConfig => {
   if (!fieldConfig.config.span) {
     fieldConfig.config.span = 24
