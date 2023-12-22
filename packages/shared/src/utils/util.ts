@@ -308,6 +308,7 @@ export const setUrlQuery = (url: string, query: Record<string, string|number>) =
 }
 
 export const getLabelByValue = (value: unknown, options: IAnyObject[], optionProps: {value: string, label: string}) => {
+  // 支持tree
   return options.find(option => option[optionProps.value] === value)?.[optionProps.label]
 }
 
@@ -472,7 +473,7 @@ export const depthFirstSearchTree = <
   T extends IAnyObject,
   K extends (keyof T & string),
   C extends string
->(
+  >(
     tree: T,
     value: T[K],
     key: K,
@@ -497,6 +498,36 @@ export const depthFirstSearchTree = <
     if (result) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const data = { ...tree } as T
+      Reflect.deleteProperty(data, children)
+      result.unshift(data)
+      return result
+    }
+  }
+}
+export const depthFirstSearchTree2 = <T extends object, K extends (keyof T & string), C extends (keyof T & string)>(
+  tree: T[],
+  value:T[K],
+  key: K,
+  children: C = 'children' as C,
+  depth = 0
+): undefined | T[] => {
+  depth++
+  if (!isArray(tree)) throw Error('tree must be array')
+  if (tree.length === 0) return
+  tree = ([] as T[]).concat(tree)
+  const loop = tree.length
+  for (let i = 0; i < loop; i++) {
+    if (getFieldValue(tree[i], key) === value) {
+      const data = { ...tree[i] }
+      Reflect.deleteProperty(data, children)
+      return [data]
+    }
+    if (depth > 9) continue // 超过9层时不在向下查找
+    const childrenTree = getFieldValue(tree[i], children)
+    if (!childrenTree) continue
+    const result = depthFirstSearchTree2(childrenTree as T[], value, key, children, depth)
+    if (result) {
+      const data = { ...tree[i] } as T
       Reflect.deleteProperty(data, children)
       result.unshift(data)
       return result

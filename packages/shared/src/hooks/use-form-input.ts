@@ -3,13 +3,18 @@ import { useElFormItemInject } from './use-form'
 import {
   isEmpty,
   isNotEmpty,
-  getLabelByValue,
   isObject,
   isArray,
-  isNumber, getFieldValue, setFieldValue, getUsingConfig, IRenderConfig, IAnyObject
+  isNumber,
+  getFieldValue,
+  setFieldValue,
+  getUsingConfig,
+  IRenderConfig,
+  IAnyObject,
+  depthFirstSearchTree2,
+  debugWarn
 } from '../utils'
 import { getFormValueByTemplate, UpdateFormStream, InputProps } from '../helper'
-
 const useUpdateStream = (props: InputProps, context: SetupContext) => {
   const updateStream = new UpdateFormStream(props, (val) => {
     context.emit('streamUpdate:model', val)
@@ -190,17 +195,44 @@ export const judgeUseFn = (key: string, config: IRenderConfig, effect?: Record<s
     return config[key]
   }
 }
-
+interface IOptionProps {
+  label: string
+  value: string
+  children: string
+}
 export const useOptions = (
   props: InputProps,
   multiple: Ref<boolean> | boolean,
   updateStream: UpdateFormStream,
   context: SetupContext,
-  { autoGet = true } = {}
+  { autoGet = true, isTree = false }: {autoGet?: boolean, isTree?: boolean} = {}
 ) => {
   const optionProps = computed(() => {
     return Object.assign({ label: 'label', value: 'value', children: 'children' }, props.config?.treeProps, props.config?.optionProps)
   })
+  const getPathByValue = (options: IAnyObject[], value: unknown, optionProps: IOptionProps) => {
+    return depthFirstSearchTree2(options, value, optionProps.value, optionProps.children)
+  }
+  // 根据value从options中获取option
+  const getOptionByValue = (options: IAnyObject[], value: unknown, optionProps: IOptionProps) => {
+    if (!isTree) {
+      // 对象
+      return options.find(v => v[optionProps.value] === value)
+    } else {
+      // 路径 depthFirstSearchTree2(options, value, optionProps.value, optionProps.children)
+      const path = getPathByValue(options, value, optionProps)
+      if (path) {
+        return path[path.length - 1]
+      }
+    }
+  }
+  // 支持树选择, util的getLabelBayValue扩展而来故保留原始的入参顺序
+  const getLabelByValue = (value: unknown, options: IAnyObject[], optionProps: IOptionProps) => {
+    const option = getOptionByValue(options, value, optionProps)
+    if (option) {
+      return getFieldValue(option, optionProps.label)
+    }
+  }
   const otherKey = computed(() => {
     return props.config?.otherKey
   })
@@ -208,8 +240,13 @@ export const useOptions = (
     return props.config?.splitKey as string ?? ','
   })
   const withObject = computed(() => {
+    const value = props.config?.withObject
+    value && debugWarn('d-render',
+      `'config.withObject' is about to be deprecated in version 7.0.0, please change (config.otherKey: [labelKey]) to (config.otherKey: [labelKey,objectKey]).
+`
+    )
     // 传出的值是否为object
-    return props.config?.withObject ?? false
+    return value ?? false
   })
   const realArray = computed(() => {
     // 需要返回的shu
@@ -310,6 +347,7 @@ export const useOptions = (
       }, { immediate: true })
     }
   }
+
   // options部分组件重新定义proxyOptionsValue
   const proxyOptionsValue = computed({
     get () {
@@ -328,11 +366,22 @@ export const useOptions = (
           updateStream.appendOtherValue(otherValue)
           // 目前仅支持单选
           if (!unref(multiple)) {
-            const checkOption = (options.value as IAnyObject[]).find(v => v[optionProps.value.value] === value)
+            const checkOption = getOptionByValue((options.value as IAnyObject[]), value, optionProps.value)// (options.value as IAnyObject[]).find(v => v[optionProps.value.value] === value)
             updateStream.appendOtherValue(checkOption, 2)
           } else {
-            const checkOptions = (options.value as IAnyObject[]).filter(v => (value as unknown[]).includes(v[optionProps.value.value]))
+            // const checkOptions = (options.value as IAnyObject[]).filter(v => (value as unknown[]).includes(v[optionProps.value.value]))
+            const checkOptions = (value as unknown[]).map(val => getOptionByValue((options.value as IAnyObject[]), val, optionProps.value))
+            // TODO: 需要完成测试
             updateStream.appendOtherValue(checkOptions, 2)
+          }
+          if (isTree) {
+            if (!unref(multiple)) {
+              const path = getPathByValue(options.value, value, optionProps.value)
+              updateStream.appendOtherValue(path, 3)
+            } else {
+              const paths = (value as unknown[]).map(val => getPathByValue(options.value, val, optionProps.value))
+              updateStream.appendOtherValue(paths, 3)
+            }
           }
         }
         updateStream.end()

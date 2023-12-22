@@ -13,6 +13,12 @@ type Slots<T> = {
     [K in keyof T]?: (arg0: T[K]) => Slot
   }
 }
-
+declare global {
+  const process: {
+    env: {
+      NODE_ENV: string
+    }
+  }
+}
 // vue3 component jsx的辅助类型
-export declare type CustomComponent<T=any,M=any, S=any> = new (Props: {[K in keyof T]: T[K]} & On<M> & Slots<S>) => Component<{[K in keyof T]: T[K]} & On<M> & Slots<S>>
+export declare type CustomComponent<T=any, M=any, S=any> = new (Props: {[K in keyof T]: T[K]} & On<M> & Slots<S>) => Component<{[K in keyof T]: T[K]} & On<M> & Slots<S>>
