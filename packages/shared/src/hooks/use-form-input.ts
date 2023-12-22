@@ -200,11 +200,13 @@ interface IOptionProps {
   value: string
   children: string
 }
+
+// view组件使用时，不需要updateStream和context
 export const useOptions = (
   props: InputProps,
   multiple: Ref<boolean> | boolean,
-  updateStream: UpdateFormStream,
-  context: SetupContext,
+  updateStream?: UpdateFormStream,
+  context?: SetupContext,
   { autoGet = true, isTree = false }: {autoGet?: boolean, isTree?: boolean} = {}
 ) => {
   const optionProps = computed(() => {
