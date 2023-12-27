@@ -1,5 +1,11 @@
 # d-render
 
+## 2.1.19
+
+### Patch Changes
+
+- fix(form-item): [use-model-change]修复清空数据要求为同一个 Symbol 导致部分情况下异常的问题，特别是 pnpm 安装时
+
 ## 2.1.18
 
 ### Patch Changes
