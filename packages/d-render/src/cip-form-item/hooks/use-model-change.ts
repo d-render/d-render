@@ -5,7 +5,9 @@ import {
   isEmpty,
   isNotEmpty,
   setFieldValue,
-  emptySign, IAnyObject, IRenderConfig
+  // emptySign, 不在要求强等于
+  IAnyObject,
+  IRenderConfig
 } from '@d-render/shared'
 import { getValuesByKeys, UpdateModelQueue } from '../util'
 export const useFieldValue = (
@@ -65,11 +67,16 @@ export const useSteamUpdateValues = (
   const values = computed(() => {
     return keys.value.map(key => getFieldValue(model.value, key))
   })
+
+  // BROKEN: 2023-12-27放宽空数据的判断，原来要求为同一个Symbol, 现在只要是Symbol类型就需要清空
+  const needSetUndefined = (val: unknown) => {
+    return typeof val === 'symbol'
+  }
   const streamUpdateModel = async (values: Array<unknown | symbol>) => {
     console.log('values', values)
     if (changeEffect?.value && isNotEmpty(values[0])) {
       let value = values[0]
-      if (values[0] === emptySign) value = undefined
+      if (needSetUndefined(values[0])) value = undefined
       try {
         const result = await changeEffect.value(value, keys.value[0], readonly(model.value))
         if (result === false) throw new Error('changeEffect false interrupted data update')
@@ -80,7 +87,7 @@ export const useSteamUpdateValues = (
     const innerModel = model.value // 不能结构，结构将导致监听到整个model数据的变化
     keys.value.forEach((key, index) => {
       const value = values[index]
-      if (value === emptySign) {
+      if (needSetUndefined(value)) {
         setFieldValue(innerModel, key, undefined, true)
       } else if (!isEmpty(value)) {
         setFieldValue(innerModel, key, values[index], true)
