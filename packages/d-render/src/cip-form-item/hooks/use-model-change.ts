@@ -76,7 +76,7 @@ export const useSteamUpdateValues = (
     console.log('values', values)
     if (changeEffect?.value && isNotEmpty(values[0])) {
       let value = values[0]
-      if (needSetUndefined(values[0])) value = undefined
+      if (needSetUndefined(value)) value = undefined
       try {
         const result = await changeEffect.value(value, keys.value[0], readonly(model.value))
         if (result === false) throw new Error('changeEffect false interrupted data update')
