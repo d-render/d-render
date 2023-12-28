@@ -274,7 +274,7 @@ export default defineComponent({
       style: { gridTemplateColumns: `repeat(${grid.value},1fr)` },
       size: 'default',
       // labelPosition: _labelPosition.value,
-      labelWidth: props.labelWidth,
+      labelWidth: labelPositionBridge.value === 'top' ? '100%' : props.labelWidth,
       labelSuffix: props.labelSuffix,
       scrollToError: formProps.value.scrollToError,
       onSubmit: (ev:Event) => { ev.preventDefault() }
