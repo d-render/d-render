@@ -1,5 +1,12 @@
 # d-render
 
+## 2.1.20
+
+### Patch Changes
+
+- fix(form): 修复当表单设置为labelWidth且labelPosition为top时form-item的labelWidth依然被限制的问题
+- fix(form-item): 修复labelPosition为top时label行右侧存在12px的内边距的问题
+
 ## 2.1.19
 
 ### Patch Changes
