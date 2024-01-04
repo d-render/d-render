@@ -125,7 +125,11 @@ export default {
         </>,
         content: () => <>
         {
-          <Breadcrumb list={breadcrumb.value} draw={draw} onItemClick={item => selectItem.value = item}></Breadcrumb>
+          <Breadcrumb
+            list={breadcrumb.value}
+            draw={draw}
+            onItemClick={item => { selectItem.value = item }}
+          />
         }
           <Drawing
             Component={draw.Component}

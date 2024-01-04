@@ -1,5 +1,5 @@
-import {onMounted, ref, createApp, provide} from 'vue'
-import { useCipConfig } from "@d-render/shared";
+import { onMounted, ref, createApp, provide } from 'vue'
+import { useCipConfig } from '@d-render/shared'
 
 export default {
   props: {},
