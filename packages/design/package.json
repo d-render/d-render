@@ -1,6 +1,6 @@
 {
   "name": "@d-render/design",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "d-render中cip-form-render、cip-table-render渲染器schema的设计器",
   "sideEffects": [
     "dist/*"
@@ -9,6 +9,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "esm",
+    "dist",
+    "src",
+    "CHANGELOG.md"
+  ],
   "dependencies": {
     "@cip/code-mirror": "^1.0.6",
     "@element-plus/icons-vue": "^2.1.0",

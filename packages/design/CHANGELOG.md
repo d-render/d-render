@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.5
+
+### Patch Changes
+
+- feat: 设计器支持对设备切换的控制
+
 ## 1.1.4
 
 ### Patch Changes
