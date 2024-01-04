@@ -1,10 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import { cloneDeep, toUpperFirstCase, getFieldValue } from '@d-render/shared'
-import { DRender } from 'd-render'
+import { isLayoutType } from 'd-render'
 
-export const isLayoutType = (type) => {
-  return new DRender().isLayoutType(type)
-}
 // 允许有otherValue的字段
 export const twoValueComponentList = [
   'dateRange',
@@ -109,4 +106,22 @@ export const depthFirstSearchTree = (list, value, key, drawTypeMap = {}) => {
     if (_list.length) break
   }
   return _list
+}
+// 获取所有的input项
+export const formConfigListFlat = (list = [], cb, formList = []) => {
+  list.forEach(item => {
+    if (isLayoutType(item.config.type)) {
+      // eslint-disable-next-line
+      const options = item.config.options || []
+      const children = options.map(option => option.children).flat()
+      formConfigListFlat(children, cb, formList)
+    } else {
+      if (cb) {
+        cb(formList, item)
+      } else {
+        formList.push(item)
+      }
+    }
+  })
+  return formList
 }
