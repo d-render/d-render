@@ -3,14 +3,15 @@ import { useNamespace } from '@d-render/shared'
 export default {
   props: {
     navTitle: String,
-    preview: { type: Boolean, default: undefined }
+    preview: { type: Boolean, default: undefined },
+    equipmentSwitch: { type: Boolean, default: true }
   },
   setup (props, { slots }) {
     const ns = useNamespace('design-layout')
     return () => <div class={ns.b()}>
       <div class={ns.e('header')}>
         <div class={ns.e('title')}>{slots.title?.()}</div>
-        <div class={ns.e('equipment')}>{slots.equipment?.()}</div>
+        {props.equipmentSwitch && <div class={ns.e('equipment')}>{slots.equipment?.()}</div>}
         <div class={ns.e('handle')}>{slots.handle?.()}</div>
       </div>
       {!props.preview && <div class={ns.e('main')}>

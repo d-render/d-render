@@ -42,6 +42,7 @@ export default {
         {...designProps}
         v-model:equipment={equipment.value}
         onUpdate:schema={(val) => emit('update:schema', val)}
+        equipmentSwitch={false}
         plugins={pluginBridge}
         v-slots={slots}
       />

@@ -21,6 +21,7 @@ export default {
   props: {
     schema: {},
     equipment: {},
+    equipmentSwitch: { type: Boolean, default: true },
     drawTypeMap: {},
     defaultModule: {},
     defaultConfigure: {},
@@ -91,7 +92,12 @@ export default {
       path: breadcrumb // 当前组件路径
     })
     provide(DR_DESIGN_KEY, drDesign)
-    return () => <DesignLayout navTitle={navTitle.value} class={[ns.b()]} preview={isPreview.value}>
+    return () => <DesignLayout
+      navTitle={navTitle.value}
+      class={[ns.b()]}
+      preview={isPreview.value}
+      equipmentSwitch={props.equipmentSwitch}
+    >
       {{
         title: () => slots.title?.(),
         equipment: () => <EquipmentRadio modelValue={props.equipment} onUpdate:modelValue={updateEquipment}/>,
