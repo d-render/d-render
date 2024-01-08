@@ -1,10 +1,8 @@
-import { DRender } from 'd-render'
+import { isLayoutType } from 'd-render'
 import { inject, ref, provide, reactive, computed } from 'vue'
 import { ElIcon, ElTag } from 'element-plus'
 import { CaretRight } from '@element-plus/icons-vue'
 import { DR_DESIGN_KEY } from '@/constant'
-const dRender = new DRender()
-const isLayoutType = (type) => dRender.isLayoutType(type)
 const CustomTree = {
   props: {
     list: Object,

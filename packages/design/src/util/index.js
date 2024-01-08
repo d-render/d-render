@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid'
 import { cloneDeep, toUpperFirstCase, getFieldValue } from '@d-render/shared'
 import { isLayoutType } from 'd-render'
-
 // 允许有otherValue的字段
 export const twoValueComponentList = [
   'dateRange',

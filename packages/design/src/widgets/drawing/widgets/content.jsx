@@ -1,7 +1,7 @@
 import { computed, defineAsyncComponent, defineComponent, inject } from 'vue'
 import { Rank, DocumentCopy, Delete } from '@element-plus/icons-vue'
 import { ElIcon } from 'element-plus'
-import { isLayoutType } from '@/util'
+import { isLayoutType } from 'd-render'
 import { useNamespace } from '@d-render/shared'
 import { DR_DESIGN_KEY } from '@/constant'
 // import './content.less'

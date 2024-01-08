@@ -4,7 +4,7 @@ import { getNextItem, isEmptyObject, useFormInject } from '@d-render/shared'
 import FormDrawingContent from '../content'
 import TableContainer from './container'
 import { drawingContentProps } from '../common-props'
-import { getCopyRow } from '../../../../util'
+import { getCopyRow } from '@/util'
 
 export default {
   inheritAttrs: false,
