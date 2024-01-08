@@ -1,5 +1,11 @@
 # @d-render/design
 
+## 1.1.6
+
+### Patch Changes
+
+- refactor(\*): 调整 isLayoutType 函数的引入源
+
 ## 1.1.5
 
 ### Patch Changes
