@@ -195,9 +195,9 @@ export interface ITableColumnConfig {
 }
 
 export type IFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig>
-export type IFormFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig | IBaseFormRenderConfig | IFormRenderConfig>
-export type ISearchFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig | IBaseFormRenderConfig | ISearchRenderConfig>
-export type ITableFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig | ITableRenderConfig>
+export type IFormFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & IBaseFormRenderConfig & IFormRenderConfig>
+export type ISearchFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & IBaseFormRenderConfig & ISearchRenderConfig>
+export type ITableFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & ITableRenderConfig>
 
 // configMapToList即mergeFieldConfig联合使用
 export const generateFieldList = <T extends Record<string, unknown>>(configMap: IFieldConfig<T>, ...source: Array<Record<keyof T, IEntityConfig>|IFieldConfig<T>>) => configMapToList(mergeFieldConfig(configMap, ...source)) as IFormConfig<T>[]
