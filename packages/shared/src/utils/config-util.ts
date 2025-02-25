@@ -8,6 +8,9 @@ import type { IAnyObject } from './util'
  */
 import { cloneDeep, getFieldValue, isArray } from './util'
 import type { FormItemRule } from 'element-plus'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type NoArrayObject<T> = object
 // eslint-disable-next-line no-use-before-define
 export type TChangeConfig = (config: IRenderConfig, values: IAnyObject, outValues: IAnyObject)=> IRenderConfig
 
@@ -28,8 +31,24 @@ export interface IRenderConfigDependOn {
   key: string
   effect?: (IRenderConfigDependOnEffect & {[propname: string]: unknown}) | boolean
 }
+
+// 1. 定义基础类型映射
+export interface TypeExtensions {
+    // 内置默认类型
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    default: { }
+    // 其他基础类型...
+  }
+
+// 3. 暴露扩展点声明
+export interface DRenderTypeExtensions{
+}
+
+export type ComposeType = TypeExtensions & DRenderTypeExtensions;
+
 // base
-export interface IRenderConfig{
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType> {
   ruleKey?: string,
   sourceKey?: string,
   realKey?: string,
@@ -37,7 +56,7 @@ export interface IRenderConfig{
   /**
    * 组件类型
    */
-  type?: string
+  type?: T
   /**
    * 表单项label文案展示
    */
@@ -113,8 +132,10 @@ export interface IRenderConfig{
   itemStyle?: CSSProperties
   style?: CSSProperties
   __render?: Slot<IAnyObject>
-  [propname: string]: unknown
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ExtendedConfig<T extends keyof ComposeType = keyof ComposeType> = T extends any ? IRenderConfig<keyof ComposeType> & ComposeType[T] : never;
 export interface ITableRenderProps {
   // eslint-disable-next-line no-use-before-define
   config: ITableRenderConfig | IRenderConfig
@@ -185,7 +206,7 @@ export interface IEntityConfig {
   field?: string
   _renderConfig?: IRenderConfig
 }
-export interface IFormConfig<T = Record<string, unknown>> {
+export interface IFormConfig<T extends NoArrayObject<T>> {
   key: keyof T
   id?: string
   config: IRenderConfig
@@ -195,31 +216,30 @@ export interface ITableColumnConfig {
   config: IRenderConfig | ITableRenderConfig | {children: Array<ITableColumnConfig>}
 }
 
-export type IFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig>
-export type IFormFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & IBaseFormRenderConfig & IFormRenderConfig>
-export type ISearchFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & IBaseFormRenderConfig & ISearchRenderConfig>
-export type ITableFieldConfig<T extends Record<string, unknown>> = Record<keyof T, IRenderConfig & ITableRenderConfig>
+export type IFieldConfig<T extends NoArrayObject<T>> = Partial<Record<keyof T | (string & { }), ExtendedConfig>>
+export type IFormFieldConfig<T extends NoArrayObject<T>> = Partial<Record<keyof T | (string & { }), ExtendedConfig & IBaseFormRenderConfig & IFormRenderConfig>>
+export type ISearchFieldConfig<T extends NoArrayObject<T>> = Partial<Record<keyof T | (string & { }), ExtendedConfig & IBaseFormRenderConfig & ISearchRenderConfig>>
+export type ITableFieldConfig<T extends NoArrayObject<T>> = Partial<Record<keyof T | (string & { }), ExtendedConfig & ITableRenderConfig>>
 
 // configMapToList即mergeFieldConfig联合使用
-export const generateFieldList = <T extends Record<string, unknown>>(configMap: IFieldConfig<T>, ...source: Array<Record<keyof T, IEntityConfig>|IFieldConfig<T>>) => configMapToList(mergeFieldConfig(configMap, ...source)) as IFormConfig<T>[]
+export function generateFieldList <T extends NoArrayObject<T>> (configMap: IFieldConfig<T>, ...source: Array<Record<keyof T, IEntityConfig>|IFieldConfig<T>>): IFormConfig<T>[] { return configMapToList(mergeFieldConfig(configMap, ...source)) }
 
-export const mergeFieldConfig = <T extends Record<string, unknown>>(targetConfigMap: IFieldConfig<T>, ...sourceConfigMaps: Array<Record<keyof T, IEntityConfig>|IFieldConfig<T>>) => {
+export function mergeFieldConfig <T extends NoArrayObject<T>> (targetConfigMap: IFieldConfig<T>, ...sourceConfigMaps: Array<Record<keyof T, IEntityConfig>|IFieldConfig<T>>):IFieldConfig<T> {
   const result = {} as IFieldConfig<T>
   Object.keys(targetConfigMap).forEach(key => {
-    const targetConfig = targetConfigMap[key] || {}
+    const targetConfig = targetConfigMap[key as keyof T] || {}
     result[key as keyof T] = getMergeConfig(key, targetConfig, sourceConfigMaps) as IRenderConfig
   })
   return result as IFieldConfig<T>
 }
-
 /**
  * config 对象转为数组 (table时用的较多)
  * @param configMap
  * @return {{sort: number, config: *, key: string}[]}
  */
-export const configMapToList = <T extends Record<string, unknown>>(configMap: IFieldConfig<T>) => {
+export const configMapToList = <T extends NoArrayObject<T>>(configMap: IFieldConfig<T>) => {
   return Object.keys(configMap).map((key, i) => {
-    const config = configMap[key]
+    const config = configMap[key as keyof (typeof configMap)]!
     key = config.realKey || key // realKey的优先级高于原本的key用于处理object相同的key智能有一个的问题
     return {
       key, // realKey的优先级高于key,
@@ -234,7 +254,7 @@ export const configMapToList = <T extends Record<string, unknown>>(configMap: IF
  * @param source
  * @returns {*}
  */
-export const insertFieldConfigToList = <T extends Record<string, unknown>>(target: IFormConfig<T>[] = [], source: IFormConfig<T>[]) => {
+export const insertFieldConfigToList = <T extends NoArrayObject<T>>(target: IFormConfig<T>[] = [], source: IFormConfig<T>[]) => {
   target = [...target] // 需要浅拷贝一次不然会导致值被修改的问题
   source.forEach(fieldConfig => {
     const { config: { insert } = {} } = fieldConfig
@@ -251,7 +271,7 @@ export const insertFieldConfigToList = <T extends Record<string, unknown>>(targe
   return target
 }
 
-export const configListToMap = <T extends Record<string, unknown>>(configList: IFormConfig<T>[]) => {
+export const configListToMap = <T extends NoArrayObject<T>>(configList: IFormConfig<T>[]) => {
   const result = {} as IFieldConfig<T>
   configList.forEach(({ key, config } = { key: '', config: {} }) => {
     if (key) {
@@ -275,7 +295,7 @@ const handlerDependOn = (dependOn: IRenderConfig['dependOn'], newDependOn: IRend
  * @param sourceConfigMaps
  * @return {{}}
  */
-function getMergeConfig <T extends Record<string, unknown>> (key: string, targetConfig: IRenderConfig, sourceConfigMaps: (IFieldConfig<T>|Record<keyof T, IEntityConfig>)[]) {
+function getMergeConfig <T extends NoArrayObject<T>> (key: string, targetConfig: IRenderConfig, sourceConfigMaps: (IFieldConfig<T>|Record<keyof T, IEntityConfig>)[]) {
   let sourceConfig = {} as IRenderConfig
   const sourceKey = targetConfig.sourceKey || targetConfig.realKey || key
   let dependOn = [] as IRenderConfig['dependOn']
@@ -397,7 +417,7 @@ function handlerEffect (effect: IRenderConfigDependOnEffect, preKey: string) {
   return result
 }
 
-export const keysToConfigMap = <T extends Record<string, unknown>>(keys: Array<keyof T | (IRenderConfig & {key: keyof T})>) => {
+export const keysToConfigMap = <T extends NoArrayObject<T>>(keys: Array<keyof T | (IRenderConfig & {key: keyof T})>) => {
   const configMap = {} as IFieldConfig<T>
   keys.forEach(key => {
     let config = {} as IRenderConfig
@@ -411,12 +431,10 @@ export const keysToConfigMap = <T extends Record<string, unknown>>(keys: Array<k
   })
   return configMap
 }
-
-export const defineFieldConfig = <T extends Record<string, unknown>>(config: IFormFieldConfig<T>) => config
-// 为ts服务
+export function defineFieldConfig <T extends NoArrayObject<T>> (config: IFormFieldConfig<T>): IFormFieldConfig<T> { return config }
 // form配置
-export const defineFormFieldConfig = <T extends Record<string, unknown>>(config: IFormFieldConfig<T>) => config
+export function defineFormFieldConfig <T extends NoArrayObject<T>> (config: IFormFieldConfig<T>): IFormFieldConfig<T> { return config }
 // table配置
-export const defineTableFieldConfig = <T extends Record<string, unknown>>(config: ITableFieldConfig<T>) => config
+export function defineTableFieldConfig <T extends NoArrayObject<T>> (config: ITableFieldConfig<T>): ITableFieldConfig<T> { return config }
 // search-form配置
-export const defineSearchFieldConfig = <T extends Record<string, unknown>>(config: ISearchFieldConfig<T>) => config
+export function defineSearchFieldConfig<T extends NoArrayObject<T>> (config: ISearchFieldConfig<T>): ISearchFieldConfig<T> { return config }
