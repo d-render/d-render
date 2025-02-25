@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.0.4
+
+### Patch Changes
+
+- perf(config-util): 优化 IRenderConfig 的类型定义 允许使用 `DRenderTypeExtensions` 接口进行扩展
+
 ## 2.0.3
 
 ### Patch Changes
