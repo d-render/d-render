@@ -1,6 +1,6 @@
 import { computed, defineComponent } from 'vue'
 import { formInputViewProps, fromInputEmits, useFormView } from '@d-render/shared'
-import TextareaDirectives from '@cip/components/directives/textarea'
+import TextareaDirectives from '@ltdp/components/directives/textarea'
 export default defineComponent({
   props: formInputViewProps,
   emits: [...fromInputEmits],
