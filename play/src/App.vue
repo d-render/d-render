@@ -7,8 +7,8 @@
 </template>
 <script setup>
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { PlConfigProvide } from '@cip/page-layout'
-import CipConfigProvide from '@cip/components/cip-config-provide'
+import { PlConfigProvide } from '@ltdp/page-layout'
+import CipConfigProvide from '@ltdp/components/cip-config-provide'
 import ThemeStandard from '@page-layout/theme-standard'
 import '@page-layout/theme-standard/dist/index.css'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

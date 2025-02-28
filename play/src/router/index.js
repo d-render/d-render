@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import { prependRoutes, getBaseName, getDefaultBaseRoute } from '@cip/utils/route-util.js'
+// import { prependRoutes, getBaseName, getDefaultBaseRoute } from '@ltdp/utils/route-util.js'
 const ctx = require.context('@/views', true, /(\w+\/)*(routes\/index|routes)\.js$/i)
 
 const getChildren = (ctx) => {

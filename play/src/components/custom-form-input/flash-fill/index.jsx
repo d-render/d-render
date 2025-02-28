@@ -1,6 +1,6 @@
 import { computed, ref, withDirectives } from 'vue'
 import { ElPopover, ElTable, ElTableColumn, ClickOutside } from 'element-plus'
-import CipInput from '@cip/components/cip-input'
+import CipInput from '@ltdp/components/cip-input'
 import { formInputProps, useFormInput } from '@d-render/shared'
 import { throttle } from 'lodash-es'
 

@@ -1,4 +1,4 @@
-import CipCodeMirror from '@cip/code-mirror'
+import CipCodeMirror from '@ltdp/code-mirror'
 import 'codemirror/mode/jsx/jsx'
 import './index.less'
 import Wrapper from './wrapper'

@@ -1,9 +1,9 @@
 import { computed, inject, ref, watch } from 'vue'
 import { formInputProps, fromInputEmits, useFormInput } from '@d-render/shared'
-import CipSelect from '@cip/d-render-plugin-cci/input/basic/select'
-import CipMessage from '@cip/components/cip-message'
+import CipSelect from '@ltdp/d-render-plugin-cci/input/basic/select'
+import CipMessage from '@ltdp/components/cip-message'
 import { CipButtonText, CipButton } from '@xdp/button'
-import CipDialog from '@cip/components/cip-dialog'
+import CipDialog from '@ltdp/components/cip-dialog'
 import { Plus, Close } from '@element-plus/icons-vue'
 import './index.less'
 

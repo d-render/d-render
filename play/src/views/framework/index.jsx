@@ -1,10 +1,10 @@
 import { ref } from 'vue'
-import CipMain from '@cip/components/main'
-import '@cip/styles'
+import CipMain from '@ltdp/components/main'
+import '@ltdp/styles'
 import { menuService } from '@/api'
 import DRLogo from './logo'
 import GithubLogo from './github-logo'
-import store from '@cip/components/store'
+import store from '@ltdp/components/store'
 import { ElIcon, ElLink } from 'element-plus'
 import styles from './index.module.less'
 export default {

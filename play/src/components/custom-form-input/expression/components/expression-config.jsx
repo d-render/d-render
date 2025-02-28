@@ -1,5 +1,5 @@
 import { defineComponent, ref, inject } from 'vue'
-import CipTree from '@cip/components/cip-tree'
+import CipTree from '@ltdp/components/cip-tree'
 import ExpressionEditor from '@/components/expression-editor'
 import './expression-config.less'
 
