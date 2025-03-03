@@ -1,4 +1,4 @@
-import CipPageLayoutInfo from '@cip/page-layout/info'
+import CipPageLayoutInfo from '@ltdp/page-layout/info'
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import RawCode from '!!raw-loader!../example/change-config/base'
 // eslint-disable-next-line import/no-webpack-loader-syntax

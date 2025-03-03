@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { formInputProps, fromInputEmits, useFormInput } from '@d-render/shared'
 import { CipButtonText } from '@xdp/button'
-import CipDialog from '@cip/components/cip-dialog'
+import CipDialog from '@ltdp/components/cip-dialog'
 import Flow from './components/flow'
 import './index.less'
 

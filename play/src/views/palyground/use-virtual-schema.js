@@ -1,4 +1,4 @@
-import { isJson } from '@cip/utils/util'
+import { isJson } from '@ltdp/utils/util'
 
 export const useVirtualSchema = (fieldKey) => {
   const get = () => {

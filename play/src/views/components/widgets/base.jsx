@@ -1,4 +1,4 @@
-import CipPageLayoutInfo from '@cip/page-layout/info'
+import CipPageLayoutInfo from '@ltdp/page-layout/info'
 import { CipForm } from 'd-render'
 import { infoFieldList } from './config'
 export default {

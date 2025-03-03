@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import styles from './wrapper.module.less'
-import CipButton from '@cip/components/cip-button'
+import CipButton from '@ltdp/components/cip-button'
 export default {
   name: 'ExampleBlockWrapper',
   setup (props, { slots }) {

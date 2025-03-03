@@ -3,7 +3,7 @@ import { cloneDeep, throttle } from 'lodash-es'
 import { v4 as uuid } from 'uuid'
 import { CipForm } from 'd-render'
 import { Graph } from '@antv/x6'
-import CipDialog from '@cip/components/cip-dialog'
+import CipDialog from '@ltdp/components/cip-dialog'
 import NodeList from './node-list'
 import {
   defaultData,

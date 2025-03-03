@@ -35,12 +35,12 @@
     },
     "./CHANGELOG.md": "./CHANGELOG.md",
     "./*": {
-      "import": [
-        "./esm/*.js",
-        "./esm/*/index.js",
-        "./esm/*"
-      ],
+      "import": "./esm/*/index.js",
       "types": "./types/*.d.ts"
+    },
+    "./cip-table/util": {
+       "import": "./esm/cip-table/util.js",
+      "types": "./types/cip-table/util.d.ts"
     },
     "./dist/*": "./dist/*"
   },

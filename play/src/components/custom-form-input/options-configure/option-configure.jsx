@@ -1,5 +1,5 @@
-import CipNumber from '@cip/components/cip-number'
-import CipInput from '@cip/components/cip-input'
+import CipNumber from '@ltdp/components/cip-number'
+import CipInput from '@ltdp/components/cip-input'
 export default {
   props: {
     option: {},
