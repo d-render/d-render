@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.0.5
+
+### Patch Changes
+
+- perf: 优化对 d-render 配置的类型推断
+
 ## 2.0.4
 
 ### Patch Changes
