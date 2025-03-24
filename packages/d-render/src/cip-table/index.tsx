@@ -12,7 +12,6 @@ import {
   RendererElement
 } from 'vue'
 import { ElTable, ElTableColumn, ElRadio, ElTooltip, ElIcon } from 'element-plus'
-import { InfoFilled } from '@element-plus/icons-vue'
 import TableSelectionColumn from './table-column-selection'
 import {
   isNotEmpty,
@@ -23,11 +22,11 @@ import {
   setFieldValue,
   cipTableKey,
   useCipConfig,
-  useCipPageConfig, IAnyObject, ITableColumnConfig
+  useCipPageConfig, type IAnyObject, type ITableColumnConfig
 } from '@d-render/shared'
 // @ts-ignore
 import { CipButtonCollapse, CipButtonText } from '@xdp/button'
-import { tableProps } from './table-props'
+import { tableProps, type TTableProps } from './table-props'
 import ColumnInput from './column-input'
 import { EmptyStatus, Hint } from './icons-vue'
 import { dateColumnWidthMap, handleColumnWidthMap, SizeCellConfigKey } from './config'
@@ -42,8 +41,8 @@ export default defineComponent({
   name: 'CipTable',
   inheritAttrs: false,
   props: tableProps,
-  emits: ['sort', 'update:data', 'update:selectColumns', 'mainFieldClick', 'update:selectRadio'],
-  setup (props, context) {
+  emits: ['sort', 'update:data', 'update:selectColumns', 'mainFieldClick', 'update:selectRadio', 'row-click'],
+  setup (props: TTableProps, context) {
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
     const cipTableRef = ref()
@@ -133,6 +132,7 @@ export default defineComponent({
       const { children, type, formatter, columnType, ...tableColumnConfig } = config
       // date 类型 强行修改宽度
       if (!tableColumnConfig.width) {
+        // 兼容历史老代码
         if (config.type === 'date' && config.viewType === 'datetime') {
           tableColumnConfig.width = dateColumnWidthMap[_size.value]
         }
@@ -224,9 +224,10 @@ export default defineComponent({
               columnKey: key,
               tableDependOnValues: props.dependOnValues,
               tableData: props.data,
+              rowEdit: props.editType === 'row' ? editRowIdx.value === $index : true,
               updateData
             }
-            // $render的优先级高于普通的type
+            // __render的优先级高于普通的type
             if (typeof config.__render === 'function') {
               return config.__render({ ...inputProps, row, $index, $position: 'table' })
             }
@@ -235,12 +236,30 @@ export default defineComponent({
                 onClick: () => {
                   context.emit('mainFieldClick', { row, $index })
                 }
+                // @ts-ignore
               }, () => h(ColumnInput, inputProps))
             }
+            // @ts-ignore
             return h(ColumnInput, inputProps)
           }
         }
       })
+    }
+
+    const editRowIdx = ref(-1)
+    const handlerOutClick = () => {
+      editRowIdx.value = -1
+      document.removeEventListener('click', handlerOutClick)
+    }
+    const onRowClick = (row: any, column: any, event: Event) => {
+      if (event) {
+        event.stopPropagation()
+      }
+      document.addEventListener('click', handlerOutClick)
+      const idx = props.data.findIndex(v => v === row)
+      editRowIdx.value = idx
+      console.log('column', column)
+      context.emit('row-click', row, column, event)
     }
     // 渲染table的所有数据列 注意此处为Columns
     const renderTableColumns = (columns: Array<ITableColumnConfig> = []) => {
@@ -366,6 +385,7 @@ export default defineComponent({
       defaultExpandAll={props.defaultExpendAll}
       onSort-change={onSortChange}
       onSelection-change={onSelectionChange}
+      onRow-click={onRowClick}
     >
       {{
         default: () => TableColumns(),

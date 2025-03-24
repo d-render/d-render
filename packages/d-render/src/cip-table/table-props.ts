@@ -44,7 +44,8 @@ export const tableProps = {
   handlerLimit: { type: Number, default: 3 },
   fieldKey: String, // form下使用时的data所在的键值
   ruleKey: String, // form下当前data的检验规则key, 此处为空时使用fieldKey
-  dependOnValues: Object as PropType<IAnyObject>// form 下对外部数据的依赖
+  dependOnValues: Object as PropType<IAnyObject>, // form 下对外部数据的依赖
+  editType: { type: String as PropType<'all' | 'row' | 'cell'>, default: 'all' }
 }
 
 export type TTableProps = ExtractPropTypes<typeof tableProps>

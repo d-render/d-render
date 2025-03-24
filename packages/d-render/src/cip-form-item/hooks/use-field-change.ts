@@ -1,10 +1,10 @@
-import { ref, computed, watch, toRef, Ref, ComputedRef, onUnmounted } from 'vue'
-import { getFieldValue, IAnyObject, IRenderConfig } from '@d-render/shared'
+import { ref, computed, watch, toRef, Ref, ComputedRef } from 'vue'
+import { getFieldValue, IAnyObject, TFormConfig } from '@d-render/shared'
 import { getChangeIndex, getValuesByKeys, IKey } from '../util'
 import type { FormItemProps } from '../index'
 // 监听数据变化，处理变化的数据后再执行
 export const useFieldChange = (props: FormItemProps,
-  securityConfig: Ref<IRenderConfig>,
+  securityConfig: ComputedRef<TFormConfig>,
   dependOnWatchCb: (
     { changeKeys, changeOldValues }: {changeKeys: Array<IKey>, changeOldValues: Array<unknown> },
     { values, outValues, executeChangeValueEffect }: {values: IAnyObject, outValues: IAnyObject, executeChangeValueEffect: boolean}
@@ -15,7 +15,7 @@ export const useFieldChange = (props: FormItemProps,
   const tableDependOnValues = toRef(props, 'tableDependOnValues') as Ref<IAnyObject>
   const parentDependOnValues = toRef(props, 'parentDependOnValues') as Ref<IAnyObject>
   const model = toRef(props, 'model')
-  const dependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.dependOn || [])
+  const dependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.dependOn as IKey[] || [])
   const outDependOn:ComputedRef<Array<IKey>> = computed(() => securityConfig.value.outDependOn || [])
   const filterSelf = (dependOn: Array<IKey>) => {
     return dependOn.filter(key => {

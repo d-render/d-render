@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "数据渲染库 - form、table、search-form",
   "main": "./esm/main.js",
   "module": "./esm/main.js",
@@ -39,7 +39,7 @@
       "types": "./types/*.d.ts"
     },
     "./cip-table/util": {
-       "import": "./esm/cip-table/util.js",
+      "import": "./esm/cip-table/util.js",
       "types": "./types/cip-table/util.d.ts"
     },
     "./dist/*": "./dist/*"
@@ -56,13 +56,13 @@
     "type": "git"
   },
   "dependencies": {
-    "@d-render/shared": "workspace:>=2.0.2",
+    "@d-render/shared": "workspace:>=2.0.6",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": "^1.2.1",
     "@xdp/config": "^1.0.2"
   },
   "peerDependencies": {
-    "@d-render/shared": "workspace:>=2.0.2",
+    "@d-render/shared": "workspace:>=2.0.6",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1",
     "@xdp/config": ">= 1.0.1",

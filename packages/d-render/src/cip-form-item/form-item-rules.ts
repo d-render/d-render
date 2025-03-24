@@ -7,7 +7,7 @@ import {
 
 } from './form-validator'
 import type { TValidator } from './form-validator'
-import type { IAnyObject, IRenderConfig } from '@d-render/shared'
+import type { IAnyObject, TFormConfig, IRenderConfig } from '@d-render/shared'
 import type { FormItemRule } from 'element-plus'
 
 interface ICustomValidator {
@@ -23,7 +23,7 @@ const validatorMap: Record<string, TValidator> = {
   sql: sqlSimpleValidator
 }
 
-const isInputType = (config: IRenderConfig) => {
+const isInputType = (config: TFormConfig) => {
   if (config.triggerType === 'input') { return true }
   if (config.triggerType === 'select') { return false }
   // 兼容老的未设置triggerType的表单数据验证
@@ -36,7 +36,7 @@ export interface RequiredRule {
   [propname: string]: unknown
 }
 // 获取单字段规则
-export const getRulesByFieldConfig = (config: IRenderConfig, otherValue: unknown, dependOnValues: IAnyObject, outDependOnValues: IAnyObject) => {
+export const getRulesByFieldConfig = (config: TFormConfig, otherValue: unknown, dependOnValues: IAnyObject, outDependOnValues: IAnyObject) => {
   const rules = [] as FormItemRule[]
   if (config.required) { // 必填
     const defaultPreText = isInputType(config) ? '请输入' : '请选择'
@@ -64,7 +64,7 @@ export const getRulesByFieldConfig = (config: IRenderConfig, otherValue: unknown
     }
   }
   if (typeof config.customRequiredRule === 'function') {
-    const CRR = config.customRequiredRule(config, otherValue, dependOnValues, outDependOnValues)
+    const CRR = config.customRequiredRule(config as IRenderConfig, otherValue as IAnyObject, dependOnValues, outDependOnValues)
     rules.push(CRR)
   }
   // 提取公共函数

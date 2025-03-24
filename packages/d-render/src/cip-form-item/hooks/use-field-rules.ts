@@ -1,9 +1,9 @@
 import { computed, ComputedRef } from 'vue'
 import type { Ref } from 'vue'
 import { getRulesByFieldConfig } from '../form-item-rules'
-import type { IAnyObject, IRenderConfig } from '@d-render/shared'
+import type { IAnyObject, TFormConfig } from '@d-render/shared'
 export const useRules = (
-  config: Ref<IRenderConfig>,
+  config: ComputedRef<TFormConfig>,
   isReadonly: Ref<boolean>,
   status: ComputedRef<'read'|'read-write'|'hidden'>,
   otherValue: ComputedRef<unknown>,

@@ -1,4 +1,4 @@
-import { h, toRef, computed, ref, unref, onErrorCaptured, defineComponent, watch, nextTick } from 'vue'
+import { h, toRef, computed, ref, unref, onErrorCaptured, defineComponent, watch } from 'vue'
 import type { PropType, ExtractPropTypes, Ref, ComputedRef, VNode } from 'vue'
 import { ElFormItem, ElTooltip, ElIcon } from 'element-plus'
 import { InfoFilled, WarningFilled } from '@element-plus/icons-vue'
@@ -9,7 +9,7 @@ import {
   useFormInject,
   useElFormInject,
   useCipConfig,
-  getUsingConfig, getFieldValue, IAnyObject, IRenderConfig
+  getUsingConfig, getFieldValue, IAnyObject, TFormConfig
 } from '@d-render/shared'
 import { useWatchFieldDepend } from './hooks/use-field-depend'
 import { useFieldValue, useSteamUpdateValues } from './hooks/use-model-change'
@@ -19,7 +19,7 @@ import { getInputComponent, getViewComponent, getH5InputComponent } from '../uti
 
 const formItemProps = {
   config: {
-    type: Object as PropType<IRenderConfig>,
+    type: Object as PropType<TFormConfig>,
     required: true
   }, // 字段配置信息
   fieldKey: { type: String, required: true }, // 字段名
@@ -56,7 +56,8 @@ const formItemProps = {
   drawType: String, // 需要开启设计模式后优先级高于config.type 一般仅用于拖拽设计时使用， 平时无效果
   dataBus: Function,
   errorMode: String as PropType<'default' | 'tooltip'>,
-  changeCount: Number // 对象变化次数
+  changeCount: Number, // 对象变化次数
+  rowEdit: { type: Boolean, default: undefined }
 } as const
 export type FormItemProps = ExtractPropTypes<typeof formItemProps>
 export default defineComponent({
@@ -97,6 +98,13 @@ export default defineComponent({
     const status:ComputedRef<'read'|'read-write'|'hidden'> = computed(() => {
       // 为设置则默认开始可读可写模式
       const config = formItemConfig.value
+      // 如果在表格内,开启了行编辑且行编辑为关闭状态
+      if (props.inTable && props.rowEdit === false) {
+        // 仅考虑readable为false时隐藏此项
+        if (config.readable === false) return 'hidden'
+        return 'read'
+      }
+
       if (props.readonly) {
         if (config.readable === false) return 'hidden'
         return 'read'
@@ -114,7 +122,7 @@ export default defineComponent({
     })
     // Input组件实际使用的配置
     const formItemConfig = computed(() => {
-      return (runningConfig.value || props.config) as IRenderConfig // handleFormConfig()
+      return (runningConfig.value || props.config) as TFormConfig // handleFormConfig()
     })
     const model = toRef(props, 'model')
     const fieldKey = toRef(props, 'fieldKey') as Ref<string>
@@ -271,9 +279,9 @@ export default defineComponent({
         },
         onSearch: props.onSearch
       }
-
-      if (formItemConfig.value.$render) {
-        return formItemConfig.value.$render(componentProps)
+      // BROKEN: $render 调整为__render
+      if (formItemConfig.value.__render) {
+        return formItemConfig.value.__render(componentProps)
       }
       const type = itemType.value
       if (status.value === 'read-write') {

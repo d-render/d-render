@@ -1,6 +1,6 @@
 import { computed, ComputedRef, ShallowRef, shallowRef } from 'vue'
 // cloneDeep,
-import { getFieldValue, IAnyObject, IRenderConfig } from '@d-render/shared'
+import { getFieldValue, IAnyObject, IRenderConfig, TFormConfig } from '@d-render/shared'
 import { EffectExecutor, IEffectExecutorConfigs, IExecutor, IEffects } from '../effect-executor'
 import { useFieldChange } from './use-field-change'
 import { secureNewFn, cloneDeepConfig, IKey, IObjectKey, getValuesByKeys } from '../util'
@@ -14,10 +14,10 @@ export const useWatchFieldDepend = (
     clearValues: () => void
   }
 ) => {
-  const securityConfig: ComputedRef<IRenderConfig> = computed(() => props.config ?? {})
+  const securityConfig: ComputedRef<TFormConfig> = computed(() => props.config ?? {})
   // 运行中的config
   // [PERF]: 6.1.x 使用shallowRef优化对config的相应
-  const runningConfig: ShallowRef<IRenderConfig|undefined> = shallowRef() // 运行时的config
+  const runningConfig: ShallowRef<TFormConfig|undefined> = shallowRef() // 运行时的config
   // 各类型自己的执行器
   // [PERF]: 6.1.x初步优化cloneDeep的性能不在对一些特殊的属性进行深度复制
   // [FEAT]: 6.0.x changeConfig、changeValue支持流式处理
@@ -31,12 +31,12 @@ export const useWatchFieldDepend = (
     let config = cloneDeepConfig(securityConfig.value)
     for (let [changeConfigCb] of effects) {
       if (typeof changeConfigCb === 'string') {
-        changeConfigCb = secureNewFn('config', 'values', 'outValues', changeConfigCb) as ()=> Promise<IRenderConfig>
+        changeConfigCb = secureNewFn('config', 'values', 'outValues', changeConfigCb) as ()=> Promise<TFormConfig>
       }
       if (typeof changeConfigCb === 'boolean') {
         continue
       }
-      config = await changeConfigCb(config, values, outValues) as IRenderConfig
+      config = await changeConfigCb(config, values, outValues) as TFormConfig
     }
     runningConfig.value = config
   }
@@ -46,7 +46,7 @@ export const useWatchFieldDepend = (
     effects: Parameters<IExecutor>['2']
   ) => {
     const otherKey = ([] as string[]).concat(props.config?.otherKey as string)
-    let data = { value: getFieldValue(props.model, props.fieldKey), otherValue:  getValuesByKeys(props.model, otherKey)  }
+    let data = { value: getFieldValue(props.model, props.fieldKey), otherValue: getValuesByKeys(props.model, otherKey) }
     for (let [changeValueCb] of effects) {
       if (typeof changeValueCb === 'string') {
         changeValueCb = secureNewFn('values', 'outValues', changeValueCb) as ()=> Promise<{ value: unknown, otherValue?: unknown } | undefined>
@@ -54,7 +54,7 @@ export const useWatchFieldDepend = (
       if (typeof changeValueCb === 'boolean') {
         continue
       }
-      data = await changeValueCb(values, outValues, data) as ()=> Promise<{ value: unknown, otherValue?: unknown }>
+      data = await changeValueCb(values, outValues, data) as { value: unknown, otherValue: {} }
     }
     if (typeof data === 'object') {
       const { value, otherValue } = data
@@ -72,7 +72,7 @@ export const useWatchFieldDepend = (
       keys = ([] as Array<string>).concat(keys)
       oldValues = ([]as Array<unknown>).concat(oldValues)
       if (
-        !(keys.length === 1 && keys[0] === props.fieldKey)  && // 不能只有自己变了变了
+        !(keys.length === 1 && keys[0] === props.fieldKey) && // 不能只有自己变了变了
         oldValues.some(val => val !== undefined) // 存在变更的依赖原始值不为undefined [1,undefined]  true [undefined,undefined] false
         // executeChangeValueEffect // 此条件提升至执行器配置中
       ) {
@@ -158,6 +158,7 @@ export const useWatchFieldDepend = (
     // 执行局部effect的回调
     privateEffectKeys.forEach(object => {
       const privateEffect = object.effect || {}
+      // @ts-ignore
       cbParams.push({
         keys: object.key,
         oldValues: changeOldValues[object._index],

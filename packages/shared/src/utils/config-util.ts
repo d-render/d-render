@@ -15,9 +15,11 @@ export type NoArrayObject<T> = object
 // 1. 定义基础类型映射
 export interface TypeExtensions {
   // 内置默认类型
-  // eslint-disable-next-line @typescript-eslint/ban-types
   default: { }
   // 其他基础类型...
+  date: { viewType?: 'datetime' }
+  number: {}
+  dateRange: { otherKey?: string }
 }
 
 // 3. 暴露扩展点声明
@@ -46,8 +48,7 @@ export interface IRenderConfigDependOn<T extends keyof ComposeType = keyof Compo
   effect?: IRenderConfigDependOnEffect<T> & { resetValue?: boolean} | boolean
 }
 
-// base
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// 基础的渲染配置 form searchFrom table共有
 export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType> {
   ruleKey?: string,
   sourceKey?: string,
@@ -61,6 +62,14 @@ export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType>
    * 表单项label文案展示
    */
   label?: string
+  /**
+   * 辅助说明
+   */
+  description?: string
+  /**
+   *
+   */
+  descriptionEffect?: 'light' | 'dark' | (string & { })
   /**
    * 表单项宽度
    */
@@ -133,14 +142,14 @@ export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType>
   itemStyle?: CSSProperties
   style?: CSSProperties
   __render?: Slot<IAnyObject>
+  _isShow?: boolean
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// 经过扩展后的IRenderConfig
 export type ExtendedConfig<T extends keyof ComposeType = keyof ComposeType> = T extends any ? IRenderConfig<T> & ComposeType[T] : never;
-
+// __render的入参
 export interface ITableRenderProps {
   // eslint-disable-next-line no-use-before-define
-  config: ITableRenderConfig | IRenderConfig
+  config: ITableRenderConfig & IRenderConfig
   fieldKey: string
   index: number
   model: IAnyObject
@@ -154,14 +163,19 @@ export interface ITableRenderProps {
   $index: number
   $position: 'table'
 }
-// table特有
+// table特有的属性
 export interface ITableRenderConfig {
-  columnType?: 'checkbox'
+  columnType?: 'checkbox' | 'mainField'
+  hideItem?: boolean
   /**
    * 超出宽度后是否展示tooltip
    */
   showOverflowTooltip?: boolean
   dynamic?: boolean // dependOn是否生效
+  formatter?: () => string
+  required?: boolean
+  trueLabel?: string // columnType为checkbox时生效
+  falseLabel?: string // columnType为checkbox时生效
   __render?: (props: ITableRenderProps) => VNode
   fixed?: boolean | 'left' | 'right'
   /**
@@ -174,7 +188,7 @@ export interface ITableRenderConfig {
   }
   selectable?: (params: {row: IAnyObject; index: number}) => boolean
 }
-
+// form及searchForm共有的属性
 export interface IBaseFormRenderConfig{
   /**
    * 当前表单项占用的栅格数
@@ -184,6 +198,12 @@ export interface IBaseFormRenderConfig{
   labelStyle?: IAnyObject,
   itemStyle?: IAnyObject
 }
+export interface ICustomValidator {
+  (values: unknown, dependOnValues: IAnyObject, outDependOnValues: IAnyObject): Promise<{data?: boolean ; message?: string }>
+ message: string
+ type: string
+}
+// form特有的属性
 export interface IFormRenderConfig<TType extends keyof ComposeType = keyof ComposeType>{
   /**
    * 当前表单项是否必填
@@ -197,34 +217,41 @@ export interface IFormRenderConfig<TType extends keyof ComposeType = keyof Compo
   regexpValidate?: string
   validateExistRemote?: (value:unknown, dependOnValues: IAnyObject) => Promise<{data: boolean}>
   validateExistRemoteErrorMessage?: string
+  requiredRuleConfig?: any
+  validateValueErrorMessage?: string
+  customValidators?: Array<ICustomValidator>
+  no?: string
+  directory?: boolean
+  importantDisabled?: boolean
 }
-interface ISearchRenderConfig {
+// searchForm特有的属性
+export interface ISearchRenderConfig {
   immediateSearch?: boolean // 变更时立即触发搜索
   autoSelect?: boolean // options组件
 }
+export type TSearchFormConfig = ExtendedConfig & IBaseFormRenderConfig & ISearchRenderConfig
 
+export type TFormConfig = ExtendedConfig & IBaseFormRenderConfig & IFormRenderConfig
 export interface IEntityConfig {
   type?: string
   field?: string
   _renderConfig?: IRenderConfig
 }
+
 export interface IFormConfig<T extends NoArrayObject<T> = Record<string, number>> {
   key: keyof T
   id?: string
   config: IRenderConfig
 }
+export type TTableColumns = ExtendedConfig & ITableRenderConfig
 export interface ITableColumnConfig {
   key: string
-  config: IRenderConfig | ITableRenderConfig | {children: Array<ITableColumnConfig>}
+  config: TTableColumns & { children: Array<ITableColumnConfig> }
 }
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type IFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), ExtendedConfig>>
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type IFormFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), ExtendedConfig & IBaseFormRenderConfig & IFormRenderConfig>>
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type ISearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), ExtendedConfig & IBaseFormRenderConfig & ISearchRenderConfig>>
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type ITableFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), ExtendedConfig & ITableRenderConfig>>
+export type IFormFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TFormConfig>>
+export type ISearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TSearchFormConfig>>
+export type ITableFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TTableColumns>>
 
 // configMapToList即mergeFieldConfig联合使用
 export function generateFieldList <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (configMap: IFieldConfig<Entity>, ...source: Array<Record<keyof Entity, IEntityConfig>|IFieldConfig<Entity>>): IFormConfig<Entity>[] {
@@ -235,6 +262,7 @@ export function mergeFieldConfig <T extends NoArrayObject<T>> (targetConfigMap: 
   const result = {} as IFieldConfig<T>
   Object.keys(targetConfigMap).forEach(key => {
     const targetConfig = targetConfigMap[key as keyof T] || {}
+    // @ts-ignore
     result[key as keyof T] = getMergeConfig(key, targetConfig, sourceConfigMaps) as IRenderConfig
   })
   return result as IFieldConfig<T>
@@ -278,6 +306,7 @@ export function configListToMap <T extends NoArrayObject<T>> (configList: IFormC
   // @ts-ignore
   configList.forEach(({ key, config } = { key: '', config: {} }) => {
     if (key) {
+      // @ts-ignore
       result[key] = config
     }
   })
@@ -422,6 +451,7 @@ export function keysToConfigMap <T extends NoArrayObject<T> = Record<string, unk
       // @ts-ignore
       config.key = undefined
     }
+    // @ts-ignore
     configMap[configKey as keyof T] = config
   })
   return configMap

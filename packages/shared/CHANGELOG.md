@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.0.6
+
+### Patch Changes
+
+- feat(d-render): [dr-table]新增行编辑模式
+
 ## 2.0.5
 
 ### Patch Changes

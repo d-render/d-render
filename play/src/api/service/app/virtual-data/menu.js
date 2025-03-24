@@ -93,5 +93,12 @@ export const menu = [
         title: 'd-render'
       }
     ]
+  },
+  {
+    name: '_develop',
+    title: '开发广场',
+    children: [
+      { name: 'DrTableBase', title: '行编辑表格' }
+    ]
   }
 ]

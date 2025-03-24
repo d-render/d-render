@@ -1,6 +1,6 @@
 // 执行器放到执行器内部
 // 作用执行其
-import { IAnyObject, IRenderConfig, IRenderConfigDependOn } from '@d-render/shared'
+import { IAnyObject, IRenderConfigDependOn, TFormConfig, IRenderConfigDependOnEffect } from '@d-render/shared'
 import { IKey } from './util'
 type TEffectFn = ((...args: unknown[])=> unknown | Promise<unknown>) | boolean
 interface IPrivateParam {
@@ -63,7 +63,7 @@ export class EffectExecutor {
   }
 
   // 处理数组及字符型数据
-  compatibleEffect (effectConfig: IAnyObject, type: string, param: IPrivateParam|IGlobalParam) {
+  compatibleEffect (effectConfig: IRenderConfigDependOnEffect, type: string, param: IPrivateParam|IGlobalParam) {
     const transformStrEffect = this.config[type].transformStrEffect
     const effect = transformStrEffect
       ? effectConfig[type] || effectConfig[`${type}Str`]
@@ -84,13 +84,13 @@ export class EffectExecutor {
     })
   }
 
-  getGlobalEffect (fieldConfig: IRenderConfig, type: string) {
+  getGlobalEffect (fieldConfig: TFormConfig, type: string) {
     return this.config[type].transformStrEffect
       ? (fieldConfig[type] || fieldConfig[`${type}Str`])
       : fieldConfig[type]
   }
 
-  getExecuteEffect (params: IEffectParams, fieldConfig: IRenderConfig, globalParam: IGlobalParam) {
+  getExecuteEffect (params: IEffectParams, fieldConfig: TFormConfig, globalParam: IGlobalParam) {
     console.log('params', params)
     const analysisEffects = this.types
     // 初始化
@@ -137,7 +137,7 @@ export class EffectExecutor {
     // 此处的入参数需要再商讨
     analysisEffects.forEach(key => {
       if (globalEffectSign[key] && this.getGlobalEffect(fieldConfig, key)) {
-        executeObject[key].unshift(...this.compatibleEffect(fieldConfig, key, globalParam))
+        executeObject[key].unshift(...this.compatibleEffect(fieldConfig as IRenderConfigDependOnEffect, key, globalParam))
       } else {
         // if (!globalEffectSign[key]) console.log(`不需要${key}全局effect`)
         // if (!config[key]) console.log(`没有${key}全局effect`)
@@ -147,7 +147,7 @@ export class EffectExecutor {
     return executeObject as IEffectConfig
   }
 
-  analysisEffects (effectParams: IEffectParams, config: IRenderConfig, globalParam: IGlobalParam) {
+  analysisEffects (effectParams: IEffectParams, config: TFormConfig, globalParam: IGlobalParam) {
     console.log('effectParams', effectParams)
     this.executeChangeValueEffect = globalParam.executeChangeValueEffect
     this.values = globalParam.values

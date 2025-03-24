@@ -16,7 +16,9 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 0,
     'import/extensions': 0,
     'no-unused-vars': 1,
-    '@typescript-eslint/no-unused-vars': 1
+    '@typescript-eslint/no-unused-vars': 1,
+    '@typescript-eslint/ban-types': 0,
+    '@typescript-eslint/no-explicit-any': 0
   },
   parserOptions: {
     ecmaVersion: 2020

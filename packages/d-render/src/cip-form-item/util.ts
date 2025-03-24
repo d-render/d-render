@@ -1,5 +1,5 @@
 import { unref, Ref } from 'vue'
-import { getFieldValue, isNotEmpty, setFieldValue, cloneDeep, IAnyObject, IRenderConfig, IRenderConfigDependOn } from '@d-render/shared'
+import { getFieldValue, isNotEmpty, setFieldValue, cloneDeep, IAnyObject, IRenderConfig, IRenderConfigDependOn, TFormConfig } from '@d-render/shared'
 
 interface IEffectFunc {
   value: (...args: Array<unknown>) => unknown | Promise<unknown>
@@ -48,14 +48,14 @@ const filterProperty = (object: IAnyObject, properties: Array<string>) => {
   return [newObject, omitObject]
 }
 // 深克隆非指定属性
-export const cloneDeepConfig = (config: IRenderConfig) => {
+export const cloneDeepConfig = (config: TFormConfig) => {
   // const fixedKeys = ['dependOn', 'changeConfig', 'changeValue', 'changeValueByOld', 'outDependOn', 'asyncOptions', '$render']
   // const [volatileConfig, fixedConfig] = filterProperty(config, fixedKeys)
   // const newConfig =
   return cloneDeep(config)
 }
 
-export const isHideLabel = (config: IRenderConfig) => {
+export const isHideLabel = (config: TFormConfig) => {
   return (
     config.hideLabel ||
     (isNotEmpty(config.labelWidth) && !config.labelWidth) ||
@@ -63,10 +63,10 @@ export const isHideLabel = (config: IRenderConfig) => {
   )
 }
 
-export const getLabelWidth = (config: IRenderConfig) => {
+export const getLabelWidth = (config: TFormConfig) => {
   if (config.hideLabel) return '0px'
   if (isNotEmpty(config.labelWidth)) {
-    if (isNaN(config.labelWidth as number)) return config.labelWidth as string
+    if (isNaN(config.labelWidth as unknown as number)) return config.labelWidth as string
     return config.labelWidth + 'px'
   }
   if (!config.label) return '0px' // 兼容老的设计
@@ -118,6 +118,7 @@ export const judgeUseFn = (key: string, config: IRenderConfig, effect: IEffect) 
     )
   }
   // 对asyncOptions的特殊处理
+  // @ts-ignore
   if (key === 'asyncOptions' && typeof config.asyncOptions === 'string') { return secureNewFn('dependOnValues', 'outDependOnValues', config.asyncOptions) }
   if (!effect) return config[key] // 没有effect 参数则直接使用config[key]
   if (effect && key in effect) {
