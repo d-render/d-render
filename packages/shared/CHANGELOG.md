@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.0.7
+
+### Patch Changes
+
+- feat: 完善 use-form-input 内关于的类型
+
 ## 2.0.6
 
 ### Patch Changes
