@@ -9,12 +9,15 @@ import {
   getFieldValue,
   setFieldValue,
   getUsingConfig,
-  IRenderConfig,
-  IAnyObject,
+  type IRenderConfig,
+  type IAnyObject,
+  type ComposeType,
+  type ExtendedConfig,
   depthFirstSearchTree2,
   debugWarn
 } from '../utils'
 import { getFormValueByTemplate, UpdateFormStream, InputProps } from '../helper'
+
 const useUpdateStream = (props: InputProps, context: SetupContext) => {
   const updateStream = new UpdateFormStream(props, (val) => {
     context.emit('streamUpdate:model', val)
@@ -38,9 +41,9 @@ const useProxyOtherValue = (props: InputProps, maxOtherKey = 1, updateStream?: U
   }
   return result
 }
-const useFormBasicConfig = (props: InputProps) => {
+function useFormBasicConfig <T extends keyof ComposeType = keyof ComposeType, V = unknown> (props: InputProps) {
   const securityConfig = computed(() => {
-    return props.config ?? {}
+    return (props.config ?? {}) as ExtendedConfig<T, V>
   })
   const clearable = computed(() => {
     return securityConfig.value.clearable ?? true
@@ -61,14 +64,14 @@ const useFormBasicConfig = (props: InputProps) => {
     securityConfig, clearable, width, placeholder, inputStyle, noMatchText
   }
 }
-export const useFormInput = (props: InputProps, context: SetupContext, { fromModelValue, toModelValue, maxOtherKey }: {
+export function useFormInput <T extends keyof ComposeType = keyof ComposeType, V = unknown> (props: InputProps, context: SetupContext, { fromModelValue, toModelValue, maxOtherKey }: {
   fromModelValue?: (modelVal: unknown) => unknown
   toModelValue?: (value: unknown) => unknown
   maxOtherKey?: number
-} = {}) => {
+} = {}) {
   const inputRef = ref()
   const updateStream = useUpdateStream(props, context)
-  const { securityConfig, clearable, width, placeholder, inputStyle, noMatchText } = useFormBasicConfig(props)
+  const { securityConfig, clearable, width, placeholder, inputStyle, noMatchText } = useFormBasicConfig<T, V>(props)
   const emitInput = (val: unknown) => {
     emitModelValue(val)
   }
@@ -87,14 +90,14 @@ export const useFormInput = (props: InputProps, context: SetupContext, { fromMod
     updateStream.end()
   }
   const proxyOtherValue = useProxyOtherValue(props, maxOtherKey, updateStream)
-  const proxyValue = computed({
+  const proxyValue = computed<V>({
     // 单值时使用
     get () {
       let modelValue = props.modelValue
       if (props.values && props.values.length > 0) {
         modelValue = props.values[0]
       }
-      return isNotEmpty(fromModelValue) ? fromModelValue!(modelValue) : modelValue // props.modelValue
+      return (isNotEmpty(fromModelValue) ? fromModelValue!(modelValue) : modelValue) as V // props.modelValue
     },
     set (val) {
       emitModelValue(val)
@@ -108,7 +111,7 @@ export const useFormInput = (props: InputProps, context: SetupContext, { fromMod
       // 处于实际值展示模式时, 需要modelValue 和defaultValue都不为空才进行值的更新
       if (isEmpty(props.modelValue) && isNotEmpty(defaultValue)) {
         // emitInput(getValueByTemplate(defaultValue)) // date下需要转换值后再写入
-        proxyValue.value = getFormValueByTemplate(defaultValue as string)
+        proxyValue.value = getFormValueByTemplate(defaultValue as string) as V
       }
     }
   }, { immediate: true })
@@ -129,8 +132,8 @@ export const useFormInput = (props: InputProps, context: SetupContext, { fromMod
     noMatchText
   }
 }
-export const useFormView = (props: InputProps, { maxOtherKey }: {maxOtherKey?: number} = { }) => {
-  const { securityConfig, clearable, width, placeholder, inputStyle } = useFormBasicConfig(props)
+export function useFormView <T extends keyof ComposeType = keyof ComposeType, V = unknown> (props: InputProps, { maxOtherKey }: {maxOtherKey?: number} = { }) {
+  const { securityConfig, clearable, width, placeholder, inputStyle } = useFormBasicConfig<T, V>(props)
   const proxyOtherValue = useProxyOtherValue(props, maxOtherKey)
   return {
     securityConfig, clearable, width, inputStyle, placeholder, proxyOtherValue
@@ -188,17 +191,18 @@ export const judgeUseFn = (key: string, config: IRenderConfig, effect?: Record<s
   if (key === 'asyncOptions' && typeof config.asyncOptions === 'string') {
     return secureNewFn('dependOnValues', 'outDependOnValues', config.asyncOptions as string)
   }
-  if (!effect) return config[key] // 没有effect 参数则直接使用config[key]
+  if (!effect) return config[key as keyof ExtendedConfig] // 没有effect 参数则直接使用config[key]
   if (effect && key in effect) {
     // 有effect 且 effect对象明确存在key(不管其值为什么)
     if (typeof effect[key] === 'function') return effect[key] // effect中的值为函数 则认为此次响应使用局部方法
-    return config[key]
+    return config[key as keyof ExtendedConfig]
   }
 }
 interface IOptionProps {
   label: string
   value: string
   children: string
+  disabled: string
 }
 
 // view组件使用时，不需要updateStream和context
@@ -209,8 +213,9 @@ export const useOptions = (
   context?: SetupContext,
   { autoGet = true, isTree = false }: {autoGet?: boolean, isTree?: boolean} = {}
 ) => {
-  const optionProps = computed(() => {
-    return Object.assign({ label: 'label', value: 'value', children: 'children' }, props.config?.treeProps, props.config?.optionProps)
+  const optionProps = computed<IOptionProps>(() => {
+    // @ts-ignore
+    return Object.assign({ label: 'label', value: 'value', children: 'children', disabled: 'disabled' }, props.config?.treeProps, props.config?.optionProps)
   })
   const getPathByValue = (options: IAnyObject[], value: unknown, optionProps: IOptionProps) => {
     return depthFirstSearchTree2(options, value, optionProps.value, optionProps.children)
@@ -239,9 +244,11 @@ export const useOptions = (
     return props.config?.otherKey
   })
   const splitKey: ComputedRef<string> = computed(() => {
+    // @ts-ignore
     return props.config?.splitKey as string ?? ','
   })
   const withObject = computed(() => {
+    // @ts-ignore
     const value = props.config?.withObject
     value && debugWarn('d-render',
       `'config.withObject' is about to be deprecated in version 7.0.0, please change (config.otherKey: [labelKey]) to (config.otherKey: [labelKey,objectKey]).
@@ -252,6 +259,7 @@ export const useOptions = (
   })
   const realArray = computed(() => {
     // 需要返回的shu
+    // @ts-ignore
     return props.config?.realArray ?? false
   })
   const options = ref([] as unknown[])
@@ -281,6 +289,7 @@ export const useOptions = (
       // 防止空字符串导致的['']错误
       const modelArray = isArray(modelValue) ? modelValue : (modelValue ? (modelValue as string).split(splitKey.value) : [])
       // 如果option的value值是数字型将值转换为数字型，否则就是字符型
+      // @ts-ignore
       const autoFormat = !(props.config?.multiple && props.config?.remote)
       if (autoFormat) {
         const optionCell = isObjectOption.value ? (options.value as IAnyObject[])[0]?.[optionProps.value.value] : options.value[0]
@@ -362,10 +371,12 @@ export const useOptions = (
       const asyncFunc = judgeUseFn('asyncOptions', props.config) as (val?: IAnyObject, outVal?: IAnyObject) => Promise<unknown[]>
       options.value = await asyncFunc(val, outVal)
     } else {
+      // @ts-ignore
       options.value = (props.config?.options as unknown[]) ?? []
     }
     if (unwatch) unwatch() // 获取一次options后重新开启监听
     unwatch = watch(() => props.changeCount, () => {
+      // @ts-ignore
       if (isEmpty(props.modelValue) && props.config.autoSelect && updateStream) { // modelValue为空
         const result = (isObjectOption.value ? getFieldValue(options.value[0], optionProps.value.value) : options.value[0]) as string
         if (unref(multiple)) {
@@ -380,7 +391,9 @@ export const useOptions = (
   if (autoGet) {
     if (!(props.config.dependOn?.length) && !(props.config.outDependOn?.length)) {
       getOptions() // .then(() => { console.log('[init]: getOptions') })
+      // @ts-ignore
       if (props.config.options) { // 动态表单设计时修改options需要触发此方法
+        // @ts-ignore
         watch(() => props.config.options, () => {
           getOptions() // .then(() => { console.log('[config.options change]: getOptions') })
         })

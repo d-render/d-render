@@ -24,6 +24,7 @@ export interface TypeExtensions {
 
 // 3. 暴露扩展点声明
 export interface DRenderTypeExtensions{
+  any: {}
 }
 
 export type ComposeType = TypeExtensions & DRenderTypeExtensions;
@@ -31,7 +32,7 @@ export type ComposeType = TypeExtensions & DRenderTypeExtensions;
 // eslint-disable-next-line no-use-before-define
 export type TChangeConfig<T extends keyof ComposeType = keyof ComposeType> = (config: ExtendedConfig<T>, values: IAnyObject, outValues: IAnyObject) => ExtendedConfig<T>;
 
-export type TChangeValue = (values: IAnyObject, outValues: IAnyObject) => { value: IAnyObject, otherValue: IAnyObject } | void
+export type TChangeValue = (values: any, outValues: any) => { value: any, otherValue?: IAnyObject } | void
 export type TChangeValueByOld = (
   { key, oldValue }:{key:string, oldValue: unknown},
   values: IAnyObject, outValues: IAnyObject
@@ -49,7 +50,7 @@ export interface IRenderConfigDependOn<T extends keyof ComposeType = keyof Compo
 }
 
 // 基础的渲染配置 form searchFrom table共有
-export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType> {
+export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType, V = unknown> {
   ruleKey?: string,
   sourceKey?: string,
   realKey?: string,
@@ -141,11 +142,16 @@ export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType>
   inputStyle?: CSSProperties
   itemStyle?: CSSProperties
   style?: CSSProperties
+  placeholder?: string
+  noMatchText?: string
+  clearable?: boolean
+  defaultValue?: V
+  asyncOptions?: (dependOnValue: any, outDependOnValues: any) => Promise<any[]>
   __render?: Slot<IAnyObject>
   _isShow?: boolean
 }
 // 经过扩展后的IRenderConfig
-export type ExtendedConfig<T extends keyof ComposeType = keyof ComposeType> = T extends any ? IRenderConfig<T> & ComposeType[T] : never;
+export type ExtendedConfig<T extends keyof ComposeType = keyof ComposeType, V = unknown> = T extends any ? IRenderConfig<T, V> & ComposeType[T] : never;
 // __render的入参
 export interface ITableRenderProps {
   // eslint-disable-next-line no-use-before-define
