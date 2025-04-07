@@ -11,7 +11,7 @@ const bundlerPath = `${projectPath}/types`
 rimrafSync(buildDirResolve(bundlerPath))
 console.log('build', buildDirResolve(projectPath))
 try {
-  execSync('npx tsc', { cwd: buildDirResolve(projectPath), stdout: 'inherit' })
+  execSync('pnpm exec tsc', { cwd: buildDirResolve(projectPath), stdout: 'inherit' })
 } catch (e) {
   console.log(e)
 }
