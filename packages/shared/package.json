@@ -36,7 +36,7 @@
   "author": "xmf",
   "license": "MIT",
   "peerDependencies": {
-    "element-plus": "2.2.22",
+    "element-plus": "^2.2.22",
     "dayjs": "^1.11.9",
     "lodash-es": "4.17.x",
     "uuid": "8.3.x",
