@@ -1,5 +1,11 @@
 # d-render
 
+## 3.0.8
+
+### Patch Changes
+
+- c2e26ae: feat:添加自定义表格序号属性字段
+
 ## 3.0.7
 
 ### Patch Changes
