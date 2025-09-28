@@ -278,7 +278,7 @@ export default defineComponent({
       // 序号渲染
       if (isNotEmpty(props.offset) && props.offset! > -1 && !props.hideIndex) {
         const indexColumn = h(ElTableColumn, {
-          label: '序号',
+          label: props.seqLabel || '序号',
           fixed: props.indexFixed ? 'left' : '',
           width: transformWidth(isEmpty(props.rowKey) ? 55 : 75)
         },

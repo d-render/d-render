@@ -11,6 +11,7 @@ export const tableProps = {
     required: true,
     default: () => []
   },
+  seqLabel: { type: String, default: '序号' }, // 序号列的列名
   size: { type: String, validate: (val: string) => ['large', 'default', 'small'].includes(val) },
   border: { type: Boolean, default: undefined },
   showDisabledButton: { type: Boolean, default: undefined }, // 是否展示在table中disabled的按钮
