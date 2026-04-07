@@ -7,8 +7,7 @@
 
 ## 📚 文档
 
-- **在线文档**: [https://d-render.github.io/d-render/](https://d-render.github.io/d-render/)
-- **旧版文档**: [https://docs.d-render.x-develop.cn](https://docs.d-render.x-develop.cn)
+**在线文档**: [https://d-render.github.io/d-render/](https://d-render.github.io/d-render/)
 
 ## ✨ 特性
 

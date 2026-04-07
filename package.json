@@ -27,7 +27,6 @@
     "changeset": "changeset",
     "gen:version": "changeset version",
     "build-all": "pnpm run \"/^build:(.*)/\"",
-    "deploy:docs": "pnpm -C play build && scp -r play/dist/* x-develop.cn:~/web_html/docs/",
     "docs:dev": "pnpm -C docs dev",
     "docs:build": "pnpm -C docs build",
     "docs:preview": "pnpm -C docs preview"
