@@ -1,5 +1,7 @@
 packages:
   - 'packages/**'
   - 'play'
+  - 'docs'
 publish-branch:
   - 'dev'
+  - 'v7.x'
