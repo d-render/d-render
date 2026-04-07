@@ -1,0 +1,93 @@
+/* 自定义样式 */
+:root {
+  --vp-c-brand-1: #3eaf7c;
+  --vp-c-brand-2: #42b883;
+  --vp-c-brand-3: #35a06c;
+  --vp-c-brand-soft: rgba(62, 175, 124, 0.14);
+}
+
+/* 示例容器 */
+.demo-container {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 16px 0;
+  background: var(--vp-c-bg-soft);
+}
+
+.demo-container.dark {
+  background: var(--vp-c-bg);
+}
+
+/* 代码块样式 */
+.code-block-wrapper {
+  position: relative;
+  margin: 16px 0;
+}
+
+.code-block-wrapper pre {
+  margin: 0;
+  border-radius: 8px;
+}
+
+/* 交互提示 */
+.interactive-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--vp-c-brand-soft);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--vp-c-brand-1);
+  margin-bottom: 12px;
+}
+
+.interactive-hint svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* 输出结果样式 */
+.output-result {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--vp-c-bg-alt);
+  border-radius: 6px;
+  border-left: 3px solid var(--vp-c-brand-1);
+}
+
+.output-result pre {
+  margin: 0;
+  font-size: 13px;
+  overflow-x: auto;
+}
+
+/* 表单示例特定样式 */
+.form-demo {
+  max-width: 600px;
+}
+
+.form-demo .el-form-item {
+  margin-bottom: 18px;
+}
+
+/* 操作按钮区域 */
+.demo-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--vp-c-divider);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .demo-container {
+    padding: 16px;
+  }
+
+  .demo-actions {
+    flex-direction: column;
+  }
+}
