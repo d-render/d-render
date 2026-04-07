@@ -1,187 +1,82 @@
 # 示例
 
-这里提供了 d-render 的交互式示例，您可以直接操作体验。
+这里提供了 d-render 的完整示例，从基础到高级，让你快速上手。
 
-## 表单基础
+## 示例结构
 
-<FormBasicDemo />
-
-## 表单联动
-
-### 显示/隐藏联动 & 级联选择
-
-<FormDependonDemo />
-
-## 搜索表单
-
-<SearchFormDemo />
-
-## 可编辑表格
-
-<TableDemo />
-
-## 更多示例
-
-### 自定义 type
-
-查看[自定义 type](/guide/custom-type) 了解如何开发自定义组件。
-
-### 表格联动
-
-```vue
-<template>
-  <DrTable 
-    v-model:data="tableData" 
-    :columns="columns"
-    :editType="'row'"
-  />
-</template>
-
-<script setup>
-import { ref } from 'vue'
-import { generateFieldList } from 'd-render'
-
-const tableData = ref([])
-
-// 模拟接口
-const fetchCategories = async () => {
-  return [
-    { value: 1, label: '电子产品' },
-    { value: 2, label: '服装' }
-  ]
-}
-
-const fetchProducts = async (categoryId) => {
-  const productMap = {
-    1: [
-      { value: 101, label: '手机' },
-      { value: 102, label: '电脑' }
-    ],
-    2: [
-      { value: 201, label: 'T恤' },
-      { value: 202, label: '裤子' }
-    ]
-  }
-  return productMap[categoryId] || []
-}
-
-const columns = generateFieldList({
-  category: {
-    type: 'select',
-    label: '分类',
-    writable: true,
-    asyncOptions: fetchCategories
-  },
-  product: {
-    type: 'select',
-    label: '产品',
-    writable: true,
-    dependOn: ['category'],
-    resetValue: true,
-    dynamic: true,  // 表格联动必须开启
-    changeConfig: (config, { category }) => {
-      config.disabled = !category
-      return config
-    },
-    asyncOptions: async ({ category }) => {
-      if (!category) return []
-      return await fetchProducts(category)
-    }
-  },
-  quantity: {
-    type: 'number',
-    label: '数量',
-    writable: true
-  }
-})
-</script>
+```
+examples/
+├── basic/        # 基础示例
+│   ├── form      - 表单基础
+│   ├── search    - 搜索表单
+│   └── table     - 表格基础
+├── linkage/      # 联动示例
+│   ├── show-hide - 显示隐藏
+│   ├── cascade   - 级联选择
+│   └── derive    - 值派生
+└── advanced/     # 高级示例
+    ├── custom       - 自定义组件
+    ├── complex      - 复杂表单
+    └── table-linkage - 表格联动
 ```
 
-::: warning 表格联动注意
-表格只读列要响应 `dependOn`，必须开启 `dynamic: true`。
-:::
+## 快速导航
 
-### 验证示例
+### 🌱 基础示例
 
-```vue
-<template>
-  <DrForm 
-    ref="formRef"
-    v-model:model="model" 
-    :fieldList="fieldList"
-  />
-  <el-button @click="handleSubmit">提交</el-button>
-</template>
+- [表单基础](/examples/basic/form) - 学习表单的基本使用
+- [搜索表单](/examples/basic/search) - 学习搜索表单和即时搜索
+- [表格基础](/examples/basic/table) - 学习可编辑表格
 
-<script setup>
-import { ref } from 'vue'
-import { generateFieldList, defineFormFieldConfig } from 'd-render'
+### 🔄 联动示例
 
-const formRef = ref()
-const model = ref({})
+- [显示隐藏](/examples/linkage/show-hide) - 学习字段的显示/隐藏联动
+- [级联选择](/examples/linkage/cascade) - 学习省市县三级联动
+- [值派生](/examples/linkage/derive) - 学习自动计算字段值
 
-const fieldList = generateFieldList(defineFormFieldConfig({
-  username: {
-    type: 'input',
-    label: '用户名',
-    required: true,
-    requiredErrorMessage: '请输入用户名'
-  },
-  email: {
-    type: 'input',
-    label: '邮箱',
-    validateValue: 'email',
-    validateValueErrorMessage: '请输入正确的邮箱格式'
-  },
-  phone: {
-    type: 'input',
-    label: '手机号',
-    validateValue: 'mobilePhone'
-  },
-  password: {
-    type: 'input',
-    label: '密码',
-    regexpValidate: '^.{6,20}$',
-    regexpValidateErrorMessage: '密码长度为 6-20 位'
-  }
-}))
+### 🚀 高级示例
 
-const handleSubmit = async () => {
-  try {
-    await formRef.value.validate()
-    console.log('提交数据:', model.value)
-  } catch (e) {
-    console.error('验证失败')
-  }
-}
-</script>
+- [自定义组件](/examples/advanced/custom) - 学习开发自定义 type
+- [复杂表单](/examples/advanced/complex) - 学习处理复杂表单场景
+- [表格联动](/examples/advanced/table-linkage) - 学习表格内的字段联动
+
+## 学习路径
+
+```
+表单基础 → 搜索表单 → 表格基础
+    ↓
+显示隐藏 → 级联选择 → 值派生
+    ↓
+自定义组件 → 复杂表单 → 表格联动
 ```
 
-### otherKey 示例
+## 常见问题
 
-```vue
-<script setup>
-import { generateFieldList, defineFormFieldConfig } from 'd-render'
+### 如何快速开始？
 
-const fieldList = generateFieldList(defineFormFieldConfig({
-  userId: {
-    type: 'select',
-    label: '用户',
-    otherKey: ['userName', 'userOption'],  // 同时存 id、name、option
-    options: [
-      { value: 1, label: '张三' },
-      { value: 2, label: '李四' }
-    ]
-  }
-}))
-</script>
-```
+从[表单基础](/examples/basic/form)开始，了解最基本的使用方式。
 
-当选择"张三"时，数据模型为：
-```json
-{
-  "userId": 1,
-  "userName": "张三",
-  "userOption": { "value": 1, "label": "张三" }
-}
-```
+### 如何实现联动？
+
+查看[显示隐藏](/examples/linkage/show-hide)和[级联选择](/examples/linkage/cascade)示例。
+
+### 如何自定义组件？
+
+查看[自定义组件](/examples/advanced/custom)和[自定义 type](/guide/custom-type)文档。
+
+## 核心概念速查
+
+| 功能 | 配置 | 说明 |
+|------|------|------|
+| 指定组件类型 | `type` | `'input'`, `'select'`, `'radio'` 等 |
+| 字段依赖 | `dependOn` | 指定依赖的其他字段 |
+| 修改配置 | `changeConfig` | 依赖变化时修改配置 |
+| 修改值 | `changeValue` | 依赖变化时修改值 |
+| 清空值 | `resetValue` | 依赖变化时清空 |
+| 异步选项 | `asyncOptions` | 异步加载选项 |
+| 额外输出 | `otherKey` | 输出额外字段值 |
+
+## 需要帮助？
+
+- 📖 查看[官方文档](https://d-render.github.io/d-render/)
+- 💬 提交 [Issue](https://github.com/d-render/d-render/issues)

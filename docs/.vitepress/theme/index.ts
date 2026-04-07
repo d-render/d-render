@@ -10,6 +10,7 @@ import FormBasicDemo from '../../components/FormBasicDemo.vue'
 import FormDependonDemo from '../../components/FormDependonDemo.vue'
 import SearchFormDemo from '../../components/SearchFormDemo.vue'
 import TableDemo from '../../components/TableDemo.vue'
+import CascadeDemo from '../../components/CascadeDemo.vue'
 import CodeBlock from '../../components/CodeBlock.vue'
 
 export default {
@@ -28,6 +29,7 @@ export default {
     app.component('FormDependonDemo', FormDependonDemo)
     app.component('SearchFormDemo', SearchFormDemo)
     app.component('TableDemo', TableDemo)
+    app.component('CascadeDemo', CascadeDemo)
     app.component('CodeBlock', CodeBlock)
   }
 } satisfies Theme

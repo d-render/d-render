@@ -61,6 +61,35 @@ export default defineConfig({
             { text: '事件', link: '/api/events' }
           ]
         }
+      ],
+      '/examples/': [
+        {
+          text: '基础示例',
+          collapsible: true,
+          items: [
+            { text: '表单基础', link: '/examples/basic/form' },
+            { text: '搜索表单', link: '/examples/basic/search' },
+            { text: '表格基础', link: '/examples/basic/table' }
+          ]
+        },
+        {
+          text: '联动示例',
+          collapsible: true,
+          items: [
+            { text: '显示隐藏', link: '/examples/linkage/show-hide' },
+            { text: '级联选择', link: '/examples/linkage/cascade' },
+            { text: '值派生', link: '/examples/linkage/derive' }
+          ]
+        },
+        {
+          text: '高级示例',
+          collapsible: true,
+          items: [
+            { text: '自定义组件', link: '/examples/advanced/custom' },
+            { text: '复杂表单', link: '/examples/advanced/complex' },
+            { text: '表格联动', link: '/examples/advanced/table-linkage' }
+          ]
+        }
       ]
     }
   }
