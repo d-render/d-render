@@ -1,7 +1,7 @@
 {
   "name": "d-render",
   "version": "3.0.8",
-  "description": "数据渲染库 - form、table、search-form",
+  "description": "基于 Element Plus 二次封装的数据驱动渲染组件库 - 表单、搜索表单、表格配置化渲染",
   "main": "./esm/main.js",
   "module": "./esm/main.js",
   "types": "./types/main.d.ts",
@@ -9,19 +9,29 @@
     "dist/*"
   ],
   "keywords": [
-    "data",
-    "render",
+    "d-render",
+    "vue3",
+    "element-plus",
     "form",
     "table",
-    "searchForm"
+    "search-form",
+    "data-driven",
+    "config-driven",
+    "render",
+    "schema-form",
+    "low-code"
   ],
-  "homepage": "https://docs.d-render.x-develop.cn/",
+  "homepage": "https://d-render.github.io/d-render/",
+  "bugs": {
+    "url": "https://github.com/d-render/d-render/issues"
+  },
   "files": [
     "esm",
     "types",
     "dist",
     "src",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "README.md"
   ],
   "exports": {
     ".": {

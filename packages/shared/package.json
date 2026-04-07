@@ -1,7 +1,7 @@
 {
   "name": "@d-render/shared",
   "version": "2.0.7",
-  "description": "d-render部分共享utils hooks helper",
+  "description": "d-render 共享工具库 - 提供 utils、hooks、helper 等核心功能",
   "sideEffects": false,
   "main": "./esm/main.js",
   "module": "./esm/main.js",
@@ -11,8 +11,14 @@
     "shared",
     "utils",
     "hooks",
-    "helper"
+    "helper",
+    "vue3",
+    "element-plus"
   ],
+  "homepage": "https://d-render.github.io/d-render/",
+  "bugs": {
+    "url": "https://github.com/d-render/d-render/issues"
+  },
   "files": [
     "esm",
     "types",
