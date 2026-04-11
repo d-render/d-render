@@ -21,11 +21,32 @@ html.dark {
     //width: 100%;
     display: flex;
     flex-wrap: wrap;
+
+    // inline 模式下 form-item 默认不占满整行
+    .cip-form-item {
+        width: auto;
+        flex-shrink: 0;
+    }
+
+    // inline 模式下的强制换行样式
+    .cip-form-item--br {
+        &::before {
+            content: '';
+            flex-basis: 100%;
+            width: 0;
+            order: -1;
+        }
+    }
 }
 
 .cip-form--grid {
     display: grid !important;
     grid-column-gap: 12px;
+
+    // 强制换行样式
+    .cip-form-item--br {
+        grid-column-start: 1;
+    }
 }
 
 .cip-form--readonly {
@@ -40,6 +61,7 @@ html.dark {
     grid-gap: 0;
     position: relative;
     @border-color: var(~'--@{elNamespace}-border-color-lighter');
+
     // border-top: 1px solid @border-color;
     // cip-form-layout/classify会使用grid样式
     &.cip-form--grid {
@@ -50,7 +72,7 @@ html.dark {
         grid-gap: 0;
     }
 
-    .cip-form-item.cip-form-item--border + .cip-form-item:not(.cip-form-item--border) {
+    .cip-form-item.cip-form-item--border+.cip-form-item:not(.cip-form-item--border) {
         margin-top: 16px;
     }
 
@@ -90,12 +112,14 @@ html.dark {
 
 // only模式下去除form-item的margin-bottom
 
-.cip-form{
-  &-item, &-layout{
-    .cip-form.cip-form--mobile & + & {
-      border-top: 1px solid #ddd;
+.cip-form {
+
+    &-item,
+    &-layout {
+        .cip-form.cip-form--mobile &+& {
+            border-top: 1px solid #ddd;
+        }
     }
-  }
 }
 
 .cip-form.cip-form--mobile {

@@ -175,11 +175,14 @@ export default defineComponent({
       })
     }
     // 输入字段渲染方式
-    const getFormItem = (componentProps: IInputProps) => {
-      return h(CipFormItem, componentProps)
+    const getFormItem = (componentProps: IInputProps, br?: boolean) => {
+      return h(CipFormItem, {
+        ...componentProps,
+        class: { 'cip-form-item--br': br }
+      })
     }
     // 渲染单个字段
-    const getFormDefaultSlot = ({ key, id, config }: IFormConfig = { key: '', config: {} }, isShow?: boolean) => {
+    const getFormDefaultSlot = ({ key, id, config, br }: IFormConfig = { key: '', config: {} }, isShow?: boolean) => {
       // 若存在字段key值的插槽覆盖则配置整个ElFormItem
       config._isGrid = grid.value
       config._isShow = isShow
@@ -192,7 +195,8 @@ export default defineComponent({
       if (context.slots[`${key}Input`]) {
         return h(CipFormItem, {
           ...componentProps,
-          customSlots: context.slots[`${key}Input`]
+          customSlots: context.slots[`${key}Input`],
+          class: { 'cip-form-item--br': br }
         })
       }
       // 判断是否为布局类型的字段
@@ -205,7 +209,7 @@ export default defineComponent({
         if (config.directory) {
           directoryConfig.value[key] = { label: (config.staticInfo || config.label) as string, level: config.directory as number }
         }
-        return getFormItem(componentProps)
+        return getFormItem(componentProps, br)
       }
     }
     // 渲染表单

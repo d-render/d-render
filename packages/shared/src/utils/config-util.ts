@@ -248,6 +248,13 @@ export interface IFormConfig<T extends NoArrayObject<T> = Record<string, number>
   key: keyof T
   id?: string
   config: IRenderConfig
+  /**
+   * 是否在此字段前强制换行
+   * - grid模式：该字段会从新行开头开始排列
+   * - inline模式：该字段会换行到新行开头，但如果当前行已满，可能会产生空行
+   * - 注意：如果该字段本身就会换行（当前行已满），则无需配置 br
+   */
+  br?: boolean
 }
 export type TTableColumns = ExtendedConfig & ITableRenderConfig
 export interface ITableColumnConfig {
