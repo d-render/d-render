@@ -1,5 +1,23 @@
 # d-render
 
+## 3.1.0
+
+### Minor Changes
+
+- refactor: 重构配置类型体系，拆分 IRenderConfig 为子接口
+  - 将原先臃肿的 IRenderConfig 拆分为职责清晰的子接口体系（IBaseFormRenderConfig、IFormRenderConfig、ISearchRenderConfig、ITableRenderConfig、IRuntimeConfig）
+  - 引入泛型容器类型 IFieldItem\<C\> 替代 IFormConfig，使字段项的 config 类型可精确约束
+  - 废弃 IFormConfig 别名以保持向后兼容
+- fix: 修复 formItemConfig.value.no 强制转 string 导致 VNode 丢失的问题
+- fix: 修复 props.config?.border 类型不正确的问题，改用 formItemConfig.value.border
+- fix: 修复 cip-form-layout config prop 类型为 IFieldItem 而非 TFormConfig 的问题
+- fix: 消除 form-item-rules.ts 中重复的 ICustomValidator 定义
+
+### Patch Changes
+
+- Updated dependencies
+  - @d-render/shared@2.1.0
+
 ## 3.0.8
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # @d-render/shared
 
+## 2.1.0
+
+### Minor Changes
+
+- refactor(config-util): 重构配置类型体系，拆分 IRenderConfig 为子接口
+  - 新增 IBaseFormRenderConfig：表单/SearchForm 共有属性（span、labelWidth、labelStyle、itemStyle 等）
+  - 新增 IFormRenderConfig：Form 专属属性（验证规则、directory、border、staticInfo 等）
+  - 新增 ISearchRenderConfig：SearchForm 专属属性
+  - 新增 ITableRenderConfig：Table 专属属性
+  - 新增 IRuntimeConfig：运行时注入属性（_isGrid、_isShow、no）
+  - 引入泛型容器类型 IFieldItem\<C\> 替代 IFormConfig
+  - 新增 IFormFieldItem、ISearchFieldItem、ITableColumnItem 类型别名
+  - TFormConfig/TSearchFormConfig/TTableColumns 通过交叉类型组合对应子接口
+- fix(config-util): requiredType 从 'blur'|'change' 修正为 FormItemRule['type']
+- fix(config-util): validateValue 补充缺失的 'sql' 选项
+- fix(config-util): validateExistRemote 统一为三参数签名
+- fix(config-util): directory 从 boolean 修正为 number
+- fix(config-util): hideItem 从 ITableRenderConfig 移至 IRenderConfig（通用属性）
+- fix(config-util): no 属性从 IFormRenderConfig 移至 IRuntimeConfig
+- refactor(form-content-copy): IFormConfig 替换为 IFieldItem，动态属性访问使用 IAnyObject 类型断言
+- refactor(use-form-layout): IFormConfig 替换为 IFieldItem，动态属性访问使用 IAnyObject 类型断言
+
 ## 2.0.7
 
 ### Patch Changes
