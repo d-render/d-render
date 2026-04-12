@@ -49,7 +49,7 @@ export interface IRenderConfigDependOn<T extends keyof ComposeType = keyof Compo
   effect?: IRenderConfigDependOnEffect<T> & { resetValue?: boolean} | boolean
 }
 
-// 基础的渲染配置 form searchFrom table共有
+// 基础的渲染配置 form searchForm table共有
 export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType, V = unknown> {
   ruleKey?: string,
   sourceKey?: string,
@@ -124,31 +124,17 @@ export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType,
   changeValueByOld?: TChangeValueByOld
   changeEffect?: (value: unknown, key: string, model: IAnyObject) => Promise<boolean>
   insert?: TInsert
-  // 表单验证相关
-  requiredType?: FormItemRule['type']
-  validateValue? :string
-  regexpValidateErrorMessage?: string
-  validateExistRemote?: (value: unknown, values: IAnyObject, outValues: IAnyObject) => Promise<{data: boolean}> | {data: boolean}
-  validateExistRemoteErrorMessage?: string
+  /** 是否隐藏整个表单项 */
+  hideItem?: boolean
   // 占位
-  span?: number
-  labelWidth?: string | number
-  labelPosition?: 'left'|'right'| 'top'
-  hideLabel?: boolean
-  contentEnd?: boolean
-  itemMarginBottom?: string
-  // css
-  labelStyle?: CSSProperties
-  inputStyle?: CSSProperties
-  itemStyle?: CSSProperties
-  style?: CSSProperties
   placeholder?: string
   noMatchText?: string
   clearable?: boolean
   defaultValue?: V
   asyncOptions?: (dependOnValue: any, outDependOnValues: any) => Promise<any[]>
-  __render?: Slot<IAnyObject>
-  _isShow?: boolean
+  // css
+  inputStyle?: CSSProperties
+  style?: CSSProperties
 }
 // 经过扩展后的IRenderConfig
 export type ExtendedConfig<T extends keyof ComposeType = keyof ComposeType, V = unknown> = T extends any ? IRenderConfig<T, V> & ComposeType[T] : never;
@@ -172,7 +158,6 @@ export interface ITableRenderProps {
 // table特有的属性
 export interface ITableRenderConfig {
   columnType?: 'checkbox' | 'mainField'
-  hideItem?: boolean
   /**
    * 超出宽度后是否展示tooltip
    */
@@ -199,15 +184,30 @@ export interface IBaseFormRenderConfig{
   /**
    * 当前表单项占用的栅格数
    */
-  span?: number // form search-form特供
-  labelWidth?: string /// / form search-form特供
-  labelStyle?: IAnyObject,
-  itemStyle?: IAnyObject
+  span?: number
+  labelWidth?: string | number
+  labelStyle?: CSSProperties
+  itemStyle?: CSSProperties
+  labelPosition?: 'left' | 'right' | 'top'
+  hideLabel?: boolean
+  contentEnd?: boolean
+  itemMarginBottom?: string
+  /** 自定义渲染插槽，form/searchForm 场景使用 */
+  __render?: Slot<IAnyObject>
 }
 export interface ICustomValidator {
   (values: unknown, dependOnValues: IAnyObject, outDependOnValues: IAnyObject): Promise<{data?: boolean ; message?: string }>
  message: string
  type: string
+}
+// 运行时内部注入属性，不应由用户直接配置
+export interface IRuntimeConfig {
+  /** 内部属性: layout 的 item 需要用到 */
+  _isGrid?: number
+  /** 内部属性: 控制是否显示 */
+  _isShow?: boolean
+  /** 内部属性: 序号，由 genNo 注入 */
+  no?: string | VNode
 }
 // form特有的属性
 export interface IFormRenderConfig<TType extends keyof ComposeType = keyof ComposeType>{
@@ -218,49 +218,59 @@ export interface IFormRenderConfig<TType extends keyof ComposeType = keyof Compo
   customRequiredRule?: (config: IRenderConfig<TType>, otherValue: IAnyObject, dependOnValues: IAnyObject, outDependOnValues: IAnyObject) => FormItemRule
   requiredErrorMessage?: string
   triggerType?: 'input' // 文字提示 请输入 ｜ 请选择
-  requiredType?: 'blur'|'change'
-  validateValue?: 'email' | 'identityCard' | 'mobilePhone'
+  requiredType?: FormItemRule['type']
+  validateValue?: 'email' | 'identityCard' | 'mobilePhone' | 'sql'
   regexpValidate?: string
-  validateExistRemote?: (value:unknown, dependOnValues: IAnyObject) => Promise<{data: boolean}>
+  regexpValidateErrorMessage?: string
+  validateExistRemote?: (value: unknown, dependOnValues: IAnyObject, outDependOnValues: IAnyObject) => Promise<{data: boolean}> | {data: boolean}
   validateExistRemoteErrorMessage?: string
   requiredRuleConfig?: any
   validateValueErrorMessage?: string
   customValidators?: Array<ICustomValidator>
-  no?: string
-  directory?: boolean
   importantDisabled?: boolean
+  /** 是否为目录（层级） */
+  directory?: number
+  /** 特殊的静态组件 */
+  staticInfo?: string
+  /** 表单项边框（showOnly + border 将出现边框） */
+  border?: boolean
 }
 // searchForm特有的属性
 export interface ISearchRenderConfig {
   immediateSearch?: boolean // 变更时立即触发搜索
   autoSelect?: boolean // options组件
 }
-export type TSearchFormConfig = ExtendedConfig & IBaseFormRenderConfig & ISearchRenderConfig
+export type TSearchFormConfig = ExtendedConfig & IBaseFormRenderConfig & ISearchRenderConfig & IRuntimeConfig
 
-export type TFormConfig = ExtendedConfig & IBaseFormRenderConfig & IFormRenderConfig
+export type TFormConfig = ExtendedConfig & IBaseFormRenderConfig & IFormRenderConfig & IRuntimeConfig
 export interface IEntityConfig {
   type?: string
   field?: string
   _renderConfig?: IRenderConfig
 }
 
-export interface IFormConfig<T extends NoArrayObject<T> = Record<string, number>> {
-  key: keyof T
+/** 通用字段项容器 */
+export interface IFieldItem<C = IRenderConfig> {
+  key: string
   id?: string
-  config: IRenderConfig
-  /**
-   * 是否在此字段前强制换行
-   * - grid模式：该字段会从新行开头开始排列
-   * - inline模式：该字段会换行到新行开头，但如果当前行已满，可能会产生空行
-   * - 注意：如果该字段本身就会换行（当前行已满），则无需配置 br
-   */
+  config: C
+  /** 是否在此字段前强制换行 */
   br?: boolean
 }
-export type TTableColumns = ExtendedConfig & ITableRenderConfig
+
+/** 向后兼容别名 (deprecated) */
+export type IFormConfig<_T extends NoArrayObject<_T> = Record<string, number>> = IFieldItem
+
+export type TTableColumns = ExtendedConfig & ITableRenderConfig & IRuntimeConfig
 export interface ITableColumnConfig {
   key: string
   config: TTableColumns & { children: Array<ITableColumnConfig> }
 }
+
+/** 便捷别名 */
+export type IFormFieldItem = IFieldItem<TFormConfig>
+export type ISearchFieldItem = IFieldItem<TSearchFormConfig>
+export type ITableColumnItem = IFieldItem<TTableColumns> & { config: TTableColumns & { children: Array<ITableColumnItem> } }
 export type IFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), ExtendedConfig>>
 export type IFormFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TFormConfig>>
 export type ISearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TSearchFormConfig>>

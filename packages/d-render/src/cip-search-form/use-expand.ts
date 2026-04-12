@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import type { Ref, ComputedRef } from 'vue'
 import type { TSearchFormProps } from './props'
-import type { IAnyObject, IFormConfig } from '@d-render/shared'
+import type { IAnyObject, IFieldItem, TSearchFormConfig } from '@d-render/shared'
 const DEFAULT_SPAN = 1
 
 export const useExpand = (props: TSearchFormProps, gridCount: Ref<number>, searchFormProps: ComputedRef<IAnyObject>) => {
@@ -9,7 +9,7 @@ export const useExpand = (props: TSearchFormProps, gridCount: Ref<number>, searc
   const toggleExpand = () => {
     isExpand.value = !isExpand.value
   }
-  const getFieldSpan = (fieldConfig: IFormConfig) => {
+  const getFieldSpan = (fieldConfig: IFieldItem<TSearchFormConfig>) => {
     const { config = {} } = fieldConfig
     // 处理非整数
     const span = Math.floor(config.span!) || DEFAULT_SPAN
@@ -63,7 +63,7 @@ export const useExpand = (props: TSearchFormProps, gridCount: Ref<number>, searc
     }, 0)
   })
   // 当前展示的字段
-  const showFieldList: ComputedRef<Array<IFormConfig>> = computed(() => {
+  const showFieldList: ComputedRef<Array<IFieldItem<TSearchFormConfig>>> = computed(() => {
     if (!searchFormProps.value.collapse) {
       return props.fieldList!
     } else {

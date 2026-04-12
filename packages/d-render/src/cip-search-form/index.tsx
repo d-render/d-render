@@ -13,7 +13,7 @@ import {
   useCipConfig,
   useCipPageConfig, getFieldValue
 } from '@d-render/shared'
-import type { IAnyObject, IRenderConfig, IFormConfig } from '@d-render/shared'
+import type { IAnyObject, TSearchFormConfig, IFieldItem } from '@d-render/shared'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useComponentProps } from '@xdp/config'
@@ -122,7 +122,7 @@ export default defineComponent({
       spanSum
     } = useExpand(props, gridCount, searchFormProps)
 
-    const isImmediateSearch = (config: IRenderConfig) => {
+    const isImmediateSearch = (config: TSearchFormConfig) => {
       return config.immediateSearch === true || config.autoSelect === true
     }
 
@@ -136,7 +136,7 @@ export default defineComponent({
 
     const formModel = computed(() => Object.assign({}, props.defaultModel, props.model))
 
-    const formItem = ({ key, config }: IFormConfig = { key: '', config: {} }) => {
+    const formItem = ({ key, config }: IFieldItem<TSearchFormConfig> = { key: '', config: {} }) => {
       return h(CipFormItem, {
         key,
         model: formModel.value,

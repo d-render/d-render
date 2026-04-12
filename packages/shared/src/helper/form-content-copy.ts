@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid'
-import { cloneDeep, toUpperFirstCase, IFormConfig } from '../utils'
+import { cloneDeep, toUpperFirstCase, IFieldItem, IAnyObject } from '../utils'
 import { DRender } from './d-render'
 const dRender = new DRender()
 
@@ -21,24 +21,25 @@ export const generateFieldKey = (type = 'error') => {
   return `${type}_${uuid().split('-')[0]}` // ${Date.now()}${cacheKey}
 }
 // 甚于类型的复制方式
-export const getCopyItem = (item: IFormConfig<Record<string, unknown>>) => {
-  const result = cloneDeep(item) as (IFormConfig<Record<string, unknown>> & {id: string})
-  const type = item.config.type
+export const getCopyItem = (item: IFieldItem) => {
+  const result = cloneDeep(item) as (IFieldItem & {id: string})
+  const config = result.config as IAnyObject
+  const type = config.type as string | undefined
   const sign = generateFieldKey(type)
   result.id = sign
   result.key = sign
   if (twoValueComponentList.includes(type!)) {
-    result.config.otherKey = `other${toUpperFirstCase(sign)}`
+    config.otherKey = `other${toUpperFirstCase(sign)}`
   }
   if (threeValueComponentList.includes(type!)) {
-    result.config.otherKey = [`other${toUpperFirstCase(sign)}`, `extra${toUpperFirstCase(sign)}`]
+    config.otherKey = [`other${toUpperFirstCase(sign)}`, `extra${toUpperFirstCase(sign)}`]
   }
   return result
 }
 // layout 类型的复制方式
-export const getCopyLayout = (layout: IFormConfig<Record<string, unknown>>, typeMap: Record<string, string>) => {
+export const getCopyLayout = (layout: IFieldItem, typeMap: Record<string, string>) => {
   const newLayout = getCopyItem(layout); // 修改自身标记
-  (newLayout.config.options as Array<{children: IFormConfig<Record<string, unknown>>[]}>)?.forEach?.((option) => {
+  ((newLayout.config as IAnyObject).options as Array<{children: IFieldItem[]}>)?.forEach?.((option) => {
     // 修改子row标记
     const children = option.children || []
     if (children.length > 0) {
@@ -48,16 +49,17 @@ export const getCopyLayout = (layout: IFormConfig<Record<string, unknown>>, type
   return newLayout
 }
 // table 的复制方式
-export const getCopyTable = (table: IFormConfig<Record<string, unknown>>, typeMap: Record<string, string> = {}) => {
+export const getCopyTable = (table: IFieldItem, typeMap: Record<string, string> = {}) => {
   const newTable = getCopyItem(table) // 修改自身标记
-  const options = (newTable.config?.options || []) as Array<IFormConfig<Record<string, unknown>>>
+  const config = newTable.config as IAnyObject
+  const options = (config?.options || []) as Array<IFieldItem>
   if (options?.length > 0) {
-    newTable.config.options = options.map((option) => getCopyRow(option, typeMap))
+    config.options = options.map((option) => getCopyRow(option, typeMap))
   }
   return newTable
 }
 // 复制一列
-export const getCopyRow = (row: IFormConfig<Record<string, unknown>>, typeMap: Record<string, string> = {}) => {
+export const getCopyRow = (row: IFieldItem, typeMap: Record<string, string> = {}) => {
   const type = row.config?.type
     ? typeMap[row.config?.type] ?? row.config?.type
     : 'default'
@@ -68,13 +70,14 @@ export const getCopyRow = (row: IFormConfig<Record<string, unknown>>, typeMap: R
   }
 }
 
-export const getTableItem = (item: IFormConfig<Record<string, unknown>>) => {
-  const result = cloneDeep(item) as (IFormConfig<Record<string, unknown>> & {id: string})
-  const type = item.config.type
-  result.id = item.config.key as string
-  result.key = item.config.key as string
+export const getTableItem = (item: IFieldItem) => {
+  const result = cloneDeep(item) as (IFieldItem & {id: string})
+  const config = result.config as IAnyObject
+  const type = config.type as string | undefined
+  result.id = config.key as string
+  result.key = config.key as string
   if (twoValueComponentList.includes(type!)) {
-    result.config.otherKey = `other${toUpperFirstCase(item.config.key as string)}`
+    config.otherKey = `other${toUpperFirstCase(config.key as string)}`
   }
   return result
 }

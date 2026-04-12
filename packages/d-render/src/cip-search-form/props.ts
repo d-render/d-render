@@ -1,8 +1,8 @@
 import type { ExtractPropTypes, PropType } from 'vue'
-import type { IAnyObject, IFormConfig } from '@d-render/shared'
+import type { IAnyObject, IFieldItem, TSearchFormConfig } from '@d-render/shared'
 export const cipSearchFormProps = {
   model: Object,
-  fieldList: { type: Array as PropType<Array<IFormConfig>>, required: true },
+  fieldList: { type: Array as PropType<Array<IFieldItem<TSearchFormConfig>>>, required: true },
   hideSearch: Boolean, // 是否隐藏search按钮
   handleAbsolute: Boolean, // 在pageCurd下的特殊行为
   collapse: { type: Boolean, default: undefined }, // 是否开启展开/收缩

@@ -1,10 +1,10 @@
 import { h, toRefs, computed, unref, PropType, defineComponent } from 'vue'
 import { getH5InputComponent, getInputComponent, getViewComponent } from '../utils'
-import { getFieldValue, setFieldValue, useFormInject, IRenderConfig, IAnyObject, IFormConfig } from '@d-render/shared'
+import { getFieldValue, setFieldValue, useFormInject, IRenderConfig, IAnyObject, TFormConfig, IFieldItem } from '@d-render/shared'
 export default defineComponent({
   name: 'CipFormLayout',
   props: {
-    config: Object as PropType<IRenderConfig>, // 字段配置信息
+    config: Object as PropType<TFormConfig>, // 字段配置信息
     fieldKey: { type: String, required: true }, // 字段名
     model: { // 字段所属model
       type: Object as PropType<IAnyObject>,
@@ -49,7 +49,7 @@ export default defineComponent({
       const componentType = props.isDesign ? (props.drawType || props.config?.type) : props.config?.type
       if (props.readonly) {
         return h(getViewComponent(componentType), componentProps, {
-          item: ({ children, index }: { children: Array<IFormConfig>, index: number } = { children: [], index: 0 }) => {
+          item: ({ children, index }: { children: Array<IFieldItem<TFormConfig>>, index: number } = { children: [], index: 0 }) => {
             return context.slots.item?.({ children, index })
           }
         })

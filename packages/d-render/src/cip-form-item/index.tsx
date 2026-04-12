@@ -9,7 +9,7 @@ import {
   useFormInject,
   useElFormInject,
   useCipConfig,
-  getUsingConfig, getFieldValue, IAnyObject, TFormConfig
+  getUsingConfig, getFieldValue, IAnyObject, TFormConfig, TSearchFormConfig
 } from '@d-render/shared'
 import { useWatchFieldDepend } from './hooks/use-field-depend'
 import { useFieldValue, useSteamUpdateValues } from './hooks/use-model-change'
@@ -19,7 +19,7 @@ import { getInputComponent, getViewComponent, getH5InputComponent } from '../uti
 
 const formItemProps = {
   config: {
-    type: Object as PropType<TFormConfig>,
+    type: Object as PropType<TFormConfig | TSearchFormConfig>,
     required: true
   }, // 字段配置信息
   fieldKey: { type: String, required: true }, // 字段名
@@ -174,7 +174,7 @@ export default defineComponent({
         result.push(descriptionComp)
       }
       if (formItemConfig.value.no) {
-        result.unshift(formItemConfig.value.no as string)
+        result.unshift(formItemConfig.value.no!)
       }
       // 仅在正在使用rules的input中且required为true时展示必填标记
       if (usingRules.value && formItemConfig.value.required) {
@@ -366,7 +366,7 @@ export default defineComponent({
               'cip-form-item--label-position-top': isLabelPositionTop.value,
               'cip-form-item--hidden': !childStatus.value || formItemConfig.value.hideItem,
               'cip-form-item--in-table': props.inTable,
-              'cip-form-item--border': props.config?.border !== false
+              'cip-form-item--border': formItemConfig.value.border !== false
             }
           ]}>
           {formItem()}

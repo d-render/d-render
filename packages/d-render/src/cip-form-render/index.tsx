@@ -1,10 +1,10 @@
 import { computed, ref, watch, reactive, provide, defineComponent, ComputedRef } from 'vue'
 import type { PropType } from 'vue'
-import type { IAnyObject, IFormConfig } from '@d-render/shared'
+import type { IAnyObject, IFieldItem } from '@d-render/shared'
 import CipForm from '../cip-form'
 
 interface ISchema {
-  list: Array<IFormConfig>
+  list: Array<IFieldItem>
   labelWidth: string | number
   labelPosition: 'left'|'right'| 'top'
   labelSuffix: string

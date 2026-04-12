@@ -7,14 +7,8 @@ import {
 
 } from './form-validator'
 import type { TValidator } from './form-validator'
-import type { IAnyObject, TFormConfig, IRenderConfig } from '@d-render/shared'
+import type { IAnyObject, TFormConfig, IRenderConfig, ICustomValidator } from '@d-render/shared'
 import type { FormItemRule } from 'element-plus'
-
-interface ICustomValidator {
-   (values: unknown, dependOnValues: IAnyObject, outDependOnValues: IAnyObject): Promise<{data?: boolean ; message?: string }>
-  message: string
-  type: string
-}
 
 const validatorMap: Record<string, TValidator> = {
   email: emailValidator,

@@ -5,7 +5,7 @@ import {
   getFieldValue,
   useFormProvide,
   DRender,
-  useCipPageConfig, isEmpty, IAnyObject, IFormConfig, IRenderConfig
+  useCipPageConfig, isEmpty, IAnyObject, IFieldItem, TFormConfig
 } from '@d-render/shared'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -20,7 +20,7 @@ interface IInputProps {
   componentKey: string
   model?: IAnyObject
   fieldKey: string
-  config: IRenderConfig
+  config: TFormConfig
   dataBus?: (key: string, val: unknown) => void
   readonly?: boolean
   grid: number | true
@@ -37,7 +37,7 @@ export default defineComponent({
   name: 'CipForm',
   props: {
     model: Object as PropType<IAnyObject>,
-    fieldList: Array as PropType<IFormConfig[]>,
+    fieldList: Array as PropType<IFieldItem<TFormConfig>[]>,
     showOnly: Boolean,
     modelKey: {
       type: [String, Function]
@@ -61,7 +61,7 @@ export default defineComponent({
     // 回车触发回调
     enterHandler: Function,
     errorMode: { type: String as PropType<'default' | 'tooltip'>, default: undefined },
-    genNo: Function as PropType<(v: IFormConfig, count: number)=> (VNode | string)>
+    genNo: Function as PropType<(v: IFieldItem<TFormConfig>, count: number)=> (VNode | string)>
   },
   emits: ['update:model', 'submit', 'cancel'],
   slots: Object as SlotsType<{
@@ -124,7 +124,7 @@ export default defineComponent({
       }
     }
     // 获取layout及item组件需要的props
-    const getComponentProps = (key: string, config: IRenderConfig, id?: string) => {
+    const getComponentProps = (key: string, config: TFormConfig, id?: string) => {
       const componentKey = generateComponentKey(id || key)
       const componentProps: IInputProps = {
         key: componentKey,
@@ -168,8 +168,8 @@ export default defineComponent({
         onCancel: () => {
           context.emit('cancel')
         }
-      }, {
-        item: ({ children = [], isShow }: {children: IFormConfig[], isShow?: boolean} = { children: [] }) => {
+      } as any, {
+        item: ({ children = [], isShow }: {children: IFieldItem<TFormConfig>[], isShow?: boolean} = { children: [] }) => {
           return children.map((v) => getFormDefaultSlot(v, isShow))
         }
       })
@@ -179,10 +179,10 @@ export default defineComponent({
       return h(CipFormItem, {
         ...componentProps,
         class: { 'cip-form-item--br': br }
-      })
+      } as any)
     }
     // 渲染单个字段
-    const getFormDefaultSlot = ({ key, id, config, br }: IFormConfig = { key: '', config: {} }, isShow?: boolean) => {
+    const getFormDefaultSlot = ({ key, id, config, br }: IFieldItem<TFormConfig> = { key: '', config: {} }, isShow?: boolean) => {
       // 若存在字段key值的插槽覆盖则配置整个ElFormItem
       config._isGrid = grid.value
       config._isShow = isShow
@@ -197,7 +197,7 @@ export default defineComponent({
           ...componentProps,
           customSlots: context.slots[`${key}Input`],
           class: { 'cip-form-item--br': br }
-        })
+        } as any)
       }
       // 判断是否为布局类型的字段
       if (dRender.isLayoutType(config.type!)) {
@@ -292,7 +292,7 @@ export default defineComponent({
           'cip-form--readonly': props.showOnly
         }
       ],
-      style: { gridTemplateColumns: `repeat(${grid.value},1fr)` },
+      style: { gridTemplateColumns: grid.value ? `repeat(${grid.value},1fr)` : undefined },
       size: 'default',
       // labelPosition: _labelPosition.value,
       labelWidth: labelPositionBridge.value === 'top' ? '100%' : props.labelWidth,
