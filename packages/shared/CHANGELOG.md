@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.1
+
+### Patch Changes
+
+- feat(shared): configMapToList 函数支持将内部的 br 提取出来
+
 ## 2.1.0
 
 ### Minor Changes
@@ -9,7 +15,7 @@
   - 新增 IFormRenderConfig：Form 专属属性（验证规则、directory、border、staticInfo 等）
   - 新增 ISearchRenderConfig：SearchForm 专属属性
   - 新增 ITableRenderConfig：Table 专属属性
-  - 新增 IRuntimeConfig：运行时注入属性（_isGrid、_isShow、no）
+  - 新增 IRuntimeConfig：运行时注入属性（\_isGrid、\_isShow、no）
   - 引入泛型容器类型 IFieldItem\<C\> 替代 IFormConfig
   - 新增 IFormFieldItem、ISearchFieldItem、ITableColumnItem 类型别名
   - TFormConfig/TSearchFormConfig/TTableColumns 通过交叉类型组合对应子接口
