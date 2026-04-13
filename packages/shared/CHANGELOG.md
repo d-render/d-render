@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.2
+
+### Patch Changes
+
+- 优化 config-util 类型推导
+
 ## 2.1.1
 
 ### Patch Changes
