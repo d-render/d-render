@@ -174,12 +174,21 @@ export default defineComponent({
         }
       })
     }
+    // inline 模式下换行包装函数
+    const wrapWithInlineBreak = (node: VNode, br?: boolean) => {
+      if (!br || grid.value) return node
+      return [
+        h('div', { class: 'cip-form-inline-br', key: `br__${String(node.key ?? '')}` }),
+        node
+      ]
+    }
     // 输入字段渲染方式
     const getFormItem = (componentProps: IInputProps, br?: boolean) => {
-      return h(CipFormItem, {
+      const node = h(CipFormItem, {
         ...componentProps,
         class: { 'cip-form-item--br': br }
       } as any)
+      return wrapWithInlineBreak(node, br)
     }
     // 渲染单个字段
     const getFormDefaultSlot = ({ key, id, config, br }: IFieldItem<TFormConfig> = { key: '', config: {} }, isShow?: boolean) => {
@@ -193,11 +202,12 @@ export default defineComponent({
       const componentProps = getComponentProps(key, config, id)
       // 若存在字段key值+Input的插槽覆盖则配置ElFormItem内的Input
       if (context.slots[`${key}Input`]) {
-        return h(CipFormItem, {
+        const node = h(CipFormItem, {
           ...componentProps,
           customSlots: context.slots[`${key}Input`],
           class: { 'cip-form-item--br': br }
         } as any)
+        return wrapWithInlineBreak(node, br)
       }
       // 判断是否为布局类型的字段
       if (dRender.isLayoutType(config.type!)) {

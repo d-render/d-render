@@ -28,14 +28,14 @@ html.dark {
         flex-shrink: 0;
     }
 
-    // inline 模式下的强制换行样式
-    .cip-form-item--br {
-        &::before {
-            content: '';
-            flex-basis: 100%;
-            width: 0;
-            order: -1;
-        }
+    // inline 模式下的强制换行样式（真实 DOM 节点）
+    .cip-form-inline-br {
+        flex-basis: 100%;
+        width: 0;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
     }
 }
 
