@@ -194,6 +194,8 @@ export interface IBaseFormRenderConfig{
   itemMarginBottom?: string
   /** 自定义渲染插槽，form/searchForm 场景使用 */
   __render?: Slot<IAnyObject>
+  /** 是否在此字段前强制换行 */
+  br?: boolean
 }
 export interface ICustomValidator {
   (values: unknown, dependOnValues: IAnyObject, outDependOnValues: IAnyObject): Promise<{data?: boolean ; message?: string }>
@@ -300,7 +302,8 @@ export function configMapToList <Entity extends NoArrayObject<Entity> = Record<s
     return {
       key, // realKey的优先级高于key,
       config,
-      sort: config.configSort || i
+      sort: config.configSort || i,
+      br: (config as any).br
     } as IFormConfig<Entity> & { sort: number }
   }).sort((a, b) => a.sort - b.sort)
 }
