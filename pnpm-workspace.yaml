@@ -1,6 +1,6 @@
 packages:
   - 'packages/**'
-  - 'play'
+  # - 'play'
   - 'docs'
 publish-branch:
   - 'dev'

@@ -34,12 +34,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@d-render/plugin-standard": "workspace:*",
-    "@d-render/shared": "workspace:*",
-    "d-render": "workspace:*",
-    "play": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
     "@esbuild-kit/cjs-loader": "^2.4.2",
