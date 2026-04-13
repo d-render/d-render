@@ -17,15 +17,25 @@ html.dark {
     margin-top: 1px;
 }
 
+.cip-form {
+    --cip-form-column-gap: 12px;
+}
+
 .@{elNamespace}-form--inline.cip-form {
     //width: 100%;
     display: flex;
     flex-wrap: wrap;
+    column-gap: var(--cip-form-column-gap);
 
     // inline 模式下 form-item 默认不占满整行
     .cip-form-item {
         width: auto;
         flex-shrink: 0;
+
+        // 使用 column-gap 控制横向间距，保留纵向默认节奏
+        > .@{elNamespace}-form-item {
+            margin-right: 0;
+        }
     }
 
     // inline 模式下的强制换行样式（真实 DOM 节点）
@@ -41,7 +51,8 @@ html.dark {
 
 .cip-form--grid {
     display: grid !important;
-    grid-column-gap: 12px;
+    grid-column-gap: var(--cip-form-column-gap);
+
 
     // 强制换行样式
     .cip-form-item--br {
