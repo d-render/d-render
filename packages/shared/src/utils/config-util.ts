@@ -260,8 +260,12 @@ export interface IFieldItem<C = IRenderConfig> {
   br?: boolean
 }
 
-/** 向后兼容别名 (deprecated) */
+/**
+ * 向后兼容别名
+ * @deprecated 请优先使用 IFieldItem、IFormFieldItem、ISearchFieldItem 或 ITableColumnItem
+ */
 export type IFormConfig<_T extends NoArrayObject<_T> = Record<string, number>> = IFieldItem
+
 
 export type TTableColumns = ExtendedConfig & ITableRenderConfig & IRuntimeConfig
 export interface ITableColumnConfig {
@@ -278,42 +282,82 @@ export type IFormFieldConfig<Entity extends NoArrayObject<Entity> = Record<strin
 export type ISearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TSearchFormConfig>>
 export type ITableFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TTableColumns>>
 
-// configMapToList即mergeFieldConfig联合使用
-export function generateFieldList <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (configMap: IFieldConfig<Entity>, ...source: Array<Record<keyof Entity, IEntityConfig>|IFieldConfig<Entity>>): IFormConfig<Entity>[] {
-  return configMapToList(mergeFieldConfig(configMap, ...source))
+type TFieldConfigMapSource<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = IFieldConfig<Entity> | Record<keyof Entity, IEntityConfig>
+type TFieldConfigValue<ConfigMap> = Extract<Exclude<ConfigMap[keyof ConfigMap], undefined>, ExtendedConfig>
+type TLooseSourceConfigMap = Record<string, ExtendedConfig | IEntityConfig | undefined>
+type TFieldConfigKind = 'field' | 'form' | 'table' | 'search'
+
+declare const FIELD_CONFIG_KIND: unique symbol
+
+type TMarkedFieldConfig<ConfigMap, Kind extends TFieldConfigKind> = ConfigMap & {
+  readonly [FIELD_CONFIG_KIND]?: Kind
 }
 
-export function mergeFieldConfig <T extends NoArrayObject<T>> (targetConfigMap: IFieldConfig<T>, ...sourceConfigMaps: Array<Record<keyof T, IEntityConfig>|IFieldConfig<T>>):IFieldConfig<T> {
-  const result = {} as IFieldConfig<T>
-  Object.keys(targetConfigMap).forEach(key => {
-    const targetConfig = targetConfigMap[key as keyof T] || {}
-    // @ts-ignore
-    result[key as keyof T] = getMergeConfig(key, targetConfig, sourceConfigMaps) as IRenderConfig
-  })
-  return result as IFieldConfig<T>
+type TFieldConfigKindOf<ConfigMap> = ConfigMap extends {
+  readonly [FIELD_CONFIG_KIND]?: infer Kind
 }
+  ? Extract<Kind, TFieldConfigKind>
+  : 'field'
+
+type TFieldListItem<Config = ExtendedConfig> = IFieldItem<Config> & { sort: number }
+
+type TGenerateFieldListResult<ConfigMap> = TFieldConfigKindOf<ConfigMap> extends 'table'
+  ? Array<TFieldListItem<TTableColumns>>
+  : TFieldConfigKindOf<ConfigMap> extends 'search'
+    ? Array<TFieldListItem<TSearchFormConfig>>
+    : TFieldConfigKindOf<ConfigMap> extends 'form'
+      ? Array<TFieldListItem<TFormConfig>>
+      : Array<TFieldListItem<ExtendedConfig>>
+
+// configMapToList即mergeFieldConfig联合使用
+export function generateFieldList <
+  Entity extends NoArrayObject<Entity> = Record<string, unknown>,
+  ConfigMap extends IFieldConfig<Entity> = IFieldConfig<Entity>
+> (configMap: ConfigMap, ...source: Array<TFieldConfigMapSource<Entity>>): TGenerateFieldListResult<ConfigMap> {
+  const mergedConfigMap = mergeFieldConfig(configMap, ...source)
+  return configMapToList(mergedConfigMap)
+}
+
+export function mergeFieldConfig <
+  Entity extends NoArrayObject<Entity>,
+  ConfigMap extends IFieldConfig<Entity> = IFieldConfig<Entity>
+> (targetConfigMap: ConfigMap, ...sourceConfigMaps: Array<TFieldConfigMapSource<Entity>>): ConfigMap {
+  const result = {} as ConfigMap
+  Object.keys(targetConfigMap).forEach(key => {
+    const typedKey = key as keyof ConfigMap
+    const targetConfig = (targetConfigMap[typedKey] || {}) as TFieldConfigValue<ConfigMap>
+    result[typedKey] = getMergeConfig<Entity, TFieldConfigValue<ConfigMap>>(key, targetConfig, sourceConfigMaps) as ConfigMap[typeof typedKey]
+  })
+  return result
+}
+
 /**
  * config 对象转为数组 (table时用的较多)
  */
-export function configMapToList <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (configMap: IFieldConfig<Entity>) {
+export function configMapToList <
+  Entity extends NoArrayObject<Entity> = Record<string, unknown>,
+  ConfigMap extends IFieldConfig<Entity> = IFieldConfig<Entity>
+> (configMap: ConfigMap): TGenerateFieldListResult<ConfigMap> {
   return Object.keys(configMap).map((key, i) => {
-    const config = configMap[key as keyof (typeof configMap)]!
+    const config = configMap[key as keyof (typeof configMap)]! as ExtendedConfig
     key = config.realKey || key // realKey的优先级高于原本的key用于处理object相同的key智能有一个的问题
     return {
       key, // realKey的优先级高于key,
       config,
       sort: config.configSort || i,
       br: (config as any).br
-    } as IFormConfig<Entity> & { sort: number }
-  }).sort((a, b) => a.sort - b.sort)
+    }
+  }).sort((a, b) => a.sort - b.sort) as TGenerateFieldListResult<ConfigMap>
 }
+
 /**
  * 将一个字段配置数据插入到另一个配置数据中
  */
-export function insertFieldConfigToList <Entity extends NoArrayObject<Entity>> (target: IFormConfig<Entity>[] = [], source: IFormConfig<Entity>[]) {
+export function insertFieldConfigToList <C extends { insert?: TInsert } = ExtendedConfig> (target: Array<IFieldItem<C>> = [], source: Array<IFieldItem<C>>) {
   target = [...target] // 需要浅拷贝一次不然会导致值被修改的问题
   source.forEach(fieldConfig => {
-    const { config: { insert } = {} } = fieldConfig
+    if (!fieldConfig?.config) return
+    const insert = fieldConfig.config.insert
     if (insert) {
       // 需要开启排序 before 的优先级高于 after
       const offset = insert.before ? 0 : 1
@@ -327,17 +371,17 @@ export function insertFieldConfigToList <Entity extends NoArrayObject<Entity>> (
   return target
 }
 
-export function configListToMap <T extends NoArrayObject<T>> (configList: IFormConfig<T>[]) {
-  const result = {} as IFieldConfig<T>
-  // @ts-ignore
-  configList.forEach(({ key, config } = { key: '', config: {} }) => {
+
+export function configListToMap <T extends NoArrayObject<T>, C extends ExtendedConfig = ExtendedConfig> (configList: Array<IFieldItem<C>>) {
+  const result = {} as Partial<Record<keyof T | (string & {}), C>>
+  configList.forEach(({ key, config }) => {
     if (key) {
-      // @ts-ignore
-      result[key] = config
+      result[key as keyof T | (string & {})] = config
     }
   })
   return result
 }
+
 const handlerDependOn = (dependOn: IRenderConfig['dependOn'], newDependOn: IRenderConfig['dependOn'], isMerge: boolean) => {
   if (dependOn && newDependOn) {
     const result = isMerge ? [...dependOn, ...newDependOn] : newDependOn
@@ -349,40 +393,44 @@ const handlerDependOn = (dependOn: IRenderConfig['dependOn'], newDependOn: IRend
 /**
  * 合并字段配置
  */
-function getMergeConfig <T extends NoArrayObject<T>> (key: string, targetConfig: IRenderConfig, sourceConfigMaps: (IFieldConfig<T>|Record<keyof T, IEntityConfig>)[]) {
-  let sourceConfig = {} as IRenderConfig
+function getMergeConfig <
+  Entity extends NoArrayObject<Entity>,
+  Config extends ExtendedConfig = ExtendedConfig
+> (key: string, targetConfig: Config, sourceConfigMaps: Array<TFieldConfigMapSource<Entity>>): Config {
+  let sourceConfig = {} as Config
   const sourceKey = targetConfig.sourceKey || targetConfig.realKey || key
   let dependOn = [] as IRenderConfig['dependOn']
   const isMergeDependOn = targetConfig.mergeDependOn === true
   if (sourceKey) {
     const sourceKeys = sourceKey.split('.')
-    sourceConfigMaps.forEach((sourceConfigMap = {} as IFieldConfig<T>) => {
-      // @ts-ignore
-      let sourceConfigNext = getFieldConfig(sourceConfigMap[sourceKey])
+    sourceConfigMaps.forEach((sourceConfigMap = {} as TFieldConfigMapSource<Entity>) => {
+      const sourceMap = sourceConfigMap as TLooseSourceConfigMap
+      let sourceConfigNext = getFieldConfig<Config>(sourceMap[sourceKey])
       if (!sourceConfigNext && sourceKeys.length > 1) {
-        // @ts-ignore
-        sourceConfigNext = getFieldConfig(sourceConfigMap[sourceKeys[0]])
+        sourceConfigNext = getFieldConfig<Config>(sourceMap[sourceKeys[0]])
         const preKey = [sourceKeys[0]]
         for (let i = 1; i < sourceKeys.length; i++) {
           if (!sourceConfigNext) break
-          // @ts-ignore
-          sourceConfigNext = getFieldConfig(sourceConfigNext[sourceKeys[i]] as IRenderConfig, preKey.join('.')) as IRenderConfig
+          const nestedSourceMap = sourceConfigNext as unknown as TLooseSourceConfigMap
+          sourceConfigNext = getFieldConfig<Config>(nestedSourceMap[sourceKeys[i]], preKey.join('.'))
           preKey.push(sourceKeys[i]) // 最后一个key,舍弃
         }
       }
-      dependOn = handlerDependOn(sourceConfig?.dependOn, sourceConfigNext?.dependOn, isMergeDependOn)
+      dependOn = handlerDependOn(sourceConfig?.dependOn as IRenderConfig['dependOn'], sourceConfigNext?.dependOn as IRenderConfig['dependOn'], isMergeDependOn)
       sourceConfig = { ...sourceConfig, ...sourceConfigNext }
+
     })
   }
   /**
    * 合并逻辑
    */
   if (isMergeDependOn) {
-    dependOn = handlerDependOn(dependOn, targetConfig.dependOn, true)
+    dependOn = handlerDependOn(dependOn, targetConfig.dependOn as IRenderConfig['dependOn'], true)
   } else {
-    dependOn = targetConfig.dependOn || dependOn
+    dependOn = (targetConfig.dependOn as IRenderConfig['dependOn']) || dependOn
   }
-  return { ...sourceConfig, ...targetConfig, dependOn } as IRenderConfig
+
+  return { ...sourceConfig, ...targetConfig, dependOn } as Config
 }
 
 /**
@@ -406,12 +454,18 @@ const handlerEffectFunction = (fn: InstanceType<typeof Function>, key: string, p
   // 如果key不符合上述条件返回原值
   return fn
 }
+
+const isEntityConfig = (config: ExtendedConfig | IEntityConfig | undefined): config is IEntityConfig & { _renderConfig: IRenderConfig } => {
+  return typeof config === 'object' && config !== null && '_renderConfig' in config && !!config._renderConfig
+}
+
 /**
  * 获取字段配置（_renderConfig为数据定义时定义的字段渲染配置）
  */
-function getFieldConfig (config: IRenderConfig | IEntityConfig, preKey = '') {
-  if ((config as IEntityConfig)?._renderConfig) {
-    const _renderConfig = cloneDeep((config as IEntityConfig)._renderConfig) as IRenderConfig
+function getFieldConfig <Config extends ExtendedConfig = ExtendedConfig> (config: Config | IEntityConfig | undefined, preKey = ''): Config | undefined {
+  if (!config) return undefined
+  if (isEntityConfig(config)) {
+    const _renderConfig = cloneDeep(config._renderConfig) as Config
     if (preKey) {
       const dependOn = _renderConfig.dependOn
       if (dependOn && dependOn.length > 0) {
@@ -425,7 +479,8 @@ function getFieldConfig (config: IRenderConfig | IEntityConfig, preKey = '') {
           } else {
             return `${preKey}.${on}`
           }
-        }) as IRenderConfig['dependOn'];
+        }) as Config['dependOn']
+
         // `${preKey}.${on}`
         ['changeConfig', 'changeValue', 'asyncOptions', 'getOptionsFilter'].forEach(key => {
           if (typeof _renderConfig[key as keyof IRenderConfig] === 'function') {
@@ -442,11 +497,11 @@ function getFieldConfig (config: IRenderConfig | IEntityConfig, preKey = '') {
         _renderConfig.otherKey = (otherKey as string[]).map(v => `${preKey}.${v}`)
       }
     }
-    return _renderConfig as IRenderConfig
-  } else {
-    return config as IRenderConfig
+    return _renderConfig
   }
+  return config as Config
 }
+
 
 /**
  * 处理dependOn 为对象时的副作用配置
@@ -482,10 +537,10 @@ export function keysToConfigMap <T extends NoArrayObject<T> = Record<string, unk
   })
   return configMap
 }
-export function defineFieldConfig <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (config: IFormFieldConfig<Entity>): IFormFieldConfig<Entity> { return config }
+export function defineFieldConfig <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (config: IFormFieldConfig<Entity>): TMarkedFieldConfig<IFormFieldConfig<Entity>, 'form'> { return config as TMarkedFieldConfig<IFormFieldConfig<Entity>, 'form'> }
 // form配置
-export function defineFormFieldConfig <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (config: IFormFieldConfig<Entity>): IFormFieldConfig<Entity> { return config }
+export function defineFormFieldConfig <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (config: IFormFieldConfig<Entity>): TMarkedFieldConfig<IFormFieldConfig<Entity>, 'form'> { return config as TMarkedFieldConfig<IFormFieldConfig<Entity>, 'form'> }
 // table配置
-export function defineTableFieldConfig <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (config: ITableFieldConfig<Entity>): ITableFieldConfig<Entity> { return config }
+export function defineTableFieldConfig <Entity extends NoArrayObject<Entity> = Record<string, unknown>> (config: ITableFieldConfig<Entity>): TMarkedFieldConfig<ITableFieldConfig<Entity>, 'table'> { return config as TMarkedFieldConfig<ITableFieldConfig<Entity>, 'table'> }
 // search-form配置
-export function defineSearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> (config: ISearchFieldConfig<Entity>): ISearchFieldConfig<Entity> { return config }
+export function defineSearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> (config: ISearchFieldConfig<Entity>): TMarkedFieldConfig<ISearchFieldConfig<Entity>, 'search'> { return config as TMarkedFieldConfig<ISearchFieldConfig<Entity>, 'search'> }
