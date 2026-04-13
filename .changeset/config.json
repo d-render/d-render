@@ -5,7 +5,7 @@
   "fixed": [],
   "linked": [],
   "access": "public",
-  "baseBranch": "main",
+  "baseBranch": "v7.x",
   "updateInternalDependencies": "patch",
-  "ignore": ["play", "d-render-docs"]
+  "ignore": ["d-render-docs"]
 }
