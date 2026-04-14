@@ -18,7 +18,23 @@ import {
 } from '../utils'
 import { getFormValueByTemplate, UpdateFormStream, InputProps } from '../helper'
 
-const useUpdateStream = (props: InputProps, context: SetupContext) => {
+type UseFormInputEmit = {
+  (event: 'streamUpdate:model', val: unknown[]): void
+  (event: 'update:modelValue', val: unknown): void
+}
+type UseFormInputContext = Pick<SetupContext, 'emit'> & {
+  emit: UseFormInputEmit
+}
+
+type UseOptionsEmit = {
+  (event: 'update:modelValue', val: unknown): void
+}
+type UseOptionsContext = Pick<SetupContext, 'emit'> & {
+  emit: UseOptionsEmit
+}
+
+const useUpdateStream = (props: InputProps, context: UseFormInputContext) => {
+
   const updateStream = new UpdateFormStream(props, (val) => {
     context.emit('streamUpdate:model', val)
   })
@@ -64,7 +80,8 @@ function useFormBasicConfig <T extends keyof ComposeType = keyof ComposeType, V 
     securityConfig, clearable, width, placeholder, inputStyle, noMatchText
   }
 }
-export function useFormInput <T extends keyof ComposeType = keyof ComposeType, V = unknown> (props: InputProps, context: SetupContext, { fromModelValue, toModelValue, maxOtherKey }: {
+export function useFormInput <T extends keyof ComposeType = keyof ComposeType, V = unknown> (props: InputProps, context: UseFormInputContext, { fromModelValue, toModelValue, maxOtherKey }: {
+
   fromModelValue?: (modelVal: unknown) => unknown
   toModelValue?: (value: unknown) => unknown
   maxOtherKey?: number
@@ -210,9 +227,10 @@ export const useOptions = (
   props: InputProps,
   multiple: Ref<boolean> | boolean,
   updateStream?: UpdateFormStream,
-  context?: SetupContext,
+  context?: UseOptionsContext,
   { autoGet = true, isTree = false }: {autoGet?: boolean, isTree?: boolean} = {}
 ) => {
+
   const optionProps = computed<IOptionProps>(() => {
     // @ts-ignore
     return Object.assign({ label: 'label', value: 'value', children: 'children', disabled: 'disabled' }, props.config?.treeProps, props.config?.optionProps)
