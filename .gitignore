@@ -12,3 +12,6 @@ node_modules
 !**/types/.gitkeep
 
 .gitconfig
+
+docs/.vitepress/cache/
+
