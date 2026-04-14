@@ -10,7 +10,6 @@
     "build-styles": "gulp --require @esbuild-kit/cjs-loader -f ./build/tasks/styles/gulpfile.js",
     "dev-js": "rollup -c ./build/tasks/javascript.js --watch",
     "build-js": "rollup -c ./build/tasks/javascript.js",
-    "build-types": "node ./build/tasks/types.js",
     "build-typescript": "node ./build/tasks/typescript.js",
     "dev:shared": "cross-env ENTRY_MODULE=shared pnpm run dev-js",
     "build:shared": "cross-env ENTRY_MODULE=shared pnpm run \"/^(build-js|build-typescript)$/\"",
