@@ -6,6 +6,8 @@
   "linked": [],
   "access": "public",
   "baseBranch": "v7.x",
-  "updateInternalDependencies": "patch",
-  "ignore": ["d-render-docs"]
+  "updateInternalDependencies": "minor",
+  "ignore": [
+    "d-render-docs"
+  ]
 }

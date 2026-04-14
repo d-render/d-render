@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.3
+
+### Patch Changes
+
+- refactor(hooks): 优化表单输入钩子的类型定义和上下文处理
+
 ## 2.1.2
 
 ### Patch Changes
