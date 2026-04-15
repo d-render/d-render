@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.4
+
+### Patch Changes
+
+- refactor: 完善 d-render 和 shared 的类型
+
 ## 2.1.3
 
 ### Patch Changes

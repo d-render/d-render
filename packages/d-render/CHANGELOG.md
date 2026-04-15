@@ -1,5 +1,13 @@
 # d-render
 
+## 3.1.2
+
+### Patch Changes
+
+- refactor: 完善 d-render 和 shared 的类型
+- Updated dependencies
+  - @d-render/shared@2.1.4
+
 ## 3.1.1
 
 ### Patch Changes
@@ -7,9 +15,7 @@
 - fix(cip-form): 修复内联模式下表单字段配置换行（`br`）不生效的问题
 - refactor(cip-form): 优化表单布局列间距样式
 
-
 ## 3.1.0
-
 
 ### Minor Changes
 
