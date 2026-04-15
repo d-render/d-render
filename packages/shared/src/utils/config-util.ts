@@ -141,20 +141,25 @@ export type ExtendedConfig<T extends keyof ComposeType = keyof ComposeType, V = 
 // __render的入参
 export interface ITableRenderProps {
   // eslint-disable-next-line no-use-before-define
-  config: ITableRenderConfig & IRenderConfig
+  config: Partial<ITableColumnConfig['config']>
+
   fieldKey: string
   index: number
   model: IAnyObject
+  row?: IAnyObject
   key: string
-  tableRuleKey: string
-  propertyKey: string
+  tableRuleKey?: string
+
+  propertyKey: string | number
   columnKey: string
-  tableDependOnValues: IAnyObject
+  tableDependOnValues?: IAnyObject
+
   tableData: Array<IAnyObject>
   updateData: (val: IAnyObject, index: number) => void
   $index: number
   $position: 'table'
 }
+
 // table特有的属性
 export interface ITableRenderConfig {
   columnType?: 'checkbox' | 'mainField'
@@ -266,11 +271,12 @@ export interface IFieldItem<C = IRenderConfig> {
  */
 export type IFormConfig<_T extends NoArrayObject<_T> = Record<string, number>> = IFieldItem
 
-
-export type TTableColumns = ExtendedConfig & ITableRenderConfig & IRuntimeConfig
+export type TTableColumns = ExtendedConfig & ITableRenderConfig & IRuntimeConfig & {
+  children?: Array<{ key: string, config: TTableColumns }>
+}
 export interface ITableColumnConfig {
   key: string
-  config: TTableColumns & { children: Array<ITableColumnConfig> }
+  config: TTableColumns
 }
 
 /** 便捷别名 */
@@ -371,7 +377,6 @@ export function insertFieldConfigToList <C extends { insert?: TInsert } = Extend
   return target
 }
 
-
 export function configListToMap <T extends NoArrayObject<T>, C extends ExtendedConfig = ExtendedConfig> (configList: Array<IFieldItem<C>>) {
   const result = {} as Partial<Record<keyof T | (string & {}), C>>
   configList.forEach(({ key, config }) => {
@@ -418,7 +423,6 @@ function getMergeConfig <
       }
       dependOn = handlerDependOn(sourceConfig?.dependOn as IRenderConfig['dependOn'], sourceConfigNext?.dependOn as IRenderConfig['dependOn'], isMergeDependOn)
       sourceConfig = { ...sourceConfig, ...sourceConfigNext }
-
     })
   }
   /**
@@ -501,7 +505,6 @@ function getFieldConfig <Config extends ExtendedConfig = ExtendedConfig> (config
   }
   return config as Config
 }
-
 
 /**
  * 处理dependOn 为对象时的副作用配置
