@@ -1,6 +1,6 @@
 import { computed, ComputedRef, ShallowRef, shallowRef } from 'vue'
 // cloneDeep,
-import { getFieldValue, IAnyObject, IRenderConfig, TFormConfig } from '@d-render/shared'
+import { getFieldValue, IAnyObject, TFormConfig } from '@d-render/shared'
 import { EffectExecutor, IEffectExecutorConfigs, IExecutor, IEffects } from '../effect-executor'
 import { useFieldChange } from './use-field-change'
 import { secureNewFn, cloneDeepConfig, IKey, IObjectKey, getValuesByKeys } from '../util'
@@ -69,7 +69,6 @@ export const useWatchFieldDepend = (
   ) => {
     // 获取判断结果
     for (let [resetValueCb, { oldValues, keys }] of effects) {
-      keys = ([] as Array<string>).concat(keys)
       oldValues = ([]as Array<unknown>).concat(oldValues)
       if (
         !(keys.length === 1 && keys[0] === props.fieldKey) && // 不能只有自己变了变了
@@ -97,7 +96,6 @@ export const useWatchFieldDepend = (
     let data
     for (let [changeValueByOldCb, { keys, oldValues }] of effects) {
       keys = ([] as Array<string>).concat(keys)
-      oldValues = ([]as Array<unknown>).concat(oldValues)
       if (typeof changeValueByOldCb === 'boolean') {
         continue
       }
@@ -150,7 +148,8 @@ export const useWatchFieldDepend = (
       .filter(key => typeof key === 'object') as Array<IObjectKey & {_index: number }>
     // 获取全局effect的key
     const hasGlobalEffectKey = changeKeys.find(key => typeof key === 'string')
-    const cbParams = []
+    const cbParams: Array<Record<string, unknown>> = []
+
     // 执行全局effect的回调
     if (hasGlobalEffectKey) {
       cbParams.push({}) // 只要有个无effect的标记即可，analysisEffects会使用globalParam中的配置
@@ -160,13 +159,14 @@ export const useWatchFieldDepend = (
       const privateEffect = object.effect || {}
       // @ts-ignore
       cbParams.push({
-        keys: object.key,
-        oldValues: changeOldValues[object._index],
+        keys: ([] as Array<string>).concat(object.key),
+        oldValues: ([] as Array<unknown>).concat(changeOldValues[object._index]),
         effect: privateEffect
       })
     })
     // [BROKEN]: 6.0.x 除resetValue外，其他函数在执行私有的副作用时会优先执行全局的副作用
-    effectExecutor.analysisEffects(cbParams, securityConfig.value, {
+    effectExecutor.analysisEffects(cbParams as Parameters<typeof effectExecutor.analysisEffects>[0], securityConfig.value, {
+
       values,
       outValues,
       keys: changeKeys,

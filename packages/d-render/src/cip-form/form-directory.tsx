@@ -27,11 +27,12 @@ export default defineComponent({
       })
       return result
     })
-    const DynamicHead = ({ config }: { config: IDir }) => {
-      return h('a', { href: `#${config.key}`, class: 'form-directory-item' }, [
-        h('h' + config.config.level, {}, [config.config.label])
+    const renderHead = (item: IDir) => {
+      return h('a', { key: item.key, href: `#${item.key}`, class: 'form-directory-item' }, [
+        h('h' + item.config.level, {}, [item.config.label])
       ])
     }
+
     return () => <>
       <div class={'form-directory__switch'} onClick={() => openDrawer()}>
         <ElIcon style={'font-size: 24px'}>
@@ -41,8 +42,9 @@ export default defineComponent({
       <ElDrawer custom-class={'form-directory__drawer'} v-model={drawerSwitch.value} title={'表单目录'}>
         <div class={'form-directory'}>
           {list.value.map(v => {
-            return (<DynamicHead key={v.key} config={v}/>)
+            return renderHead(v)
           })}
+
         </div>
       </ElDrawer>
     </>

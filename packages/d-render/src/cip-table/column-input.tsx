@@ -21,9 +21,10 @@ export default defineComponent({
   },
   setup (props) {
     const computedConfig = computed(() => {
-      const config = { ...props.config }
+      const config = { ...props.config } as ITableColumnConfig['config'] & { hideLabel?: boolean }
       config.width = '100%'
       config.hideLabel = true
+
       const writable = props.config.writable
       if (writable) {
         config.ruleKey = `${props.tableRuleKey}.${props.propertyKey}.${props.columnKey}`

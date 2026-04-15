@@ -215,7 +215,8 @@ export default defineComponent({
             }
             const inputProps = {
               config, // 去除$render
-              fieldKey: props.fieldKey,
+              fieldKey: props.fieldKey || '',
+
               index: $index,
               model: row,
               key,

@@ -1,5 +1,6 @@
 import { computed, defineComponent, ExtractPropTypes } from 'vue'
-import type { PropType } from 'vue'
+import type { PropType, Component, FunctionalComponent } from 'vue'
+
 import { useInputProps, useFormInput, formInputProps, useElementFormEvent, IAnyObject } from '@d-render/shared'
 
 const tFromInputProps = {
@@ -10,13 +11,17 @@ const tFromInputProps = {
 }
 
 type ICompProps = ExtractPropTypes<typeof tFromInputProps>
+type IComp = FunctionalComponent<ICompProps> | Component
+
 export default defineComponent({
+
   name: 'CipFormInputTransform',
   props: {
     ...formInputProps,
     inputPropsConfig: { type: Array as PropType<Parameters<typeof useInputProps>['1']>, default: () => [] },
     formInputOptions: { type: Object, default: undefined },
-    comp: { type: [Object, Function] as PropType<(props: ICompProps)=> JSX.Element>, required: true }
+    comp: { type: [Object, Function] as PropType<IComp>, required: true }
+
   },
   // emits: formInputEmits,
   setup (props, context) {
@@ -33,9 +38,10 @@ export default defineComponent({
     const { handleChange, handleBlur } = useElementFormEvent()
     if (!props.comp) return new Error('comp must be an component')
     return () => {
-      const Comp = props.comp
+      const Comp = props.comp as unknown as any
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       return <Comp
+
         {...inputProps.value}
         {...otherValueProps.value}
         {...otherValueListener}
