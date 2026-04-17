@@ -1,5 +1,12 @@
 # d-render
 
+## 3.1.4
+
+### Patch Changes
+
+- fix(d-render): [DrSearchForm]修复组件changeValue无效的问题
+   - 临时解决方案，此问题是由于defaultModel的合并引入的，到不传入仅修复defaultModel存在的情况
+
 ## 3.1.2
 
 ### Patch Changes
