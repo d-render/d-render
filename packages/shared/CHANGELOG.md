@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.6
+
+### Patch Changes
+
+- feat(shared): [useFormInput] defaultValue & otherDefaultValue 支持函数
+
 ## 2.1.5
 
 ### Patch Changes
