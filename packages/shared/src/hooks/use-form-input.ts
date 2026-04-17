@@ -120,14 +120,25 @@ export function useFormInput <T extends keyof ComposeType = keyof ComposeType, V
     }
   })
   watch([() => securityConfig.value.defaultValue, () => props.changeCount], ([defaultValue]) => {
+    // 处理函数形式的 defaultValue
+    let actualDefaultValue = defaultValue
+    if (typeof defaultValue === 'function') {
+      try {
+        actualDefaultValue = (defaultValue as () => V)()
+      } catch (e) {
+        console.error('defaultValue function execution error:', e)
+        return
+      }
+    }
+
     if (props.showTemplate === true) {
       // 处于展示模版模式时，同步展示默认值【注：此模式仅在设计表单时开启】
-      emitInput(defaultValue)
+      emitInput(actualDefaultValue)
     } else {
       // 处于实际值展示模式时, 需要modelValue 和defaultValue都不为空才进行值的更新
-      if (isEmpty(props.modelValue) && isNotEmpty(defaultValue)) {
+      if (isEmpty(props.modelValue) && isNotEmpty(actualDefaultValue)) {
         // emitInput(getValueByTemplate(defaultValue)) // date下需要转换值后再写入
-        proxyValue.value = getFormValueByTemplate(defaultValue as string) as V
+        proxyValue.value = getFormValueByTemplate(actualDefaultValue as string) as V
       }
     }
   }, { immediate: true })
@@ -136,32 +147,42 @@ export function useFormInput <T extends keyof ComposeType = keyof ComposeType, V
   watch([() => securityConfig.value.otherDefaultValue, () => props.changeCount], ([otherDefaultValue]) => {
     if (!otherDefaultValue || maxOtherKey === 0) return
 
+    // 处理函数形式的 otherDefaultValue
+    let actualOtherDefaultValue: Array<unknown>
+    if (typeof otherDefaultValue === 'function') {
+      try {
+        actualOtherDefaultValue = (otherDefaultValue as () => Array<unknown>)()
+      } catch (e) {
+        console.error('otherDefaultValue function execution error:', e)
+        return
+      }
+    } else {
+      actualOtherDefaultValue = otherDefaultValue
+    }
+
     if (props.showTemplate === true) {
       // 处于展示模版模式时，同步展示默认值
-      emitOtherValue(otherDefaultValue)
+      emitOtherValue(actualOtherDefaultValue)
     } else {
-      // 处于实际值展示模式时, 需要 otherValue 为空才进行值的更新
+      // 处理实际值展示模式时, 需要 otherValue 为空才进行值的更新
       const otherValueEmpty = isEmpty(props.otherValue) ||
-        (isObject(props.otherValue) && Object.keys(props.otherValue).length === 0)
+        (isObject(props.otherValue) && Object.keys(props.otherValue as object).length === 0)
 
       if (otherValueEmpty) {
-        // 支持 otherDefaultValue 为数组， 其余情况不做处理
-        if (isArray(otherDefaultValue)) {
-          // 数组形式：对应 otherKey 数组
-          // 将数组转换为对象，根据 otherKey 的顺序映射
-          const otherKey = securityConfig.value.otherKey
-          if (isArray(otherKey)) {
-            const objValue = {} as IAnyObject
-            ;(otherKey as string[]).forEach((key, index) => {
-              if (otherDefaultValue[index] !== undefined) {
-                objValue[key] = otherDefaultValue[index]
-              }
-            })
-            emitOtherValue(objValue)
-          } else if (otherKey && otherDefaultValue[0] !== undefined) {
-            // otherKey 是单个字符串，取数组第一个值
-            emitOtherValue(otherDefaultValue[0])
-          }
+        // 数组形式：对应 otherKey 数组
+        // 将数组转换为对象，根据 otherKey 的顺序映射
+        const otherKey = securityConfig.value.otherKey
+        if (isArray(otherKey)) {
+          const objValue = {} as IAnyObject
+          ;(otherKey as string[]).forEach((key, index) => {
+            if (actualOtherDefaultValue[index] !== undefined) {
+              objValue[key] = actualOtherDefaultValue[index]
+            }
+          })
+          emitOtherValue(objValue)
+        } else if (otherKey && actualOtherDefaultValue[0] !== undefined) {
+          // otherKey 是单个字符串，取数组第一个值
+          emitOtherValue(actualOtherDefaultValue[0])
         }
       }
     }

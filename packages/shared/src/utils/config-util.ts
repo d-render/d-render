@@ -88,9 +88,12 @@ export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType,
   otherKey?: string | Array<string>
   /**
    * otherKey 的默认值，当 otherValue 为空时自动设置
-   * 支持：数组（对应 otherKey 数组）、如果otherKey为字符串则使用 otherDefaultValue 的第一个数据与之对应
+   * 支持：
+   * - 静态数组：Array<unknown>
+   * - 函数：() => Array<unknown>，运行时计算
+   * 数组元素按顺序对应 otherKey 数组
    */
-  otherDefaultValue?: Array<unknown>
+  otherDefaultValue?: Array<unknown> | (() => Array<unknown>)
   /**
    * 当前表单项是否可编辑
    */
@@ -135,7 +138,13 @@ export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType,
   placeholder?: string
   noMatchText?: string
   clearable?: boolean
-  defaultValue?: V
+  /**
+   * 主字段默认值，支持：
+   * - 静态值：字符串、数字、布尔值等
+   * - 函数：() => any，运行时计算
+   * - 模板字符串：'{{now}}' 等模板
+   */
+  defaultValue?: V | (() => V) | string
   asyncOptions?: (dependOnValue: any, outDependOnValues: any) => Promise<any[]>
   // css
   inputStyle?: CSSProperties
