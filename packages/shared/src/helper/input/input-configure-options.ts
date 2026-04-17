@@ -1,5 +1,4 @@
-import { IFormFieldConfig } from '../../utils'
-export const configureOptionsFieldConfigMap: IFormFieldConfig<Record<string, unknown>> = {
+export const configureOptionsFieldConfigMap = {
   key: {
     type: 'input',
     label: '字段标识',
@@ -88,7 +87,7 @@ export const configureOptionsFieldConfigMap: IFormFieldConfig<Record<string, unk
     placeholder: '自定义错误提示',
     dependOn: ['required'],
     readable: false,
-    changeConfig: (config, { required }) => {
+    changeConfig: (config: any, { required }: any) => {
       if (required) config.writable = true
       return config
     },
@@ -101,7 +100,7 @@ export const configureOptionsFieldConfigMap: IFormFieldConfig<Record<string, unk
     placeholder: '自定义错误提示',
     dependOn: ['validateValue'],
     readable: false,
-    changeConfig: (config, { validateValue }) => {
+    changeConfig: (config: any, { validateValue }: any) => {
       if (validateValue) config.writable = true
       return config
     },
@@ -114,7 +113,7 @@ export const configureOptionsFieldConfigMap: IFormFieldConfig<Record<string, unk
     placeholder: '自定义错误提示',
     dependOn: ['regexpValidate'],
     readable: false,
-    changeConfig: (config, { regexpValidate }) => {
+    changeConfig: (config: any, { regexpValidate }: any) => {
       if (regexpValidate) config.writable = true
       return config
     },
@@ -139,14 +138,14 @@ export const configureOptionsFieldConfigMap: IFormFieldConfig<Record<string, unk
     type: 'input',
     label: '',
     dependOn: ['changeValueType'],
-    changeConfig: (config, { changeValueType }) => {
+    changeConfig: (config: any, { changeValueType }: any) => {
       config.readable = changeValueType === 'writing'
       return config
     }
   },
   valueChangeConfig: {
     dependOn: ['changeValueType'],
-    changeConfig: (config, { changeValueType }) => {
+    changeConfig: (config: any, { changeValueType }: any) => {
       config.readable = changeValueType === 'config'
       return config
     }
@@ -165,14 +164,14 @@ export const configureOptionsFieldConfigMap: IFormFieldConfig<Record<string, unk
     type: 'input',
     label: '',
     dependOn: ['changeConfigType'],
-    changeConfig: (config, { changeConfigType }) => {
+    changeConfig: (config: any, { changeConfigType }: any) => {
       config.readable = changeConfigType === 'writing'
       return config
     }
   },
   configChangeConfig: {
     dependOn: ['changeConfigType'],
-    changeConfig: (config, { changeConfigType }) => {
+    changeConfig: (config: any, { changeConfigType }: any) => {
       config.readable = changeConfigType === 'config'
       return config
     }
