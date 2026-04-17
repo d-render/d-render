@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.5
+
+### Patch Changes
+
+- feat(shared): [useFormInput]otherKey 也支持设置默认值
+
 ## 2.1.4
 
 ### Patch Changes
