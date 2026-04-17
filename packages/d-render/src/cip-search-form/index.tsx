@@ -134,7 +134,13 @@ export default defineComponent({
       return isExpand.value ? ArrowUp : ArrowDown
     })
 
-    const formModel = computed(() => Object.assign({}, props.defaultModel, props.model))
+    const formModel = computed(() => {
+      if (!props.defaultModel) {
+        console.log('defaultModel不存在')
+        return props.model
+      }
+      return Object.assign({}, props.defaultModel, props.model)
+    })
 
     const formItem = ({ key, config }: IFieldItem<TSearchFormConfig> = { key: '', config: {} }) => {
       return h(CipFormItem, {
