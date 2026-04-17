@@ -87,6 +87,11 @@ export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType,
    */
   otherKey?: string | Array<string>
   /**
+   * otherKey 的默认值，当 otherValue 为空时自动设置
+   * 支持：数组（对应 otherKey 数组）、如果otherKey为字符串则使用 otherDefaultValue 的第一个数据与之对应
+   */
+  otherDefaultValue?: Array<unknown>
+  /**
    * 当前表单项是否可编辑
    */
   writable?: boolean

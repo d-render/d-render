@@ -34,7 +34,6 @@ type UseOptionsContext = Pick<SetupContext, 'emit'> & {
 }
 
 const useUpdateStream = (props: InputProps, context: UseFormInputContext) => {
-
   const updateStream = new UpdateFormStream(props, (val) => {
     context.emit('streamUpdate:model', val)
   })
@@ -129,6 +128,41 @@ export function useFormInput <T extends keyof ComposeType = keyof ComposeType, V
       if (isEmpty(props.modelValue) && isNotEmpty(defaultValue)) {
         // emitInput(getValueByTemplate(defaultValue)) // date下需要转换值后再写入
         proxyValue.value = getFormValueByTemplate(defaultValue as string) as V
+      }
+    }
+  }, { immediate: true })
+
+  // 处理 otherDefaultValue
+  watch([() => securityConfig.value.otherDefaultValue, () => props.changeCount], ([otherDefaultValue]) => {
+    if (!otherDefaultValue || maxOtherKey === 0) return
+
+    if (props.showTemplate === true) {
+      // 处于展示模版模式时，同步展示默认值
+      emitOtherValue(otherDefaultValue)
+    } else {
+      // 处于实际值展示模式时, 需要 otherValue 为空才进行值的更新
+      const otherValueEmpty = isEmpty(props.otherValue) ||
+        (isObject(props.otherValue) && Object.keys(props.otherValue).length === 0)
+
+      if (otherValueEmpty) {
+        // 支持 otherDefaultValue 为数组， 其余情况不做处理
+        if (isArray(otherDefaultValue)) {
+          // 数组形式：对应 otherKey 数组
+          // 将数组转换为对象，根据 otherKey 的顺序映射
+          const otherKey = securityConfig.value.otherKey
+          if (isArray(otherKey)) {
+            const objValue = {} as IAnyObject
+            ;(otherKey as string[]).forEach((key, index) => {
+              if (otherDefaultValue[index] !== undefined) {
+                objValue[key] = otherDefaultValue[index]
+              }
+            })
+            emitOtherValue(objValue)
+          } else if (otherKey && otherDefaultValue[0] !== undefined) {
+            // otherKey 是单个字符串，取数组第一个值
+            emitOtherValue(otherDefaultValue[0])
+          }
+        }
       }
     }
   }, { immediate: true })
@@ -230,7 +264,6 @@ export const useOptions = (
   context?: UseOptionsContext,
   { autoGet = true, isTree = false }: {autoGet?: boolean, isTree?: boolean} = {}
 ) => {
-
   const optionProps = computed<IOptionProps>(() => {
     // @ts-ignore
     return Object.assign({ label: 'label', value: 'value', children: 'children', disabled: 'disabled' }, props.config?.treeProps, props.config?.optionProps)
