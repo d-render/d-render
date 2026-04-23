@@ -11,6 +11,7 @@ interface CipConfig {
   table: IAnyObject
   form: { errorMode?: 'default' | 'tooltip'}
   main: IAnyObject
+  quirks: boolean
 }
 
 export const useCipConfig = () => {
