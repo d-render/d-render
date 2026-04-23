@@ -302,7 +302,6 @@ export type IFormFieldConfig<Entity extends NoArrayObject<Entity> = Record<strin
 export type ISearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TSearchFormConfig>>
 export type ITableFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TTableColumns>>
 
-type TFieldConfigMapSource<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = IFieldConfig<Entity> | Record<keyof Entity, IEntityConfig>
 type TFieldConfigValue<ConfigMap> = Extract<Exclude<ConfigMap[keyof ConfigMap], undefined>, ExtendedConfig>
 type TLooseSourceConfigMap = Record<string, ExtendedConfig | IEntityConfig | undefined>
 type TFieldConfigKind = 'field' | 'form' | 'table' | 'search'
@@ -312,6 +311,14 @@ declare const FIELD_CONFIG_KIND: unique symbol
 type TMarkedFieldConfig<ConfigMap, Kind extends TFieldConfigKind> = ConfigMap & {
   readonly [FIELD_CONFIG_KIND]?: Kind
 }
+
+/** 合并来源：普通 map、实体 map，或 define*FieldConfig 打标后的 map */
+type TFieldConfigMapSource<Entity extends NoArrayObject<Entity> = Record<string, unknown>> =
+  | IFieldConfig<Entity>
+  | Record<keyof Entity, IEntityConfig>
+  | TMarkedFieldConfig<IFormFieldConfig<Entity>, 'form'>
+  | TMarkedFieldConfig<ISearchFieldConfig<Entity>, 'search'>
+  | TMarkedFieldConfig<ITableFieldConfig<Entity>, 'table'>
 
 type TFieldConfigKindOf<ConfigMap> = ConfigMap extends {
   readonly [FIELD_CONFIG_KIND]?: infer Kind
