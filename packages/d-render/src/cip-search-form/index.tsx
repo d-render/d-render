@@ -1,5 +1,5 @@
 import { h, defineComponent, computed, ref } from 'vue'
-import type { Ref } from 'vue'
+import type { Ref, VNode, SlotsType } from 'vue'
 import { ElForm, ElFormItem } from 'element-plus'
 import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
 // @ts-ignore
@@ -26,7 +26,10 @@ export default defineComponent({
   name: 'CipSearchForm',
   props: cipSearchFormProps,
   emits: ['update:model', 'search'],
-  setup (props, { emit, attrs }) {
+  slots: Object as SlotsType<{
+    operation: () => VNode | VNode[] | null | undefined
+  }>,
+  setup (props, { emit, attrs, slots }) {
     useFormProvide(props)
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
@@ -113,6 +116,8 @@ export default defineComponent({
       return count // contentWidth.value < 1300 ? 3 : (contentWidth.value > 1900 ? 5 : 4)
     })
 
+    const operationSpan = computed(() => Math.max(1, Math.floor(props.operationSpan ?? 1)))
+
     const {
       isExpand,
       toggleExpand,
@@ -120,7 +125,7 @@ export default defineComponent({
       showFieldList,
       lastRowSpan,
       spanSum
-    } = useExpand(props, gridCount, searchFormProps)
+    } = useExpand(props, gridCount, searchFormProps, operationSpan)
 
     const isImmediateSearch = (config: TSearchFormConfig) => {
       return config.immediateSearch === true || config.autoSelect === true
@@ -172,7 +177,7 @@ export default defineComponent({
 
     const formItemList = () => showFieldList.value!.map(formItem)
     const formDefaultSlots = () => {
-      const slots = formItemList() || []
+      const fieldSlots = formItemList() || []
       // 隐藏搜索按钮 或
       // 当搜索条件整行时 且 为展开时
       if (!props.hideSearch) {
@@ -191,7 +196,7 @@ export default defineComponent({
           }
           style={{
             alignItems: searchFormProps.value.labelPosition === 'top' ? 'flex-end' : 'flex-start',
-            gridColumn: !isOne ? `${gridCount.value} / span 1` : undefined
+            gridColumn: !isOne ? `${gridCount.value - operationSpan.value + 1} / span ${operationSpan.value}` : undefined
           }}
         >
           <CipButton buttonType={'search'} onClick={() => emitSearch()}>
@@ -199,10 +204,11 @@ export default defineComponent({
           </CipButton>
           {showResetButton.value && <CipButton buttonType={'reset'} onClick={() => resetSearch()} />}
           {haveExpand.value && <CipButton square={true} icon={arrowIcon.value} onClick={() => toggleExpand()} />}
+          {slots.operation?.()}
         </ElFormItem>
-        slots.push(buttonList)
+        fieldSlots.push(buttonList)
       }
-      return slots
+      return fieldSlots
     }
 
     return () => h(ElForm, {

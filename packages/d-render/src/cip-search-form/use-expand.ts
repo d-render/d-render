@@ -4,7 +4,7 @@ import type { TSearchFormProps } from './props'
 import type { IAnyObject, IFieldItem, TSearchFormConfig } from '@d-render/shared'
 const DEFAULT_SPAN = 1
 
-export const useExpand = (props: TSearchFormProps, gridCount: Ref<number>, searchFormProps: ComputedRef<IAnyObject>) => {
+export const useExpand = (props: TSearchFormProps, gridCount: Ref<number>, searchFormProps: ComputedRef<IAnyObject>, operationSpan: Ref<number>) => {
   const isExpand = ref(false)
   const toggleExpand = () => {
     isExpand.value = !isExpand.value
@@ -28,8 +28,11 @@ export const useExpand = (props: TSearchFormProps, gridCount: Ref<number>, searc
   // 支持2中模式。
   const haveExpand = computed(() => {
     if (searchFormProps.value.collapse) {
-      if (props.completeRow) return spanSum.value > gridCount.value
-      return spanSum.value >= gridCount.value
+      // 操作按钮占 operationSpan 列，threshold 为字段进入按钮区的临界点
+      // operationSpan=1 时 threshold=gridCount，与原逻辑完全一致
+      const threshold = gridCount.value - operationSpan.value + 1
+      if (props.completeRow) return spanSum.value > threshold
+      return spanSum.value >= threshold
     }
     return false
   })
@@ -38,13 +41,15 @@ export const useExpand = (props: TSearchFormProps, gridCount: Ref<number>, searc
     const list = props.fieldList!
     const len = list.length
     let sum = 0
+    // 字段进入按钮区的临界点；operationSpan=1 时 threshold=gridCount，与原逻辑完全一致
+    const threshold = gridCount.value - operationSpan.value + 1
     for (let i = 0; i < len; i++) {
       sum += getFieldSpan(list[i])
-      if (sum === gridCount.value) {
+      if (sum === threshold) {
         // 若需要完整的一行则需要+1
         return props.completeRow ? i : i - 1
       }
-      if (sum >= gridCount.value) {
+      if (sum > threshold) {
         return i - 1
       }
     }

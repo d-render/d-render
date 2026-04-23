@@ -20,7 +20,8 @@ export const cipSearchFormProps = {
   inForm: { type: Boolean }, // 是否在form内
   // fieldKey: String, // form下使用时的data所在的键值
   // ruleKey: String, // form下当前data的检验规则key, 此处为空时使用fieldKey
-  dependOnValues: Object as PropType<IAnyObject>// form 下对外部数据的依赖
+  dependOnValues: Object as PropType<IAnyObject>, // form 下对外部数据的依赖
+  operationSpan: { type: Number, default: 1 } // 操作按钮区在 CSS Grid 中占的列数
 }
 
 export type TSearchFormProps = ExtractPropTypes<typeof cipSearchFormProps>
