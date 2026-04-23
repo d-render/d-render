@@ -1,5 +1,5 @@
 import { h, defineComponent, computed, ref } from 'vue'
-import type { Ref, VNode, SlotsType } from 'vue'
+import type { Ref, VNode, SlotsType, Component } from 'vue'
 import { ElForm, ElFormItem } from 'element-plus'
 import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
 // @ts-ignore
@@ -20,6 +20,16 @@ import { useComponentProps } from '@xdp/config'
 import CipFormItem from '../cip-form-item'
 import { useExpand } from './use-expand'
 import { cipSearchFormProps } from './props'
+export interface OperationSlotProps {
+  emitSearch: (type?: string) => void
+  resetSearch: () => void
+  toggleExpand: () => void
+  isExpand: boolean
+  haveExpand: boolean
+  showResetButton: boolean
+  arrowIcon: Component
+  searchButtonText: string | undefined
+}
 // cip-search-form 强制开启grid模式
 // [2023-11-21] 新增一个怪异模式quirks
 export default defineComponent({
@@ -27,7 +37,7 @@ export default defineComponent({
   props: cipSearchFormProps,
   emits: ['update:model', 'search'],
   slots: Object as SlotsType<{
-    operation: () => VNode | VNode[] | null | undefined
+    operation: (props: OperationSlotProps) => VNode | VNode[] | null | undefined
   }>,
   setup (props, { emit, attrs, slots }) {
     useFormProvide(props)
@@ -65,7 +75,7 @@ export default defineComponent({
         getFieldValue(cipPageConfig, 'searchForm.searchReset'),
         getFieldValue(cipConfig, 'searchForm.searchReset'),
         getFieldValue(cipConfig, 'searchReset')
-      )
+      ) as boolean | undefined
     })
     const needWatchDom = computed(() => {
       return searchFormProps.value.collapse && (isNumber(gridBridge.value) && gridBridge.value <= 0)
@@ -199,12 +209,25 @@ export default defineComponent({
             gridColumn: !isOne ? `${gridCount.value - operationSpan.value + 1} / span ${operationSpan.value}` : undefined
           }}
         >
-          <CipButton buttonType={'search'} onClick={() => emitSearch()}>
-            {{ default: ({ text }: { text: string }) => props.searchButtonText ?? text }}
-          </CipButton>
-          {showResetButton.value && <CipButton buttonType={'reset'} onClick={() => resetSearch()} />}
-          {haveExpand.value && <CipButton square={true} icon={arrowIcon.value} onClick={() => toggleExpand()} />}
-          {slots.operation?.()}
+          {slots.operation
+            ? slots.operation({
+              emitSearch,
+              resetSearch,
+              toggleExpand,
+              isExpand: isExpand.value,
+              haveExpand: haveExpand.value,
+              showResetButton: showResetButton.value,
+              arrowIcon: arrowIcon.value,
+              searchButtonText: props.searchButtonText
+            })
+            : <>
+                <CipButton buttonType={'search'} onClick={() => emitSearch()}>
+                  {{ default: ({ text }: { text: string }) => props.searchButtonText ?? text }}
+                </CipButton>
+                {showResetButton.value && <CipButton buttonType={'reset'} onClick={() => resetSearch()} />}
+                {haveExpand.value && <CipButton square={true} icon={arrowIcon.value} onClick={() => toggleExpand()} />}
+              </>
+          }
         </ElFormItem>
         fieldSlots.push(buttonList)
       }
