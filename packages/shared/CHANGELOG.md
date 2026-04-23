@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.7
+
+### Patch Changes
+
+- refactor(config-util): enhance TFieldConfigMapSource type to include marked field configurations for form, search, and table
+
 ## 2.1.6
 
 ### Patch Changes
