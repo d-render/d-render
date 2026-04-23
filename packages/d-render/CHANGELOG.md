@@ -1,11 +1,23 @@
 # d-render
 
+## 3.1.5
+
+### Patch Changes
+
+- feat(d-render): [DrSearchForm]支持操作区多列与 operation 插槽
+
+  - 新增 props operationSpan，控制搜索操作区在 CSS Grid 中占据的列数（默认 1，兼容旧版）
+  - 新增 operation 插槽， 插槽存在时替代默认按钮并下发函数
+  - useExpand 中 haveExpand、rowMaxIndex 使用 threshold = gridCount - operationSpan + 1,
+    与「操作区占用列数」对齐；operationSpan 为 1 时与原先基于 gridCount 的行为一致
+  - 搜索按钮区域 gridColumn 按 operationSpan 设置起始列与 span；
+
 ## 3.1.4
 
 ### Patch Changes
 
-- fix(d-render): [DrSearchForm]修复组件changeValue无效的问题
-   - 临时解决方案，此问题是由于defaultModel的合并引入的，到不传入仅修复defaultModel存在的情况
+- fix(d-render): [DrSearchForm]修复组件 changeValue 无效的问题
+  - 临时解决方案，此问题是由于 defaultModel 的合并引入的，到不传入仅修复 defaultModel 存在的情况
 
 ## 3.1.2
 
