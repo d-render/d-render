@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.8
+
+### Patch Changes
+
+- refactor(config-util): update field configuration types to improve type safety and consistency across field configurations
+
 ## 2.1.7
 
 ### Patch Changes
