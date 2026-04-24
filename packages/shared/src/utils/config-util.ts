@@ -297,13 +297,7 @@ export interface ITableColumnConfig {
 export type IFormFieldItem = IFieldItem<TFormConfig>
 export type ISearchFieldItem = IFieldItem<TSearchFormConfig>
 export type ITableColumnItem = IFieldItem<TTableColumns> & { config: TTableColumns & { children: Array<ITableColumnItem> } }
-export type IFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), ExtendedConfig>>
-export type IFormFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TFormConfig>>
-export type ISearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TSearchFormConfig>>
-export type ITableFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<keyof Entity | (string & {}), TTableColumns>>
 
-type TFieldConfigValue<ConfigMap> = Extract<Exclude<ConfigMap[keyof ConfigMap], undefined>, ExtendedConfig>
-type TLooseSourceConfigMap = Record<string, ExtendedConfig | IEntityConfig | undefined>
 type TFieldConfigKind = 'field' | 'form' | 'table' | 'search'
 
 declare const FIELD_CONFIG_KIND: unique symbol
@@ -311,6 +305,16 @@ declare const FIELD_CONFIG_KIND: unique symbol
 type TMarkedFieldConfig<ConfigMap, Kind extends TFieldConfigKind> = ConfigMap & {
   readonly [FIELD_CONFIG_KIND]?: Kind
 }
+
+type TFieldMapKey<Entity> = Exclude<keyof Entity | (string & {}), typeof FIELD_CONFIG_KIND>
+
+export type IFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<TFieldMapKey<Entity>, ExtendedConfig>>
+export type IFormFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<TFieldMapKey<Entity>, TFormConfig>>
+export type ISearchFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<TFieldMapKey<Entity>, TSearchFormConfig>>
+export type ITableFieldConfig<Entity extends NoArrayObject<Entity> = Record<string, unknown>> = Partial<Record<TFieldMapKey<Entity>, TTableColumns>>
+
+type TFieldConfigValue<ConfigMap> = Extract<Exclude<ConfigMap[keyof ConfigMap], undefined>, ExtendedConfig>
+type TLooseSourceConfigMap = Record<string, ExtendedConfig | IEntityConfig | undefined>
 
 /** 合并来源：普通 map、实体 map，或 define*FieldConfig 打标后的 map */
 type TFieldConfigMapSource<Entity extends NoArrayObject<Entity> = Record<string, unknown>> =
@@ -323,7 +327,7 @@ type TFieldConfigMapSource<Entity extends NoArrayObject<Entity> = Record<string,
 type TFieldConfigKindOf<ConfigMap> = ConfigMap extends {
   readonly [FIELD_CONFIG_KIND]?: infer Kind
 }
-  ? Extract<Kind, TFieldConfigKind>
+  ? Kind extends TFieldConfigKind ? Kind : 'field'
   : 'field'
 
 type TFieldListItem<Config = ExtendedConfig> = IFieldItem<Config> & { sort: number }
@@ -339,16 +343,16 @@ type TGenerateFieldListResult<ConfigMap> = TFieldConfigKindOf<ConfigMap> extends
 // configMapToList即mergeFieldConfig联合使用
 export function generateFieldList <
   Entity extends NoArrayObject<Entity> = Record<string, unknown>,
-  ConfigMap extends IFieldConfig<Entity> = IFieldConfig<Entity>
-> (configMap: ConfigMap, ...source: Array<TFieldConfigMapSource<Entity>>): TGenerateFieldListResult<ConfigMap> {
+  ConfigMap extends TFieldConfigMapSource<Entity> = TFieldConfigMapSource<Entity>
+> (configMap: ConfigMap, ...source: Array<TFieldConfigMapSource<Record<string, unknown>>>): TGenerateFieldListResult<ConfigMap> {
   const mergedConfigMap = mergeFieldConfig(configMap, ...source)
   return configMapToList(mergedConfigMap)
 }
 
 export function mergeFieldConfig <
   Entity extends NoArrayObject<Entity>,
-  ConfigMap extends IFieldConfig<Entity> = IFieldConfig<Entity>
-> (targetConfigMap: ConfigMap, ...sourceConfigMaps: Array<TFieldConfigMapSource<Entity>>): ConfigMap {
+  ConfigMap extends TFieldConfigMapSource<Entity> = TFieldConfigMapSource<Entity>
+> (targetConfigMap: ConfigMap, ...sourceConfigMaps: Array<TFieldConfigMapSource<Record<string, unknown>>>): ConfigMap {
   const result = {} as ConfigMap
   Object.keys(targetConfigMap).forEach(key => {
     const typedKey = key as keyof ConfigMap
@@ -363,7 +367,7 @@ export function mergeFieldConfig <
  */
 export function configMapToList <
   Entity extends NoArrayObject<Entity> = Record<string, unknown>,
-  ConfigMap extends IFieldConfig<Entity> = IFieldConfig<Entity>
+  ConfigMap extends TFieldConfigMapSource<Entity> = TFieldConfigMapSource<Entity>
 > (configMap: ConfigMap): TGenerateFieldListResult<ConfigMap> {
   return Object.keys(configMap).map((key, i) => {
     const config = configMap[key as keyof (typeof configMap)]! as ExtendedConfig
@@ -422,14 +426,14 @@ const handlerDependOn = (dependOn: IRenderConfig['dependOn'], newDependOn: IRend
 function getMergeConfig <
   Entity extends NoArrayObject<Entity>,
   Config extends ExtendedConfig = ExtendedConfig
-> (key: string, targetConfig: Config, sourceConfigMaps: Array<TFieldConfigMapSource<Entity>>): Config {
+> (key: string, targetConfig: Config, sourceConfigMaps: Array<TFieldConfigMapSource<Record<string, unknown>>>): Config {
   let sourceConfig = {} as Config
   const sourceKey = targetConfig.sourceKey || targetConfig.realKey || key
   let dependOn = [] as IRenderConfig['dependOn']
   const isMergeDependOn = targetConfig.mergeDependOn === true
   if (sourceKey) {
     const sourceKeys = sourceKey.split('.')
-    sourceConfigMaps.forEach((sourceConfigMap = {} as TFieldConfigMapSource<Entity>) => {
+    sourceConfigMaps.forEach((sourceConfigMap = {} as TFieldConfigMapSource<Record<string, unknown>>) => {
       const sourceMap = sourceConfigMap as TLooseSourceConfigMap
       let sourceConfigNext = getFieldConfig<Config>(sourceMap[sourceKey])
       if (!sourceConfigNext && sourceKeys.length > 1) {
