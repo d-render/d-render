@@ -1,4 +1,4 @@
-import { h, defineComponent, computed, ref } from 'vue'
+import { h, defineComponent, computed, ref, watch, Fragment } from 'vue'
 import type { Ref, VNode, SlotsType, Component } from 'vue'
 import { ElForm, ElFormItem } from 'element-plus'
 import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
@@ -40,6 +40,10 @@ export default defineComponent({
     operation: (props: OperationSlotProps) => VNode | VNode[] | null | undefined
   }>,
   setup (props, { emit, attrs, slots }) {
+    const changeCount = ref(0) // model 整个对象变化的次数
+    watch(() => props.model, () => {
+      changeCount.value++
+    }, { immediate: true })
     useFormProvide(props)
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
@@ -75,7 +79,7 @@ export default defineComponent({
         getFieldValue(cipPageConfig, 'searchForm.searchReset'),
         getFieldValue(cipConfig, 'searchForm.searchReset'),
         getFieldValue(cipConfig, 'searchReset')
-      ) as boolean | undefined
+      ) as boolean
     })
     const needWatchDom = computed(() => {
       return searchFormProps.value.collapse && (isNumber(gridBridge.value) && gridBridge.value <= 0)
@@ -90,12 +94,14 @@ export default defineComponent({
     // 值更新
     const updateModel = (val: IAnyObject) => {
       // FIX[2023-05-22]: 修复model更新且未更新defaultModel的值，model对象写入defaultModel的数据导致defaultModel失效
+
       const dModel = props.defaultModel || {}
       Object.keys(dModel).forEach(key => {
         if (val[key] === dModel[key]) {
           Reflect.deleteProperty(val, key)
         }
       })
+
       emit('update:model', val)
     }
     // 触发搜索
@@ -163,6 +169,7 @@ export default defineComponent({
         model: formModel.value,
         fieldKey: key,
         config,
+        changeCount: changeCount.value, // 对象变化次数
         grid: gridCount.value,
         labelPosition: searchFormProps.value.labelPosition,
         parentDependOnValues: props.dependOnValues,
@@ -220,13 +227,13 @@ export default defineComponent({
               arrowIcon: arrowIcon.value,
               searchButtonText: props.searchButtonText
             })
-            : <>
+            : <Fragment>
                 <CipButton buttonType={'search'} onClick={() => emitSearch()}>
                   {{ default: ({ text }: { text: string }) => props.searchButtonText ?? text }}
                 </CipButton>
                 {showResetButton.value && <CipButton buttonType={'reset'} onClick={() => resetSearch()} />}
                 {haveExpand.value && <CipButton square={true} icon={arrowIcon.value} onClick={() => toggleExpand()} />}
-              </>
+              </Fragment>
           }
         </ElFormItem>
         fieldSlots.push(buttonList)
