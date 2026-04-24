@@ -1,5 +1,11 @@
 # d-render
 
+## 3.1.6
+
+### Patch Changes
+
+- feat(d-render): [cip-search-form]add changeCount tracking for model updates and improve button rendering
+
 ## 3.1.5
 
 ### Patch Changes
