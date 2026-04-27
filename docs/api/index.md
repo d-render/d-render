@@ -10,6 +10,22 @@
 
 ## 核心配置接口
 
+### TAsyncOptions
+
+异步拉取选项列表的函数签名（与 `@d-render/shared` 导出一致），供 `IRenderConfig.asyncOptions` 使用。
+
+```ts
+type TAsyncOptions = (
+  dependOnValues?: Record<string, unknown>,
+  outDependOnValues?: Record<string, unknown>,
+  extra?: unknown
+) => Promise<unknown[]>
+```
+
+- `dependOnValues`：`dependOn` 聚合后的依赖字段值。
+- `outDependOnValues`：`outDependOn` 对应的外层作用域值（如表格内字段依赖表格外字段）。
+- `extra`：组件侧透传，例如远程搜索的 `query`（见内置选项类组件）。
+
 ### IRenderConfig
 
 基础渲染配置，适用于表单、搜索表单、表格。
@@ -41,8 +57,8 @@ interface IRenderConfig {
   resetValue?: boolean
   changeValueByOld?: TChangeValueByOld
   
-  // 异步选项
-  asyncOptions?: (dependOnValue, outDependOnValues) => Promise<any[]>
+  // 异步选项：函数或设计器保存的函数体字符串
+  asyncOptions?: TAsyncOptions | string
   
   // 其他
   placeholder?: string

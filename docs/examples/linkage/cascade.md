@@ -237,7 +237,7 @@ dependOn: [{
 
 ### asyncOptions
 
-异步加载选项，接收依赖值作为参数：
+异步加载选项。函数形式与 **`TAsyncOptions`** 一致：`(dependOnValues?, outDependOnValues?, extra?) => Promise<unknown[]>`；依赖字段的值会出现在第一个参数对象中（见下方示例）。亦可配置为 **字符串**（函数体源码），供设计器序列化场景使用。
 
 ```js
 {

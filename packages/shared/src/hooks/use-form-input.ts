@@ -11,6 +11,7 @@ import {
   getUsingConfig,
   type IRenderConfig,
   type IAnyObject,
+  type TAsyncOptions,
   type ComposeType,
   type ExtendedConfig,
   depthFirstSearchTree2,
@@ -446,8 +447,12 @@ export const useOptions = (
    */
   const getOptions = async (val?: IAnyObject, outVal?: IAnyObject, extra?: unknown) => {
     if (props.config.asyncOptions) {
-      const asyncFunc = judgeUseFn('asyncOptions', props.config) as (val?: IAnyObject, outVal?: IAnyObject, extra?: unknown) => Promise<unknown[]>
-      options.value = await asyncFunc(val, outVal, extra)
+      const resolved = judgeUseFn('asyncOptions', props.config)
+      if (typeof resolved === 'function') {
+        options.value = await (resolved as TAsyncOptions)(val, outVal, extra)
+      } else {
+        options.value = []
+      }
     } else {
       // @ts-ignore
       options.value = (props.config?.options as unknown[]) ?? []

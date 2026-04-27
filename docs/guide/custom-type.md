@@ -180,10 +180,11 @@ const emit = defineEmits(formInputEmits)
 const { proxyValue, securityConfig } = useFormInput(props, emit)
 const options = ref([])
 
-// 组件配置中声明 asyncOptions
+// 组件配置中声明 asyncOptions（与 TAsyncOptions 一致，可传第三参 extra，如 remote 的 query）
 const loadOptions = async () => {
-  if (securityConfig.value.asyncOptions) {
-    options.value = await securityConfig.value.asyncOptions(props.dependOnValues)
+  const fn = securityConfig.value.asyncOptions
+  if (typeof fn === 'function') {
+    options.value = await fn(props.dependOnValues, props.outDependOnValues)
   }
 }
 

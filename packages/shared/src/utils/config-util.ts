@@ -33,6 +33,14 @@ export type ComposeType = TypeExtensions & DRenderTypeExtensions;
 export type TChangeConfig<T extends keyof ComposeType = keyof ComposeType> = (config: ExtendedConfig<T>, values: IAnyObject, outValues: IAnyObject) => ExtendedConfig<T>;
 
 export type TChangeValue = (values: any, outValues: any) => { value: any, otherValue?: IAnyObject } | void
+
+/** 异步加载选项（dependOn / remote 等场景下的拉取函数） */
+export type TAsyncOptions = (
+  dependOnValues?: IAnyObject,
+  outDependOnValues?: IAnyObject,
+  extra?: unknown
+) => Promise<unknown[]>
+
 export type TChangeValueByOld = (
   { key, oldValue }:{key:string, oldValue: unknown},
   values: IAnyObject, outValues: IAnyObject
@@ -145,7 +153,8 @@ export interface IRenderConfig <T extends keyof ComposeType = keyof ComposeType,
    * - 模板字符串：'{{now}}' 等模板
    */
   defaultValue?: V | (() => V) | string
-  asyncOptions?: (dependOnValue: any, outDependOnValues: any) => Promise<any[]>
+  /** 函数：异步拉取选项；字符串：设计器保存的函数体源码，运行时编译 */
+  asyncOptions?: TAsyncOptions | string
   // css
   inputStyle?: CSSProperties
   style?: CSSProperties

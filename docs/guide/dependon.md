@@ -149,7 +149,7 @@
 
 ### 5. asyncOptions：动态拉取选项
 
-最常用的联动方式之一。
+最常用的联动方式之一。类型为 **`TAsyncOptions | string`**：既可以是异步函数，也可以是设计器里保存的函数体字符串（运行时编译）。函数签名为 `(dependOnValues?, outDependOnValues?, extra?) => Promise<unknown[]>`，前两参与联动回调中的依赖对象一致；第三参 `extra` 仅部分内置组件会传入（例如远程搜索）。
 
 ```js
 {

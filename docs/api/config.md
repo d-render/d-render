@@ -124,8 +124,10 @@
 
 ### asyncOptions
 
-- 类型：`(dependOnValues, outDependOnValues) => Promise<any[]>`
-- 说明：异步获取选项
+- 类型：`TAsyncOptions | string`（`TAsyncOptions` 见 [API 参考](/api/#tasyncoptions)）
+- 说明：异步获取选项列表。
+  - **函数**：签名为 `(dependOnValues?, outDependOnValues?, extra?) => Promise<unknown[]>`，前两个参数与 `changeConfig` / `changeValue` 的依赖对象一致；`extra` 由具体组件传入（如远程搜索关键字）。
+  - **字符串**：动态表单设计器等场景下保存的函数体源码，运行时会编译为与上述相同的入参顺序（`dependOnValues`、`outDependOnValues`）。
 
 ### immediateChangeValue
 
