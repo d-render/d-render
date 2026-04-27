@@ -1,6 +1,6 @@
 {
   "name": "@d-render/shared",
-  "version": "2.1.10",
+  "version": "2.1.11",
   "description": "d-render 共享工具库 - 提供 utils、hooks、helper 等核心功能",
   "sideEffects": false,
   "main": "./esm/main.js",

@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.11
+
+### Patch Changes
+
+- feat(api): enhance asyncOptions type to support function signature and string representation
+
 ## 2.1.10
 
 ### Patch Changes
