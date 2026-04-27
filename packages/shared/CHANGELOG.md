@@ -1,5 +1,13 @@
 # @d-render/shared
 
+## 2.1.9
+
+### Patch Changes
+
+- feat(use-form-input): enhance getOptions function to accept additional parameters for improved flexibility
+
+  - Updated getOptions to include an extra parameter for additional options.
+
 ## 2.1.8
 
 ### Patch Changes
