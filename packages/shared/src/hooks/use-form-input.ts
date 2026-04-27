@@ -438,10 +438,16 @@ export const useOptions = (
       }
     }
   })
-  const getOptions = async (val?: IAnyObject, outVal?: IAnyObject) => {
+  /**
+   * 获取options
+   * @param val 依赖数据
+   * @param outVal 外部依赖数据（table外的数据，inTable为true时有效）
+   * @param extra 额外参数（例：remoteMethod的第一个入参query，建议使用对象）
+   */
+  const getOptions = async (val?: IAnyObject, outVal?: IAnyObject, extra?: unknown) => {
     if (props.config.asyncOptions) {
-      const asyncFunc = judgeUseFn('asyncOptions', props.config) as (val?: IAnyObject, outVal?: IAnyObject) => Promise<unknown[]>
-      options.value = await asyncFunc(val, outVal)
+      const asyncFunc = judgeUseFn('asyncOptions', props.config) as (val?: IAnyObject, outVal?: IAnyObject, extra?: unknown) => Promise<unknown[]>
+      options.value = await asyncFunc(val, outVal, extra)
     } else {
       // @ts-ignore
       options.value = (props.config?.options as unknown[]) ?? []
