@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.10
+
+### Patch Changes
+
+- 修复一下小错误
+
 ## 2.1.9
 
 ### Patch Changes
