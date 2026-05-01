@@ -36,6 +36,7 @@ export default defineComponent({
     }, {}))
     const inputProps = useInputProps(props, props.inputPropsConfig)
     const { handleChange, handleBlur } = useElementFormEvent()
+    const rootStyle = computed(() => ({ width: width.value }))
     if (!props.comp) return new Error('comp must be an component')
     return () => {
       const Comp = props.comp as unknown as any
@@ -50,11 +51,11 @@ export default defineComponent({
         outDependOnValues={props.outDependOnValues}
         tableData={props.tableData}
         onSearch={props.onSearch}
-        style={{ width: width.value }}
+        style={rootStyle.value}
         values={props.values}
         v-model={proxyValue.value}
-        onChange={() => { handleChange() }}
-        onBlur={() => { handleBlur() }}
+        onChange={handleChange}
+        onBlur={handleBlur}
         usingRules={props.usingRules}
         showTemplate={props.showTemplate}
         config={props.config}
