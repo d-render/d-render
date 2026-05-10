@@ -4,59 +4,26 @@
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M13 3v2h4.59L12 10.59 13.41 12 19 6.41V11h2V3h-8zM5 13h2v6h6v2H5v-8z"/>
       </svg>
-      <span>交互式示例 - 选择省份后城市自动加载</span>
+      <span>交互式示例 — 国家 / 省 / 市三级联动（dependOn + asyncOptions）</span>
     </div>
 
     <div class="form-demo">
-      <el-form :model="model" label-width="100px">
-        <el-form-item label="国家">
-          <el-select v-model="model.country" placeholder="请选择国家" @change="handleCountryChange">
-            <el-option label="中国" value="china" />
-            <el-option label="美国" value="usa" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="省份">
-          <el-select
-            v-model="model.province"
-            :disabled="!model.country"
-            :placeholder="model.country ? '请选择省份' : '请先选择国家'"
-            @change="handleProvinceChange"
-          >
-            <el-option
-              v-for="item in provinces"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="城市">
-          <el-select
-            v-model="model.city"
-            :disabled="!model.province"
-            :placeholder="model.province ? '请选择城市' : '请先选择省份'"
-          >
-            <el-option
-              v-for="item in cities"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-      </el-form>
+      <DrForm
+        v-model:model="model"
+        :field-list="fieldList"
+        label-width="100px"
+        :grid="1"
+      />
 
       <div class="output-result">
-        <div style="font-weight: 600; margin-bottom: 8px;">📝 表单数据</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">表单数据</div>
         <pre>{{ JSON.stringify(model, null, 2) }}</pre>
       </div>
 
       <div class="demo-actions">
         <el-button type="primary" size="small" @click="resetForm">重置</el-button>
         <el-button size="small" @click="showCode = !showCode">
-          {{ showCode ? '隐藏' : '显示' }}配置代码
+          {{ showCode ? '隐藏' : '显示' }}配置说明
         </el-button>
       </div>
 
@@ -69,7 +36,11 @@
 
 <script setup>
 import { ref } from 'vue'
+import { DrForm, generateFieldList, defineFormFieldConfig } from 'd-render'
+import { ensureDocDRender } from './ensure-doc-d-render'
 import CodeBlock from './CodeBlock.vue'
+
+ensureDocDRender()
 
 const model = ref({
   country: '',
@@ -99,64 +70,78 @@ const cityMap = {
   12: [{ value: 1201, label: '纽约市' }]
 }
 
-const provinces = ref([])
-const cities = ref([])
-
-const handleCountryChange = () => {
-  model.value.province = ''
-  model.value.city = ''
-  provinces.value = provinceMap[model.value.country] || []
-  cities.value = []
+const fetchCountries = async () => {
+  await new Promise((r) => setTimeout(r, 100))
+  return [
+    { value: 'china', label: '中国' },
+    { value: 'usa', label: '美国' }
+  ]
 }
-
-const handleProvinceChange = () => {
-  model.value.city = ''
-  cities.value = cityMap[model.value.province] || []
-}
-
-const resetForm = () => {
-  model.value = { country: '', province: '', city: '' }
-  provinces.value = []
-  cities.value = []
-}
-
-const cascadeCode = `import { generateFieldList, defineFormFieldConfig } from 'd-render'
 
 const fieldList = generateFieldList(defineFormFieldConfig({
   country: {
     type: 'select',
     label: '国家',
+    placeholder: '请选择国家',
     asyncOptions: fetchCountries
   },
   province: {
     type: 'select',
     label: '省份',
+    placeholder: '请选择省份',
     dependOn: ['country'],
-    resetValue: true,  // 国家变化时清空省份
+    resetValue: true,
     changeConfig: (config, { country }) => {
-      config.disabled = !country  // 未选择国家时禁用
+      config.disabled = !country
+      config.placeholder = country ? '请选择省份' : '请先选择国家'
       return config
     },
-    asyncOptions: async ({ country }) => {
+    asyncOptions: async (dependOnValues) => {
+      const country = dependOnValues?.country
       if (!country) return []
-      return await fetchProvinces(country)
+      await new Promise((r) => setTimeout(r, 100))
+      return provinceMap[country] || []
     }
   },
   city: {
     type: 'select',
     label: '城市',
+    placeholder: '请选择城市',
     dependOn: ['province'],
-    resetValue: true,  // 省份变化时清空城市
+    resetValue: true,
     changeConfig: (config, { province }) => {
       config.disabled = !province
+      config.placeholder = province ? '请选择城市' : '请先选择省份'
       return config
     },
-    asyncOptions: async ({ province }) => {
+    asyncOptions: async (dependOnValues) => {
+      const province = dependOnValues?.province
       if (!province) return []
-      return await fetchCities(province)
+      await new Promise((r) => setTimeout(r, 80))
+      return cityMap[province] || []
     }
   }
-}))`
+}))
+
+const resetForm = () => {
+  model.value = { country: '', province: '', city: '' }
+}
+
+const cascadeCode = `// 国家 -> 省 -> 市：每一级 dependOn 上一级，resetValue 在依赖变化时清空本级
+province: {
+  type: 'select',
+  label: '省份',
+  dependOn: ['country'],
+  resetValue: true,
+  changeConfig: (config, { country }) => {
+    config.disabled = !country
+    return config
+  },
+  asyncOptions: async (dependOnValues) => {
+    if (!dependOnValues?.country) return []
+    return await fetchProvinces(dependOnValues.country)
+  }
+}`
 </script>
 
 <style scoped>

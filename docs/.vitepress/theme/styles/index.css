@@ -91,3 +91,13 @@
     flex-direction: column;
   }
 }
+
+.demo-placeholder {
+  padding: 24px;
+  text-align: center;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  border: 1px dashed var(--vp-c-divider);
+  border-radius: 8px;
+  margin: 16px 0;
+}

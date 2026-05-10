@@ -4,64 +4,27 @@
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M13 3v2h4.59L12 10.59 13.41 12 19 6.41V11h2V3h-8zM5 13h2v6h6v2H5v-8z"/>
       </svg>
-      <span>交互式示例 - 选择省份后，城市会自动加载</span>
+      <span>交互式示例 — 类型联动显隐；省份变更会清空并刷新城市选项</span>
     </div>
 
     <div class="form-demo">
-      <el-form :model="model" label-width="100px">
-        <el-form-item label="类型">
-          <el-radio-group v-model="model.type">
-            <el-radio value="personal">个人</el-radio>
-            <el-radio value="company">企业</el-radio>
-          </el-radio-group>
-        </el-form-item>
-
-        <el-form-item v-if="model.type === 'company'" label="企业名称" required>
-          <el-input v-model="model.companyName" placeholder="请输入企业名称" />
-        </el-form-item>
-
-        <el-divider content-position="left">级联选择</el-divider>
-
-        <el-form-item label="省份">
-          <el-select
-            v-model="model.province"
-            placeholder="请选择省份"
-            @change="handleProvinceChange"
-          >
-            <el-option
-              v-for="item in provinces"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="城市">
-          <el-select
-            v-model="model.city"
-            :disabled="!model.province"
-            :placeholder="model.province ? '请选择城市' : '请先选择省份'"
-          >
-            <el-option
-              v-for="item in cities"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-      </el-form>
+      <DrForm
+        ref="formRef"
+        v-model:model="model"
+        :field-list="fieldList"
+        label-width="100px"
+        :grid="1"
+      />
 
       <div class="output-result">
-        <div style="font-weight: 600; margin-bottom: 8px;">📝 表单数据 (model)</div>
+        <div style="font-weight: 600; margin-bottom: 8px;">表单数据 (model)</div>
         <pre>{{ JSON.stringify(model, null, 2) }}</pre>
       </div>
 
       <div class="demo-actions">
         <el-button type="primary" size="small" @click="resetForm">重置表单</el-button>
         <el-button size="small" @click="showCode = !showCode">
-          {{ showCode ? '隐藏' : '显示' }}配置代码
+          {{ showCode ? '隐藏' : '显示' }}配置说明
         </el-button>
       </div>
 
@@ -73,16 +36,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import { DrForm, generateFieldList, defineFormFieldConfig } from 'd-render'
+import { ensureDocDRender } from './ensure-doc-d-render'
 import CodeBlock from './CodeBlock.vue'
 
-const model = ref({
-  type: 'personal',
-  companyName: '',
-  province: '',
-  city: ''
-})
+ensureDocDRender()
 
+const formRef = ref()
 const showCode = ref(false)
 
 const provinces = [
@@ -106,27 +67,21 @@ const cityMap = {
   ]
 }
 
-const cities = ref([])
-
-const handleProvinceChange = (val) => {
-  model.value.city = ''
-  cities.value = cityMap[val] || []
+const fetchProvinces = async () => {
+  await new Promise((r) => setTimeout(r, 120))
+  return provinces
 }
 
-const resetForm = () => {
-  model.value = {
-    type: 'personal',
-    companyName: '',
-    province: '',
-    city: ''
-  }
-  cities.value = []
-}
+const model = ref({
+  type: 'personal',
+  companyName: '',
+  province: '',
+  city: ''
+})
 
-const dependonCode = `// 显示/隐藏联动
-{
+const fieldList = generateFieldList(defineFormFieldConfig({
   type: {
-    type: 'radio',
+    type: 'select',
     label: '类型',
     options: [
       { value: 'personal', label: '个人' },
@@ -136,34 +91,74 @@ const dependonCode = `// 显示/隐藏联动
   companyName: {
     type: 'input',
     label: '企业名称',
+    required: true,
+    placeholder: '请输入企业名称',
     dependOn: ['type'],
     changeConfig: (config, { type }) => {
       config.hideItem = type !== 'company'
       return config
     }
-  }
-}
-
-// 级联选择
-{
+  },
   province: {
     type: 'select',
     label: '省份',
+    placeholder: '请选择省份',
     asyncOptions: fetchProvinces
   },
   city: {
     type: 'select',
     label: '城市',
+    placeholder: '请选择城市',
     dependOn: ['province'],
-    resetValue: true,  // 省份变化时清空城市
+    resetValue: true,
     changeConfig: (config, { province }) => {
       config.disabled = !province
+      config.placeholder = province ? '请选择城市' : '请先选择省份'
       return config
     },
-    asyncOptions: async ({ province }) => {
+    asyncOptions: async (dependOnValues) => {
+      const province = dependOnValues?.province
       if (!province) return []
-      return await fetchCities(province)
+      await new Promise((r) => setTimeout(r, 80))
+      return cityMap[province] || []
     }
+  }
+}))
+
+const resetForm = () => {
+  formRef.value?.clearValidate?.()
+  model.value = {
+    type: 'personal',
+    companyName: '',
+    province: '',
+    city: ''
+  }
+}
+
+const dependonCode = `// dependOn + changeConfig：企业名称仅在企业类型时展示
+companyName: {
+  type: 'input',
+  label: '企业名称',
+  dependOn: ['type'],
+  changeConfig: (config, { type }) => {
+    config.hideItem = type !== 'company'
+    return config
+  }
+}
+
+// dependOn + resetValue + asyncOptions：省变化时清空市并拉取选项
+city: {
+  type: 'select',
+  label: '城市',
+  dependOn: ['province'],
+  resetValue: true,
+  changeConfig: (config, { province }) => {
+    config.disabled = !province
+    return config
+  },
+  asyncOptions: async (dependOnValues) => {
+    if (!dependOnValues?.province) return []
+    return await fetchCities(dependOnValues.province)
   }
 }`
 </script>

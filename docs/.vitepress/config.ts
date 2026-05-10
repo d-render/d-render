@@ -1,4 +1,34 @@
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vitepress'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const repoRoot = path.resolve(__dirname, '../..')
+
+const workspacePkgDir: Record<string, string> = {
+  'd-render': 'packages/d-render',
+  '@d-render/shared': 'packages/shared',
+  '@d-render/plugin-standard': 'packages/plugin-standard/core'
+}
+
+/** 读取 workspace 内 package.json 的 module / exports.import（与库发布入口一致） */
+function resolveWorkspacePkgMain (specifier: string) {
+  const relDir = workspacePkgDir[specifier]
+  if (!relDir) throw new Error(`[docs/vite] 未配置 workspace 包目录: ${specifier}`)
+  const pkgPath = path.join(repoRoot, relDir, 'package.json')
+  const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as {
+    module?: string
+    main?: string
+    exports?: { '.': { import?: string } }
+  }
+  const entry = pkg.module || pkg.exports?.['.']?.import || pkg.main
+  if (typeof entry !== 'string') {
+    throw new Error(`[docs/vite] ${specifier} 的 package.json 缺少 module / exports.import / main`)
+  }
+  return path.join(path.dirname(pkgPath), entry)
+}
 
 export default defineConfig({
   title: 'd-render',
@@ -91,6 +121,55 @@ export default defineConfig({
           ]
         }
       ]
+    }
+  },
+  vite: {
+    plugins: [vueJsx()],
+    resolve: {
+      dedupe: ['vue', 'element-plus', 'd-render', '@d-render/shared'],
+      // 仅匹配裸入口，避免 `d-render/style` 被拼到 main.js 后面
+      alias: [
+        { find: /^d-render$/, replacement: resolveWorkspacePkgMain('d-render') },
+        { find: /^@d-render\/shared$/, replacement: resolveWorkspacePkgMain('@d-render/shared') },
+        { find: /^@d-render\/plugin-standard$/, replacement: resolveWorkspacePkgMain('@d-render/plugin-standard') }
+      ]
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true
+        }
+      }
+    },
+    ssr: {
+      noExternal: [
+        'd-render',
+        '@d-render/shared',
+        '@d-render/plugin-standard',
+        '@xdp/button',
+        '@xdp/config',
+        '@xdp/utils'
+      ]
+    },
+    optimizeDeps: {
+      include: [
+        'd-render',
+        '@d-render/shared',
+        '@d-render/plugin-standard',
+        'element-plus',
+        '@element-plus/icons-vue',
+        'lodash-es',
+        'dayjs',
+        'uuid',
+        '@xdp/button',
+        '@xdp/config',
+        '@xdp/utils'
+      ]
+    },
+    build: {
+      dynamicImportVarsOptions: {
+        exclude: [/plugin-standard[/\\]core[/\\]esm[/\\]main\.js$/]
+      }
     }
   }
 })

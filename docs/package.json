@@ -3,15 +3,28 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "prebuild": "pnpm -w run build:shared && pnpm -w run build:d-render && pnpm -w run build:plugin-standard:core",
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },
   "dependencies": {
-    "element-plus": "^2.2.22",
+    "@d-render/plugin-standard": "workspace:*",
+    "@d-render/shared": "2.1.11",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@xdp/button": "^1.2.1",
+    "@xdp/config": "^1.0.2",
+    "@xdp/utils": "^1.0.3",
+    "d-render": "3.1.6",
+    "dayjs": "^1.11.9",
+    "element-plus": "2.2.22",
+    "lodash-es": "4.17.21",
+    "uuid": "8.3.2",
     "vue": "^3.4.34"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "less": "^4.2.0",
     "vitepress": "^1.0.0"
   }
 }
