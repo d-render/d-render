@@ -6,7 +6,7 @@ import 'element-plus/dist/index.css'
 import './styles/index.css'
 import { DRender } from 'd-render'
 import PluginStandard from '@d-render/plugin-standard'
-import 'd-render/style'
+import 'd-render/dist/index.css'
 
 
 /** 文档站仅在浏览器动态加载示例后调用，用于注册标准插件与样式 */
