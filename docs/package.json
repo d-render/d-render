@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "prebuild": "pnpm -w run build:shared && pnpm -w run build:d-render && pnpm -w run build:plugin-standard:core",
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "build": "pnpm -w run build:shared && pnpm -w run build:d-render && pnpm -w run build:plugin-standard:core && vitepress build",
     "preview": "vitepress preview"
   },
   "dependencies": {
