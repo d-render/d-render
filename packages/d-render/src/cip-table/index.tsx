@@ -73,6 +73,10 @@ export default defineComponent({
       return tableUsingConfig('dangerButton', false) as boolean
     })
 
+    const _defaultAlign = computed(() => {
+      return tableUsingConfig('defaultAlign', 'left') as 'left' | 'center' | 'right'
+    })
+
     const calculateCurrentWidthFn: ComputedRef<(width: number)=> number> = computed(() => {
       if (props.size) return (width) => width + addBorderWidth.value
       const { sizeStandard = 'default', size = 'default' } = (cipConfig.table || {}) as {
@@ -184,7 +188,7 @@ export default defineComponent({
 
       return h(ElTableColumn, {
         prop: key,
-        align: config.type === 'number' ? 'right' : '', // 针对数字类型进行居右优化
+        align: config.type === 'number' ? 'right' : _defaultAlign.value, // 针对数字类型进行居右优化
         style: 'display: flex;',
         ...tableColumnConfig
       }, {
@@ -259,7 +263,6 @@ export default defineComponent({
       document.addEventListener('click', handlerOutClick)
       const idx = props.data.findIndex(v => v === row)
       editRowIdx.value = idx
-      console.log('column', column)
       context.emit('row-click', row, column, event)
     }
     // 渲染table的所有数据列 注意此处为Columns
@@ -281,6 +284,7 @@ export default defineComponent({
         const indexColumn = h(ElTableColumn, {
           label: props.seqLabel || '序号',
           fixed: props.indexFixed ? 'left' : '',
+          align: _defaultAlign.value,
           width: transformWidth(isEmpty(props.rowKey) ? 55 : 75)
         },
         {
@@ -327,6 +331,7 @@ export default defineComponent({
         const handlerColumn = h(ElTableColumn, {
           label: '操作',
           fixed: 'right',
+          align: _defaultAlign.value,
           width: props.handlerWidth
             ? transformWidth(props.handlerWidth)
             : handleColumnWidthMap[_size.value] + addBorderWidth.value

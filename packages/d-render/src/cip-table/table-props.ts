@@ -46,7 +46,8 @@ export const tableProps = {
   fieldKey: String, // form下使用时的data所在的键值
   ruleKey: String, // form下当前data的检验规则key, 此处为空时使用fieldKey
   dependOnValues: Object as PropType<IAnyObject>, // form 下对外部数据的依赖
-  editType: { type: String as PropType<'all' | 'row' | 'cell'>, default: 'all' }
+  editType: { type: String as PropType<'all' | 'row' | 'cell'>, default: 'all' },
+  defaultAlign: { type: String as PropType<'left' | 'center' | 'right'> }
 }
 
 export type TTableProps = ExtractPropTypes<typeof tableProps>
