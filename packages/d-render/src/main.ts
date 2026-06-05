@@ -8,6 +8,7 @@ export { default as CipTable, default as DrTable } from './cip-table'
 export { default as CipFormRender, default as DrFormRender } from './cip-form-render'
 export { default as CipFormInputTransform, default as DrFormInputTransform } from './cip-form-input-transform'
 export { default as CipTableRender, default as DrTableRender } from './cip-table-render'
+export { default as CipConfigProvider, default as DrConfigProvider } from './cip-config-provider'
 export {
   isLayoutType
 } from './utils'
