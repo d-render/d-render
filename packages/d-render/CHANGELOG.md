@@ -1,5 +1,12 @@
 # d-render
 
+## 3.1.7
+
+### Patch Changes
+
+- feat(d-render): [DrTable]新增 defaultAlign 属性控制列内容的默认对其方式
+  feat(d-render): [DrConfigProvider]新增全局配置控制组件
+
 ## 3.1.6
 
 ### Patch Changes
