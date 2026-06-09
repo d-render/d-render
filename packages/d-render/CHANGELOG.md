@@ -1,5 +1,11 @@
 # d-render
 
+## 3.1.8
+
+### Patch Changes
+
+- feat(d-render): add handlerAlign and handlerHeaderAlign props for customizable column alignment
+
 ## 3.1.7
 
 ### Patch Changes
