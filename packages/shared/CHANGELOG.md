@@ -1,5 +1,11 @@
 # @d-render/shared
 
+## 2.1.12
+
+### Patch Changes
+
+- fix(shared): 优化 ITableRenderConfig 的类型
+
 ## 2.1.11
 
 ### Patch Changes
