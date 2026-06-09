@@ -331,7 +331,8 @@ export default defineComponent({
         const handlerColumn = h(ElTableColumn, {
           label: '操作',
           fixed: 'right',
-          align: _defaultAlign.value,
+          align: props.handlerAlign ?? _defaultAlign.value,
+          headerAlign: props.handlerHeaderAlign,
           width: props.handlerWidth
             ? transformWidth(props.handlerWidth)
             : handleColumnWidthMap[_size.value] + addBorderWidth.value

@@ -42,6 +42,8 @@ export const tableProps = {
     type: String
     // default: '136px'
   },
+  handlerHeaderAlign: { type: String as PropType<'left' | 'center' | 'right'> },
+  handlerAlign: { type: String as PropType<'left' | 'center' | 'right'> },
   handlerLimit: { type: Number, default: 3 },
   fieldKey: String, // form下使用时的data所在的键值
   ruleKey: String, // form下当前data的检验规则key, 此处为空时使用fieldKey
