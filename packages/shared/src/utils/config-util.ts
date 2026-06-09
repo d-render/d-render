@@ -198,10 +198,17 @@ export interface ITableRenderConfig {
   __render?: (props: ITableRenderProps) => VNode
   fixed?: boolean | 'left' | 'right'
   /**
-   * 当前表单项最小宽度
+   * 当前列最小宽度
    */
-  minWidth?: string
+  minWidth?: number | string
+  /**
+   * 列内容对齐方式
+   */
   align?: 'left' | 'center' | 'right'
+  /**
+   * 表头对齐方式
+   */
+  headerAlign?: 'left' | 'center' | 'right'
   slots?: {
     header?: Slot
   }
