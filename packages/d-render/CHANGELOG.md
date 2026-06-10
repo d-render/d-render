@@ -1,5 +1,16 @@
 # d-render
 
+## 3.1.9
+
+### Patch Changes
+
+- ### Added
+  - **ITableRenderConfig**（shared）：新增 `textLevel` 列文字层级配置，支持 `primary`（主信息）、`regular`（常规，默认）、`secondary`（次要信息），用于区分表格列主次文字颜色。
+  - **CipTableConfig**（shared）：新增 `transformPx` 自定义 px 宽度转换函数，优先级高于 `size` / `sizeStandard` 的换算逻辑；接收列配置原始 px 数值，返回实际渲染宽度（不含 border 补偿，内部自动叠加）。
+  - **DrTable**（d-render）：支持列配置 `textLevel`，按层级应用 `text-primary` / `text-regular` / `text-secondary` 样式；`columnType` 为 `mainField` 时仍默认使用主信息样式。
+- Updated dependencies
+  - @d-render/shared@2.1.13
+
 ## 3.1.8
 
 ### Patch Changes
