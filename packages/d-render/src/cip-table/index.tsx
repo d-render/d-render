@@ -78,6 +78,10 @@ export default defineComponent({
     })
 
     const calculateCurrentWidthFn: ComputedRef<(width: number)=> number> = computed(() => {
+      const customTransform = cipConfig.table?.transformPx
+      if (typeof customTransform === 'function') {
+        return (width) => customTransform(width) + addBorderWidth.value
+      }
       if (props.size) return (width) => width + addBorderWidth.value
       const { sizeStandard = 'default', size = 'default' } = (cipConfig.table || {}) as {
         sizeStandard: SizeCellConfigKey
@@ -126,8 +130,9 @@ export default defineComponent({
     })
     // 原始的width 转换系数
     const transformWidth = (widthStr: string | number) => {
-      if (typeof widthStr === 'number') return Math.ceil(calculateCurrentWidthFn.value(widthStr))
-      if (widthStr.indexOf('px') > -1) return `${Math.ceil(calculateCurrentWidthFn.value(Number(widthStr.replace(/px$/, ''))))}px`
+      const applyPx = calculateCurrentWidthFn.value
+      if (typeof widthStr === 'number') return Math.ceil(applyPx(widthStr))
+      if (widthStr.indexOf('px') > -1) return `${Math.ceil(applyPx(Number(widthStr.replace(/px$/, ''))))}px`
       return widthStr
     }
     // 渲染table的单个数据列 注意此处为Column
