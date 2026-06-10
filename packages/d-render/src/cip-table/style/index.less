@@ -86,3 +86,16 @@ html:not(.dark) {
     color: #c0c0c0;
   }
 }
+
+// 列文字层级
+.cip-table {
+  .text-primary > .cell {
+    color: var(--el-text-color-primary);
+  }
+  .text-regular > .cell {
+    color: var(--el-text-color-regular);
+  }
+  .text-secondary > .cell {
+    color: var(--el-text-color-secondary);
+  }
+}

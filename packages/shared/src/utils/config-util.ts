@@ -213,6 +213,13 @@ export interface ITableRenderConfig {
     header?: Slot
   }
   selectable?: (params: {row: IAnyObject; index: number}) => boolean
+  /**
+   * 列文字层级，用于区分主次信息
+   * - `primary`：主信息，颜色最深
+   * - `regular`：常规信息（默认）
+   * - `secondary`：次要信息，颜色最浅
+   */
+  textLevel?: 'primary' | 'regular' | 'secondary'
 }
 // form及searchForm共有的属性
 export interface IBaseFormRenderConfig{
