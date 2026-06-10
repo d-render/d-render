@@ -1,0 +1,191 @@
+---
+description: 根据 commit 编写 Changeset 并自动执行 pnpm gen:version 更新 CHANGELOG（d-render monorepo 发版）
+globs: .changeset/**/*,packages/**/CHANGELOG.md
+alwaysApply: false
+---
+
+# Changelog 与 Changeset 规范
+
+用户要求总结 commit、编写 changelog 或 changeset 时，按本规则执行。**任一可发包**（`d-render`、`@d-render/*`）均适用。
+
+## 1. 分析 commit
+
+```bash
+git show <sha> --stat --format=fuller
+git show <sha> -p   # 需要 API/类型/样式细节时
+```
+
+按变更文件路径判断影响哪些包（见 §4）。多个 commit 合并说明时，changelog 按时间梳理；changeset 按**对用户影响**归类（Added / Fixed / Changed），不按 commit 逐条罗列。
+
+## 2. Changelog 正文（给人看）
+
+- 语言：**简体中文**（可与英文 commit scope 混用，如 `feat(d-render): …`）
+- 结构：`### Added` / `### Fixed` / `### Changed`；有破坏性时加 `### BREAKING CHANGE` 或正文注明
+- 每条写清：**做了什么**、**默认值/是否破坏性**、**升级注意**（若有）
+- 命名约定：
+  - **组件**：优先 **Dr 前缀**（`DrForm`、`DrTable`、`DrSearchForm`、`DrConfigProvider` 等；源码目录多为 `cip-*`，二者等价）
+  - **渲染器/设计器**：`DrFormRender`、`DrTableRender`、`@d-render/design`
+  - **shared**：**hook / 工具函数 / 类型名**（如 `useFormInput`、`config-util`、`ITableRenderConfig`）
+  - **插件**：`@d-render/plugin-standard` 及其 configure / mobile 子包中的组件或注册项
+
+### 包专属说明要点
+
+| 包 | 正文侧重 |
+|----|----------|
+| `d-render` | 组件 prop/API、插槽、`DrConfigProvider` 全局配置、字段配置类型（`defineFormFieldConfig` 等） |
+| `@d-render/shared` | hooks/utils/helper 签名与行为、配置类型（`config-util`、`IRenderConfig` 体系） |
+| `@d-render/design` | 设计器交互、schema 编辑、与 `d-render` 渲染器的联动 |
+| `@d-render/plugin-standard` | 标准插件组件注册、`configure` 配置面板 |
+| `@d-render/plugin-standard-configure` | 插件侧配置 UI 与选项 |
+| `@d-render/plugin-standard-mobile` | 移动端插件适配（当前 `private`，内部版本） |
+
+**类型变更**：涉及 `packages/shared` 或 `d-render` 类型定义时，写明影响的配置接口（如 `IFormRenderConfig`、`ITableRenderConfig`）及业务侧需调整的字段。
+
+## 3. Changeset 文件
+
+- 路径：`.changeset/<语义化名称>.md`
+- 配置：`.changeset/config.json`，`baseBranch` 为 **`v7.x`**（`publish-branch` 亦含 `dev`）
+
+### 单包
+
+```markdown
+---
+"d-render": patch
+---
+
+### Fixed
+- **DrSearchForm**：修复 `changeValue` 在存在 `defaultModel` 时不生效的问题。
+```
+
+### 多包（同一变更影响多个发布单元）
+
+```markdown
+---
+"d-render": minor
+"@d-render/shared": patch
+---
+
+### Added
+- **DrTable**（d-render）：新增 `handlerAlign`、`handlerHeaderAlign` 控制操作列对齐。
+
+### Changed
+- **ITableRenderConfig**（shared）：优化表格字段配置类型定义。
+```
+
+**只为实际改动的包写 frontmatter**；未改动的包不要出现在 changeset 中。
+
+### 版本 bump
+
+| 变更类型 | bump |
+|----------|------|
+| 新 API / 新 prop / 新组件 / 新导出 | `minor` |
+| bug 修复、样式修复、类型收紧但不破坏调用 | `patch` |
+| 破坏性 API、配置类型迁移、需业务改引入方式 | `major` |
+
+同一批发版：含 `minor` 时相关 `fix` 可合并进同一文件用 `minor`；需严格区分则拆多个 changeset。
+
+以下情况通常**不需要** changeset：
+
+- 仅改 `docs/`（包名 `d-render-docs`，已在 changeset `ignore`）
+- 仅改 `play/`（演示工程，非发包单元）
+- 仅改根目录构建脚本 / CI，**不**改变任何 npm 包产物
+
+## 4. 可发包一览
+
+根据 `git diff` 路径选择 frontmatter 中的包名；版本号见各包 `package.json`。
+
+| 包名 | 目录 | 典型变更 |
+|------|------|----------|
+| `d-render` | `packages/d-render/` | 表单/搜索表单/表格组件、样式、`types/` |
+| `@d-render/shared` | `packages/shared/` | hooks、utils、helper、配置类型 |
+| `@d-render/design` | `packages/design/` | 可视化设计器 |
+| `@d-render/plugin-standard` | `packages/plugin-standard/core/` | 标准插件核心（`private`） |
+| `@d-render/plugin-standard-configure` | `packages/plugin-standard/configure/` | 插件配置面板（`private`） |
+| `@d-render/plugin-standard-mobile` | `packages/plugin-standard/mobile/` | 移动端插件（`private`） |
+
+**不发包 / 忽略**：`d-render-docs`（`docs/`）、`play/`、`d-render-projects`（根目录）。
+
+### 跨包联动（须在 changeset 正文中写清依赖关系）
+
+- `d-render` 依赖 `@d-render/shared`：shared 类型或 hook 变更常触发 `d-render` 联动发版；changeset 会生成 `Updated dependencies`
+- `@d-render/design` 依赖 `d-render` + `@d-render/shared`：设计器改动若仅 UI，通常只 bump `design`；若依赖新渲染 API，需同步 bump `d-render`
+- `plugin-standard*` 依赖 `d-render` + `@d-render/shared`：核心渲染能力变更时注明插件侧最低兼容版本
+
+## 5. 发版流程（Agent 必须按序执行）
+
+编写或更新 `.changeset/*.md` 后，**必须在同一轮对话内自动执行** `pnpm gen:version`，不要只创建 changeset 就结束。
+
+1. 分析 commit / `git diff`，确定影响的包与 bump 级别
+2. 创建或更新 `.changeset/<语义化名称>.md`（正文简体中文，见 §2–§3）
+3. **在仓库根目录执行**（使用 Shell 工具，非仅口头建议）：
+
+```bash
+pnpm gen:version
+```
+
+1. 检查命令退出码为 0；确认各相关包的 `CHANGELOG.md` 与 `package.json` 版本已更新
+2. 向用户汇报：**哪些包 bump 到了什么版本**、CHANGELOG 新增摘要；列出仍存在的未提交文件（changeset 已被消费删除属正常）
+
+### 何时跳过 `gen:version`
+
+- 用户**仅**要求查看/解释已有 CHANGELOG，且未新建 changeset
+- 用户明确说「先不要发版 / 不要 gen:version」
+- 仓库中**没有任何**待消费的 `.changeset/*.md`（除 `README.md` 外）
+
+### 失败与边界
+
+- `pnpm gen:version` 失败：根据终端输出修复（如 frontmatter 包名错误、changeset 格式问题）后**重试**，直至成功或向用户说明阻塞原因
+- 执行后 `.changeset/` 下对应文件会被删除，版本写入各包 — 这是预期行为
+- **不要**替用户 `git commit` / `git push`，除非用户明确要求
+
+### 其它命令
+
+- `pnpm changeset` — 仅当需要交互式创建时使用；Agent 通常直接写 `.changeset/*.md`
+- 验证构建（对应根目录 `ENTRY_MODULE`）：
+  - `pnpm build:shared`
+  - `pnpm build:d-render`
+  - `pnpm build:design`
+  - `pnpm build:plugin-standard:core` / `pnpm build:plugin-standard:configure`
+- `pnpm build-all` — 构建全部发包单元
+
+## 6. 示例
+
+**d-render 组件能力：**
+
+```markdown
+---
+"d-render": minor
+---
+
+### Added
+- **DrSearchForm**：新增 `operationSpan`（默认 `1`）与 `operation` 插槽，支持操作区多列布局。
+
+### Fixed
+- **DrSearchForm**：修复 `changeValue` 无效的问题（`defaultModel` 合并场景）。
+```
+
+**shared 类型 + d-render 联动：**
+
+```markdown
+---
+"@d-render/shared": minor
+"d-render": patch
+---
+
+### Changed
+- **配置类型体系**（shared）：拆分 `IRenderConfig` 为 `IFormRenderConfig`、`ITableRenderConfig` 等子接口；`IFormConfig` 标记废弃但仍兼容。
+
+### Fixed
+- **DrFormLayout**（d-render）：修正 `config` prop 类型为 `TFormConfig`。
+```
+
+**仅设计器：**
+
+```markdown
+---
+"@d-render/design": patch
+---
+
+### Fixed
+- **design**：修复拖动操作被 mask 遮挡的问题。
+```
