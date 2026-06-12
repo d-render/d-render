@@ -1,5 +1,18 @@
 # d-render
 
+## 3.1.10
+
+### Patch Changes
+
+- ### Fixed
+
+  - **DrTable**：列配置 `minWidth` 与 `width` 一样经 `transformWidth` 处理，随表格 `size`、`border` 及 `transformPx` 缩放。
+  - **DrTable**：修复列配置 `tableFormatter` 未正确传给 `ElTableColumn` 的问题。
+
+  ### Changed
+
+  - **DrTable**：`handlerWidth` prop 类型由 `string` 扩展为 `string | number`，与列宽转换逻辑一致。
+
 ## 3.1.9
 
 ### Patch Changes
