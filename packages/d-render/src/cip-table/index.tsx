@@ -138,7 +138,7 @@ export default defineComponent({
     // 渲染table的单个数据列 注意此处为Column
     const renderTableColumn = ({ key, config }: { key: string, config: Partial<ITableColumnConfig['config']> } = { key: '', config: {} }) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { children, type, formatter, columnType, textLevel, ...tableColumnConfig } = config
+      const { children, type, formatter, columnType, textLevel, tableFormatter, ...tableColumnConfig } = config
       // date 类型 强行修改宽度
       if (!tableColumnConfig.width) {
         // 兼容历史老代码
@@ -147,6 +147,9 @@ export default defineComponent({
         }
       } else {
         tableColumnConfig.width = transformWidth(tableColumnConfig.width)
+      }
+      if (tableColumnConfig.minWidth) {
+        tableColumnConfig.minWidth = transformWidth(tableColumnConfig.minWidth)
       }
       const headerSlots = ({ column, $index }: ITableRow) => {
         if (config.slots?.header) {
@@ -200,6 +203,7 @@ export default defineComponent({
         align: config.type === 'number' ? 'right' : _defaultAlign.value, // 针对数字类型进行居右优化
         style: 'display: flex;',
         className: textLevelClass,
+        formatter: tableFormatter,
         ...tableColumnConfig
       }, {
         header: headerSlots,

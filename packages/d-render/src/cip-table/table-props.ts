@@ -39,7 +39,7 @@ export const tableProps = {
   defaultExpendAll: Boolean,
   withTableHandle: Boolean, // 是否需要自带的处理列
   handlerWidth: { // 自带的处理列的宽度
-    type: String
+    type: [String, Number]
     // default: '136px'
   },
   handlerHeaderAlign: { type: String as PropType<'left' | 'center' | 'right'> },
