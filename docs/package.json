@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@d-render/plugin-standard": "workspace:*",
-    "@d-render/shared": "2.1.13",
+    "@d-render/shared": "2.1.14",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": "^1.2.1",
     "@xdp/config": "^1.0.2",

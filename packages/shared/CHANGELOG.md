@@ -1,5 +1,17 @@
 # @d-render/shared
 
+## 2.1.14
+
+### Patch Changes
+
+- ### Added
+
+  - **ITableRenderConfig**：新增 `tableFormatter` 类型定义，用于自定义单元格格式化，签名与 Element Plus `formatter` 一致，返回 `string | VNode`。
+
+  ### Changed
+
+  - **ITableRenderConfig**：`__render` 返回值类型由 `VNode` 扩展为 `VNode | string`，支持直接返回文本。
+
 ## 2.1.13
 
 ### Patch Changes
