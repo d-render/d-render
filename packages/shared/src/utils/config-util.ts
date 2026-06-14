@@ -195,7 +195,7 @@ export interface ITableRenderConfig {
   required?: boolean
   trueLabel?: string // columnType为checkbox时生效
   falseLabel?: string // columnType为checkbox时生效
-  __render?: (props: ITableRenderProps) => VNode
+  __render?: (props: ITableRenderProps) => VNode | string
   fixed?: boolean | 'left' | 'right'
   /**
    * 当前列最小宽度
@@ -220,6 +220,7 @@ export interface ITableRenderConfig {
    * - `secondary`：次要信息，颜色最浅
    */
   textLevel?: 'primary' | 'regular' | 'secondary'
+  tableFormatter?: (row: any, column: any, cellValue: any, index: number) => string | VNode
 }
 // form及searchForm共有的属性
 export interface IBaseFormRenderConfig{
