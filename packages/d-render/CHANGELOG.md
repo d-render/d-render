@@ -1,5 +1,12 @@
 # d-render
 
+## 3.1.11
+
+### Patch Changes
+
+- ### Fixed
+  - **d-render**：修复导出 `version` 后 TypeScript 声明文件（`types/`）生成异常的问题；版本号改为构建时通过 `__D_RENDER_VERSION__` 注入，不再从 `package.json` 直接导入。
+
 ## 3.1.10
 
 ### Patch Changes
