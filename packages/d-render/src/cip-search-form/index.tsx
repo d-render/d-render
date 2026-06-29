@@ -54,7 +54,7 @@ export default defineComponent({
         const dModel = props.defaultModel as IAnyObject
         Object.keys(dModel).forEach(key => {
           // 只有formModel.value对应的值为空才合并，如果props.model整体变化则再合并一次
-          if (isEmpty(formModel.value![key]) && isEmpty(dModel[key])) {
+          if (isEmpty(formModel.value![key]) && !isEmpty(dModel[key])) {
             formModel.value![key] = dModel[key]
           }
         })
