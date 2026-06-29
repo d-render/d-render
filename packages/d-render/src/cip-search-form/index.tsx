@@ -1,4 +1,4 @@
-import { h, defineComponent, computed, ref, watch, Fragment } from 'vue'
+import { h, defineComponent, computed, ref, watch, Fragment, toRef } from 'vue'
 import type { Ref, VNode, SlotsType, Component } from 'vue'
 import { ElForm, ElFormItem } from 'element-plus'
 import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
@@ -11,7 +11,9 @@ import {
   useFormProvide,
   useObserveDomResize,
   useCipConfig,
-  useCipPageConfig, getFieldValue
+  useCipPageConfig,
+  getFieldValue,
+  isEmpty
 } from '@d-render/shared'
 import type { IAnyObject, TSearchFormConfig, IFieldItem } from '@d-render/shared'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -41,9 +43,23 @@ export default defineComponent({
   }>,
   setup (props, { emit, attrs, slots }) {
     const changeCount = ref(0) // model 整个对象变化的次数
+    const formModel = toRef(props, 'model')
     watch(() => props.model, () => {
       changeCount.value++
     }, { immediate: true })
+    watch([() => props.defaultModel, changeCount], () => {
+      if (props.defaultModel && formModel.value) {
+        const dModel = props.defaultModel as IAnyObject
+        Object.keys(dModel).forEach(key => {
+          // 只有formModel.value对应的值为空才合并，如果props.model整体变化则再合并一次
+          if (isEmpty(formModel.value![key]) && isEmpty(dModel[key])) {
+            formModel.value![key] = dModel[key]
+          }
+        })
+      }
+    }, {
+      immediate: true
+    })
     useFormProvide(props)
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
@@ -155,14 +171,15 @@ export default defineComponent({
       return isExpand.value ? ArrowUp : ArrowDown
     })
 
-    const formModel = computed(() => {
-      if (!props.defaultModel) {
-        console.log('defaultModel不存在')
-        return props.model
-      }
-      return Object.assign({}, props.defaultModel, props.model)
-    })
-
+    // refactor: 此处代码以修复存在defaultModel后resetValue无效的问题
+    // const formModel = computed(() => {
+    //   if (!props.defaultModel) {
+    //     console.log('defaultModel不存在')
+    //     return props.model
+    //   }
+    //   // 上次只处理了不存在defaultModel的情况，现在需要处理有defaultModel的情况了
+    //   return Object.assign({}, props.defaultModel, props.model)
+    // })
     const formItem = ({ key, config }: IFieldItem<TSearchFormConfig> = { key: '', config: {} }) => {
       return h(CipFormItem, {
         key,
