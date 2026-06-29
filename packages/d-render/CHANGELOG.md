@@ -1,5 +1,12 @@
 # d-render
 
+## 3.1.14
+
+### Patch Changes
+
+- ### Fixed
+  - **DrSearchForm**：修复 `defaultModel` 合并条件判断错误，仅在 `model` 字段为空且 `defaultModel` 对应值非空时才写入默认值。
+
 ## 3.1.13
 
 ### Patch Changes
