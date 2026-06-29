@@ -1,5 +1,12 @@
 # d-render
 
+## 3.1.13
+
+### Patch Changes
+
+- ### Fixed
+  - **DrSearchForm**：优化 `formModel` 与 `defaultModel` 的 watch 同步逻辑，改用本地 ref 并在 `pre`/`post` 刷新阶段分别同步 `model` 与默认值合并，提升响应式更新可靠性。
+
 ## 3.1.12
 
 ### Patch Changes
