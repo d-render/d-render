@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "3.1.14",
+  "version": "3.1.15",
   "description": "基于 Element Plus 二次封装的数据驱动渲染组件库 - 表单、搜索表单、表格配置化渲染",
   "main": "./esm/main.js",
   "module": "./esm/main.js",

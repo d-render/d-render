@@ -1,5 +1,12 @@
 # d-render
 
+## 3.1.15
+
+### Patch Changes
+
+- ### Fixed
+  - **DrSearchForm**：修复 `updateModel` 在值与 `defaultModel` 相同时删除对应字段的行为，改为直接透传 `model` 更新，避免与 `defaultModel` 合并逻辑冲突。
+
 ## 3.1.14
 
 ### Patch Changes
