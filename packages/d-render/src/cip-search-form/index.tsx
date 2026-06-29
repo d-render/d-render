@@ -43,10 +43,12 @@ export default defineComponent({
   }>,
   setup (props, { emit, attrs, slots }) {
     const changeCount = ref(0) // model 整个对象变化的次数
-    const formModel = toRef(props, 'model')
+    const formModel = ref(props.model)// toRef(props, 'model')
     watch(() => props.model, () => {
+      // 调整逻辑
+      formModel.value = props.model ?? {}
       changeCount.value++
-    }, { immediate: true })
+    }, { immediate: true, flush: 'pre' })
     watch([() => props.defaultModel, changeCount], () => {
       if (props.defaultModel && formModel.value) {
         const dModel = props.defaultModel as IAnyObject
@@ -58,7 +60,9 @@ export default defineComponent({
         })
       }
     }, {
-      immediate: true
+      immediate: true,
+      deep: true,
+      flush: 'post'
     })
     useFormProvide(props)
     const cipConfig = useCipConfig()
