@@ -1,5 +1,12 @@
 # d-render
 
+## 3.1.12
+
+### Patch Changes
+
+- ### Fixed
+  - **DrSearchForm**：修复存在 `defaultModel` 时字段 `resetValue` 无法有效触发的问题；改为直接绑定 `model` 并在空值时合并 `defaultModel`，同时将 `model` 标记为必填 prop。
+
 ## 3.1.11
 
 ### Patch Changes
