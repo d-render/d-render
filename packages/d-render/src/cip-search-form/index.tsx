@@ -115,12 +115,12 @@ export default defineComponent({
     const updateModel = (val: IAnyObject) => {
       // FIX[2023-05-22]: 修复model更新且未更新defaultModel的值，model对象写入defaultModel的数据导致defaultModel失效
 
-      const dModel = props.defaultModel || {}
-      Object.keys(dModel).forEach(key => {
-        if (val[key] === dModel[key]) {
-          Reflect.deleteProperty(val, key)
-        }
-      })
+      // const dModel = props.defaultModel || {}
+      // Object.keys(dModel).forEach(key => {
+      //   if (val[key] === dModel[key]) {
+      //     Reflect.deleteProperty(val, key)
+      //   }
+      // })
 
       emit('update:model', val)
     }
