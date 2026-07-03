@@ -1,10 +1,18 @@
 # d-render
 
+## 3.1.19
+
+### Patch Changes
+
+- ### Fixed
+  - **DrTable**：修复列配置 `columnKey` 未透传至列渲染配置的问题，确保自定义 `columnKey` 时单元格绑定与 `v-model:filterModel` 同步均使用解析后的字段名。
+
 ## 3.1.18
 
 ### Patch Changes
 
 - ### Changed
+
   - **DrTable**：`v-model:filterModel` 使用 `columnKey`（替代 `filterKey`）；`filter-change` 仍使用列 `key`（与 `ElTableColumn.prop` 一致）。曾使用 `filterKey` 的列配置需改为 `columnKey`。
 
 - Updated dependencies
