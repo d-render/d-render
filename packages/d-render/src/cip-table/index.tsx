@@ -172,9 +172,10 @@ export default defineComponent({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {
         children, type, formatter, columnType, textLevel, tableFormatter,
-        filters, filter, filterPlacement, filterMultiple, filterMethod, filteredValue, filterKey,
+        filters, filter, filterPlacement, filterMultiple, filterMethod, filteredValue, columnKey: configColumnKey,
         ...tableColumnConfig
       } = config
+      const resolvedColumnKey = configColumnKey ?? key
       const columnConfigRecord = config as Record<string, unknown>
       const columnFilterProps: Record<string, unknown> = {}
       if (filters !== undefined) columnFilterProps.filters = filters
@@ -295,7 +296,7 @@ export default defineComponent({
               key,
               tableRuleKey: props.ruleKey,
               propertyKey,
-              columnKey: key,
+              columnKey: resolvedColumnKey,
               tableDependOnValues: props.dependOnValues,
               tableData: props.data,
               rowEdit: props.editType === 'row' ? editRowIdx.value === $index : true,

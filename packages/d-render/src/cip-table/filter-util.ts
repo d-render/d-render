@@ -4,8 +4,10 @@ export type TTableFilterModel = IAnyObject
 export type TTableFilteredValues = Record<string, string[]>
 
 export interface ITableFilterColumnMeta {
+  /** Element Plus 筛选键，对应列 key / ElTableColumn.prop */
   key: string
-  filterKey: string
+  /** filterModel 与单元格绑定使用的字段名 */
+  columnKey: string
   filterMultiple: boolean
 }
 
@@ -17,6 +19,10 @@ const isEmptyFilterValue = (value: unknown) => {
 const resolveFilterMultiple = (config: Partial<ITableColumnConfig['config']>) => {
   const configRecord = config as Record<string, unknown>
   return (config.filterMultiple ?? configRecord['filter-multiple'] ?? true) as boolean
+}
+
+const resolveColumnKey = (key: string, config: Partial<ITableColumnConfig['config']>) => {
+  return config.columnKey ?? key
 }
 
 /** 收集带 filters 配置的列，含嵌套 children */
@@ -33,7 +39,7 @@ export const collectFilterableColumns = (
     if (config.filters !== undefined) {
       acc.push({
         key,
-        filterKey: config.filterKey ?? key,
+        columnKey: resolveColumnKey(key, config),
         filterMultiple: resolveFilterMultiple(config)
       })
     }
@@ -47,10 +53,10 @@ export const tableFilteredValuesToModel = (
   filterableColumns: Array<ITableFilterColumnMeta> = []
 ): TTableFilterModel => {
   const model: TTableFilterModel = {}
-  filterableColumns.forEach(({ key, filterKey, filterMultiple }) => {
+  filterableColumns.forEach(({ key, columnKey, filterMultiple }) => {
     const values = filteredValues[key]
     if (!values?.length) return
-    model[filterKey] = filterMultiple ? [...values] : values[0]
+    model[columnKey] = filterMultiple ? [...values] : values[0]
   })
   return model
 }
@@ -61,8 +67,8 @@ export const modelToTableFilteredValues = (
   filterableColumns: Array<ITableFilterColumnMeta> = []
 ): TTableFilteredValues => {
   const filteredValues: TTableFilteredValues = {}
-  filterableColumns.forEach(({ key, filterKey, filterMultiple }) => {
-    const value = model[filterKey]
+  filterableColumns.forEach(({ key, columnKey, filterMultiple }) => {
+    const value = model[columnKey]
     if (isEmptyFilterValue(value)) {
       filteredValues[key] = []
       return
@@ -83,11 +89,11 @@ export const mergeTableFilterModel = (
   filterableColumns: Array<ITableFilterColumnMeta> = []
 ): TTableFilterModel => {
   const next = { ...target }
-  filterableColumns.forEach(({ filterKey }) => {
-    if (isEmptyFilterValue(source[filterKey])) {
-      delete next[filterKey]
+  filterableColumns.forEach(({ columnKey }) => {
+    if (isEmptyFilterValue(source[columnKey])) {
+      delete next[columnKey]
     } else {
-      next[filterKey] = source[filterKey]
+      next[columnKey] = source[columnKey]
     }
   })
   return next

@@ -233,8 +233,8 @@ export interface ITableRenderConfig {
   filterMethod?: (value: unknown, row: IAnyObject, column: IAnyObject) => boolean
   /** 选中的筛选值，同 Element Plus TableColumn filtered-value */
   filteredValue?: string[]
-  /** 与搜索表单同步时使用的字段名，默认与列 key 相同 */
-  filterKey?: string
+  /** 列数据字段名；用于单元格绑定与 filterModel 同步，默认等于列 key */
+  columnKey?: string
 }
 // form及searchForm共有的属性
 export interface IBaseFormRenderConfig{
