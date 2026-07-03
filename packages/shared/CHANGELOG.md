@@ -1,5 +1,12 @@
 # @d-render/shared
 
+## 2.1.16
+
+### Patch Changes
+
+- ### Changed
+  - **ITableRenderConfig**：列配置 `filterKey` 重命名为 `columnKey`，用于单元格绑定与 `filterModel` 同步；默认等于列 `key`。
+
 ## 2.1.15
 
 ### Patch Changes
