@@ -1,5 +1,12 @@
 # d-render
 
+## 3.1.17
+
+### Patch Changes
+
+- ### Added
+  - **DrTable**：支持通过 `DrConfigProvider` 或页面配置的 `table.filterIcon` 自定义列筛选图标，函数签名与 Element Plus TableColumn `filter-icon` 插槽一致（接收 `{ filterOpened }` 并返回 `VNode`）。
+
 ## 3.1.16
 
 ### Patch Changes
