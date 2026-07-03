@@ -258,6 +258,7 @@ export default defineComponent({
         style: 'display: flex;',
         className: textLevelClass,
         formatter: tableFormatter,
+        columnKey: resolvedColumnKey,
         ...tableColumnConfig,
         ...columnFilterProps
       }, {
