@@ -49,7 +49,8 @@ const handleSearch = (model) => {
 | header-click | `(column, event)` | 表头点击 |
 | header-contextmenu | `(column, event)` | 表头右键 |
 | sort-change | `({ column, prop, order })` | 排序变化 |
-| filter-change | `(filters)` | 筛选变化 |
+| filter-change | `(filters)` | 筛选变化，`filters` 为 Element Plus 格式 `Record<string, string[]>` |
+| update:filterModel | `(model)` | 筛选变化时触发，`model` 为搜索表单友好格式（单选 `string`、多选 `string[]`），配合 `v-model:filterModel` 使用 |
 | current-change | `(currentRow, oldCurrentRow)` | 当前行变化 |
 | header-dragend | `(newWidth, oldWidth, column, event)` | 列宽拖动 |
 

@@ -49,7 +49,9 @@ export const tableProps = {
   ruleKey: String, // form下当前data的检验规则key, 此处为空时使用fieldKey
   dependOnValues: Object as PropType<IAnyObject>, // form 下对外部数据的依赖
   editType: { type: String as PropType<'all' | 'row' | 'cell'>, default: 'all' },
-  defaultAlign: { type: String as PropType<'left' | 'center' | 'right'> }
+  defaultAlign: { type: String as PropType<'left' | 'center' | 'right'> },
+  /** 筛选值，单选为 string、多选为 string[]，支持 v-model:filterModel 与搜索表单同步 */
+  filterModel: { type: Object as PropType<IAnyObject> }
 }
 
 export type TTableProps = ExtractPropTypes<typeof tableProps>

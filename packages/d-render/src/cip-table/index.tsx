@@ -31,6 +31,12 @@ import ColumnInput from './column-input'
 import { EmptyStatus, Hint } from './icons-vue'
 import { dateColumnWidthMap, handleColumnWidthMap, SizeCellConfigKey } from './config'
 import { analyseData, getPropertyKeyByPath, calculateCurrentWidth } from './util'
+import {
+  collectFilterableColumns,
+  modelToTableFilteredValues,
+  mergeTableFilterModel,
+  tableFilteredValuesToModel
+} from './filter-util'
 type TComponentSize = 'small' | 'default' | 'large'
 interface ITableRow {
   row: IAnyObject
@@ -41,7 +47,7 @@ export default defineComponent({
   name: 'CipTable',
   inheritAttrs: false,
   props: tableProps,
-  emits: ['sort', 'update:data', 'update:selectColumns', 'mainFieldClick', 'update:selectRadio', 'row-click'],
+  emits: ['sort', 'filter-change', 'update:filterModel', 'update:data', 'update:selectColumns', 'mainFieldClick', 'update:selectRadio', 'row-click'],
   setup (props: TTableProps, context) {
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
@@ -75,6 +81,16 @@ export default defineComponent({
 
     const _defaultAlign = computed(() => {
       return tableUsingConfig('defaultAlign', 'left') as 'left' | 'center' | 'right'
+    })
+
+    // 仅依赖 columns，columns 不变时复用同一份 meta，避免转换时重复 traverse
+    const filterableColumns = computed(() => collectFilterableColumns(props.columns))
+
+    // 依赖 filterModel 的筛选字段 + filterableColumns；
+    // 因 Vue 3 属性级响应式 + UpdateModelQueue 原地修改，非筛选字段变化不会触发重算
+    const tableFilteredValues = computed(() => {
+      if (props.filterModel === undefined) return undefined
+      return modelToTableFilteredValues(props.filterModel, filterableColumns.value)
     })
 
     const calculateCurrentWidthFn: ComputedRef<(width: number)=> number> = computed(() => {
@@ -120,6 +136,20 @@ export default defineComponent({
     const onSortChange = ({ prop, order }: {prop: string, order: string}) => {
       context.emit('sort', { prop, order })
     }
+    // 触发 table 筛选事件，并同步 v-model:filterModel
+    const onFilterChange = (filters: Record<string, string[]>) => {
+      if (props.filterModel !== undefined) {
+        context.emit(
+          'update:filterModel',
+          mergeTableFilterModel(
+            props.filterModel,
+            tableFilteredValuesToModel(filters, filterableColumns.value),
+            filterableColumns.value
+          )
+        )
+      }
+      context.emit('filter-change', filters)
+    }
     // 触发列的选中改变事件
     const onSelectionChange = (val: unknown) => {
       context.emit('update:selectColumns', val)
@@ -138,7 +168,28 @@ export default defineComponent({
     // 渲染table的单个数据列 注意此处为Column
     const renderTableColumn = ({ key, config }: { key: string, config: Partial<ITableColumnConfig['config']> } = { key: '', config: {} }) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { children, type, formatter, columnType, textLevel, tableFormatter, ...tableColumnConfig } = config
+      const {
+        children, type, formatter, columnType, textLevel, tableFormatter,
+        filters, filter, filterPlacement, filterMultiple, filterMethod, filteredValue, filterKey,
+        ...tableColumnConfig
+      } = config
+      const columnConfigRecord = config as Record<string, unknown>
+      const columnFilterProps: Record<string, unknown> = {}
+      if (filters !== undefined) columnFilterProps.filters = filters
+      const resolvedFilterPlacement = filterPlacement ?? (typeof filter === 'string' ? filter : undefined)
+      if (resolvedFilterPlacement !== undefined) columnFilterProps.filterPlacement = resolvedFilterPlacement
+      const resolvedFilterMultiple = filterMultiple ?? columnConfigRecord['filter-multiple']
+      if (resolvedFilterMultiple !== undefined) columnFilterProps.filterMultiple = resolvedFilterMultiple
+      const resolvedFilterMethod = filterMethod ?? columnConfigRecord['filter-method']
+      if (resolvedFilterMethod !== undefined) columnFilterProps.filterMethod = resolvedFilterMethod
+      if (tableFilteredValues.value !== undefined) {
+        if (filters !== undefined) {
+          columnFilterProps.filteredValue = tableFilteredValues.value[key] ?? []
+        }
+      } else {
+        const resolvedFilteredValue = filteredValue ?? columnConfigRecord['filtered-value']
+        if (resolvedFilteredValue !== undefined) columnFilterProps.filteredValue = resolvedFilteredValue
+      }
       // date 类型 强行修改宽度
       if (!tableColumnConfig.width) {
         // 兼容历史老代码
@@ -204,7 +255,8 @@ export default defineComponent({
         style: 'display: flex;',
         className: textLevelClass,
         formatter: tableFormatter,
-        ...tableColumnConfig
+        ...tableColumnConfig,
+        ...columnFilterProps
       }, {
         header: headerSlots,
         default: ({ row, $index, column }: ITableRow) => {
@@ -405,6 +457,7 @@ export default defineComponent({
       treeProps={props.treeProps}
       defaultExpandAll={props.defaultExpendAll}
       onSort-change={onSortChange}
+      onFilter-change={onFilterChange}
       onSelection-change={onSelectionChange}
       onRow-click={onRowClick}
     >

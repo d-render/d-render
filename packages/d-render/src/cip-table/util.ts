@@ -87,3 +87,13 @@ export const generateSpanMethod = <T>(excludeFn: (cell: ITableCell<T>)=> boolean
     }
   }
 }
+
+export {
+  collectFilterableColumns,
+  tableFilteredValuesToModel,
+  modelToTableFilteredValues,
+  mergeTableFilterModel,
+  type TTableFilterModel,
+  type TTableFilteredValues,
+  type ITableFilterColumnMeta
+} from './filter-util'

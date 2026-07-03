@@ -356,3 +356,86 @@ const handleSelectionChange = (rows) => {
 }
 </script>
 ```
+
+## 列筛选
+
+### 基本配置
+
+通过列配置的 `filters`、`filterMultiple`、`filterMethod` 等开启表头筛选，对应 Element Plus TableColumn 的同名属性。
+
+```js
+const columns = generateFieldList({
+  status: {
+    type: 'select',
+    label: '状态',
+    filters: [
+      { text: '启用', value: '1' },
+      { text: '禁用', value: '0' }
+    ],
+    filterMultiple: false,        // 单选筛选
+    filterMethod: (value, row) => row.status === value
+  },
+  tags: {
+    type: 'select',
+    label: '标签',
+    filters: [
+      { text: 'VIP', value: 'vip' },
+      { text: '新客', value: 'new' }
+    ],
+    filterMultiple: true,         // 多选筛选（默认）
+    filterMethod: (value, row) => row.tags?.includes(value)
+  }
+})
+```
+
+| 列配置 | 说明 |
+|--------|------|
+| `filters` | 筛选项，`[{ text, value }]` |
+| `filterMultiple` | 是否多选，默认 `true` |
+| `filterMethod` | 自定义筛选函数 `(value, row, column) => boolean` |
+| `filteredValue` | 初始选中值，`string[]` |
+| `filterPlacement` | 筛选面板位置，也可用简写 `filter: 'top'` |
+| `filterKey` | 与搜索表单同步时使用的字段名，默认等于列 `key` |
+
+### 与搜索表单同步（v-model:filterModel）
+
+`DrTable` 提供 `v-model:filterModel`，可直接与 `DrSearchForm` 的 `model` 共用，用户点击表头筛选时自动回写，单选列为 `string`、多选列为 `string[]`：
+
+```vue
+<template>
+  <DrSearchForm v-model:model="searchModel" :fieldList="searchFields" @search="loadData" />
+  <DrTable
+    v-model:data="tableData"
+    v-model:filterModel="searchModel"
+    :columns="columns"
+  />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+// 表格筛选会写入 status / tags 字段，与搜索表单共用
+const searchModel = ref({ name: '', status: '', tags: [] })
+</script>
+```
+
+`filterModel` 更新时只会合并筛选相关字段，不会覆盖 `name`、`date` 等其它搜索条件。
+
+### 性能注意事项
+
+`DrTable` 内部依赖 Vue 3 的**属性级响应式**来保持筛选转换的窄依赖：只有 `filterModel` 中**筛选字段**变化时才会触发表格重渲染，非筛选字段（如 `name`）变化不会影响表格。
+
+为此，更新 `filterModel` 时请**原地修改属性**，而非创建新对象：
+
+```js
+// ✅ 推荐：原地修改，属性级响应式可精准触发
+searchModel.value.status = '1'
+
+// ❌ 避免：每次创建新对象，会导致 filterModel 引用整体变化
+//          从而触发不必要的表格重渲染
+searchModel.value = { ...searchModel.value, status: '1' }
+```
+
+> `DrSearchForm` 内部已采用原地修改模式，正常使用 `v-model:model` 不会有此问题。
+> 该注意事项仅针对使用方手动修改 `filterModel` 的场景。
+
