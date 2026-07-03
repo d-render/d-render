@@ -1,5 +1,14 @@
 # @d-render/shared
 
+## 2.1.15
+
+### Patch Changes
+
+- ### Added
+  - **DrTable**（d-render）：支持列筛选，透传 `filters`、`filterMultiple`、`filterMethod` 等配置至 Element Plus TableColumn，并触发 `filter-change` 事件；新增 `v-model:filterModel` 与搜索表单 model 双向同步，合并时仅更新筛选相关字段。
+  - **filter-util**（d-render）：导出 `tableFilteredValuesToModel`、`modelToTableFilteredValues`、`mergeTableFilterModel`、`collectFilterableColumns` 筛选值转换工具。
+  - **ITableRenderConfig**（shared）：新增 `filters`、`filterPlacement`、`filter`、`filterMultiple`、`filterMethod`、`filteredValue`、`filterKey` 列筛选相关类型定义；`filterKey` 默认与列 key 相同，用于与搜索表单字段同步。
+
 ## 2.1.14
 
 ### Patch Changes
