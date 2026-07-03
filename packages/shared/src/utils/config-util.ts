@@ -221,6 +221,20 @@ export interface ITableRenderConfig {
    */
   textLevel?: 'primary' | 'regular' | 'secondary'
   tableFormatter?: (row: any, column: any, cellValue: any, index: number) => string | VNode
+  /** 列筛选选项，同 Element Plus TableColumn filters */
+  filters?: Array<{ text: string, value: string }>
+  /** 列筛选面板位置，同 Element Plus TableColumn filter-placement；也可通过 filter 传入 placement 字符串 */
+  filterPlacement?: string
+  /** filter-placement 简写，传入 top / bottom / left / right 时等同于 filterPlacement */
+  filter?: string
+  /** 是否多选筛选，同 Element Plus TableColumn filter-multiple */
+  filterMultiple?: boolean
+  /** 自定义筛选方法，同 Element Plus TableColumn filter-method */
+  filterMethod?: (value: unknown, row: IAnyObject, column: IAnyObject) => boolean
+  /** 选中的筛选值，同 Element Plus TableColumn filtered-value */
+  filteredValue?: string[]
+  /** 与搜索表单同步时使用的字段名，默认与列 key 相同 */
+  filterKey?: string
 }
 // form及searchForm共有的属性
 export interface IBaseFormRenderConfig{
