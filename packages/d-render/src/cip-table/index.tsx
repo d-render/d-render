@@ -82,7 +82,9 @@ export default defineComponent({
     const _defaultAlign = computed(() => {
       return tableUsingConfig('defaultAlign', 'left') as 'left' | 'center' | 'right'
     })
-
+    const _filterIcon = computed(() => {
+      return tableUsingConfig('filterIcon') as ((scope: { filterOpened: boolean }) => VNode) | undefined
+    })
     // 仅依赖 columns，columns 不变时复用同一份 meta，避免转换时重复 traverse
     const filterableColumns = computed(() => collectFilterableColumns(props.columns))
 
@@ -259,6 +261,7 @@ export default defineComponent({
         ...columnFilterProps
       }, {
         header: headerSlots,
+        'filter-icon': _filterIcon.value,
         default: ({ row, $index, column }: ITableRow) => {
           // if ($index === -1) return // 如果写上这个代码 children 将失效
           if (isArray(config.children) && config.children!.length > 0) {
