@@ -1,5 +1,15 @@
 # d-render
 
+## 3.1.18
+
+### Patch Changes
+
+- ### Changed
+  - **DrTable**：`v-model:filterModel` 使用 `columnKey`（替代 `filterKey`）；`filter-change` 仍使用列 `key`（与 `ElTableColumn.prop` 一致）。曾使用 `filterKey` 的列配置需改为 `columnKey`。
+
+- Updated dependencies
+  - @d-render/shared@2.1.16
+
 ## 3.1.17
 
 ### Patch Changes
