@@ -395,7 +395,7 @@ const columns = generateFieldList({
 | `filterMethod` | 自定义筛选函数 `(value, row, column) => boolean` |
 | `filteredValue` | 初始选中值，`string[]` |
 | `filterPlacement` | 筛选面板位置，也可用简写 `filter: 'top'` |
-| `filterKey` | 与搜索表单同步时使用的字段名，默认等于列 `key` |
+| `columnKey` | 列数据字段名；用于单元格绑定与 `v-model:filterModel` 同步，默认等于列 `key`；`filter-change` 仍使用列 `key` |
 
 ### 与搜索表单同步（v-model:filterModel）
 
