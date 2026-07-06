@@ -1,5 +1,15 @@
 # d-render
 
+## 3.1.20
+
+### Patch Changes
+
+- ### Added
+  - **changeValueByOld**（d-render）：回调新增 `dependOldValues` 参数，提供 dependOn 全部依赖字段变化前的完整旧值快照（结构与 `values` 一致）。适用于依赖字段为多选（数组）时，对比新旧值判断是新增还是减少了选项，从而实现"新增不处理、减少则清空"等场景。
+  - **TChangeValueByOld**（shared）：类型同步新增可选的 `dependOldValues?: IAnyObject` 字段。
+- Updated dependencies
+  - @d-render/shared@2.1.17
+
 ## 3.1.19
 
 ### Patch Changes
