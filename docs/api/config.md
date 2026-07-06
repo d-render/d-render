@@ -119,8 +119,8 @@
 
 ### changeValueByOld
 
-- 类型：`({ key, oldValue }, values, outValues) => { value, otherValue } | void`
-- 说明：基于旧值修改
+- 类型：`({ key, oldValue, dependOldValues }, values, outValues) => { value, otherValue } | void`
+- 说明：基于旧值修改。`dependOldValues` 为 dependOn 所有依赖字段变化前的完整旧值快照（结构与 `values` 一致），常用于依赖字段为多选（数组）时，对比新旧数组判断是新增还是减少了选项。
 
 ### asyncOptions
 

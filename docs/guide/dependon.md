@@ -130,18 +130,41 @@
 
 ### 4. changeValueByOld：基于旧值联动
 
-当你需要知道旧值是什么时使用。
+当你需要知道旧值是什么时使用。回调第一个参数除了当前变化字段的 `key`/`oldValue` 外，还提供 `dependOldValues`——dependOn 全部依赖字段变化前的完整旧值快照（结构与 `values` 一致）。
 
 ```js
 {
   city: {
     type: 'select',
     dependOn: ['province'],
-    changeValueByOld: ({ key, oldValue }, values) => {
+    changeValueByOld: ({ key, oldValue, dependOldValues }, values) => {
       console.log('变化的字段:', key)
       console.log('旧值:', oldValue)
+      console.log('依赖字段的旧值快照:', dependOldValues)
       console.log('当前所有依赖值:', values)
-      return { value: '' }
+      return { value: undefined }
+    }
+  }
+}
+```
+
+**场景：依赖字段为多选时，区分新增与减少**
+
+当 dependOn 字段是多选（数组）时，仅靠 `oldValue` 无法方便地对比出是新增还是减少了选项。此时可以用 `dependOldValues` 拿到该字段变化前的完整数组，与 `values` 中的当前数组做对比：新增选项不处理，减少选项时清空当前字段。
+
+```js
+{
+  city: {
+    type: 'select',
+    dependOn: ['tags'], // tags 为多选字段
+    changeValueByOld: ({ dependOldValues }, values) => {
+      const oldTags = dependOldValues?.tags ?? []
+      const newTags = values.tags ?? []
+      const isDecrease = oldTags.some(tag => !newTags.includes(tag))
+      if (isDecrease) {
+        return { value: undefined } // 出现减少时清空
+      }
+      // 只有新增时不做处理
     }
   }
 }

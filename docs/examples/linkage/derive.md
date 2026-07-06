@@ -38,6 +38,26 @@
 }
 ```
 
+当依赖字段是多选（数组）时，可以用 `dependOldValues`（dependOn 全部依赖字段变化前的完整旧值快照）与 `values`（当前值）对比，判断是新增还是减少了选项：
+
+```js
+{
+  city: {
+    type: 'select',
+    label: '城市',
+    dependOn: ['tags'], // tags 为多选字段
+    changeValueByOld: ({ dependOldValues }, values) => {
+      const oldTags = dependOldValues?.tags ?? []
+      const newTags = values.tags ?? []
+      const isDecrease = oldTags.some(tag => !newTags.includes(tag))
+      if (isDecrease) {
+        return { value: undefined } // 出现减少时清空，新增时不处理
+      }
+    }
+  }
+}
+```
+
 ## 常见场景
 
 ### 场景 1：拼接字段
