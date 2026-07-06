@@ -90,7 +90,8 @@ export const useWatchFieldDepend = (
   const changeValueByOldExecutor = async (
     values: Parameters<IExecutor>['0'],
     outValues: Parameters<IExecutor>['1'],
-    effects: Parameters<IExecutor>['2']
+    effects: Parameters<IExecutor>['2'],
+    dependOldValues: Parameters<IExecutor>['3']
   ) => {
     // 与changeValue一样，首次不触发
     let data
@@ -101,7 +102,7 @@ export const useWatchFieldDepend = (
       }
       for (const [idx, key] of keys.entries()) {
         // 全局多源监听时会执行多次,不建议设置为全局副作用 [兼容老代码]
-        data = await changeValueByOldCb({ key, oldValue: oldValues[idx] }, values, outValues, data) as {value: unknown, otherValue: unknown} | undefined
+        data = await changeValueByOldCb({ key, oldValue: oldValues[idx], dependOldValues }, values, outValues, data) as {value: unknown, otherValue: unknown} | undefined
       }
     }
     if (data !== undefined) {
@@ -137,7 +138,7 @@ export const useWatchFieldDepend = (
 
   const dependOnWatchCb = (
     { changeKeys, changeOldValues }: {changeKeys: Array<IKey>, changeOldValues: Array<unknown> },
-    { values, outValues, executeChangeValueEffect }: {values: IAnyObject, outValues: IAnyObject, executeChangeValueEffect: boolean}
+    { values, outValues, executeChangeValueEffect, dependOldValues }: {values: IAnyObject, outValues: IAnyObject, executeChangeValueEffect: boolean, dependOldValues: IAnyObject}
   ) => {
     // 获取局部effect的key
     const privateEffectKeys = changeKeys
@@ -171,17 +172,19 @@ export const useWatchFieldDepend = (
       outValues,
       keys: changeKeys,
       oldValues: changeOldValues,
-      executeChangeValueEffect
+      executeChangeValueEffect,
+      dependOldValues
     })
     effectExecutor.executeAll(props.fieldKey as string)
   }
   // 收集变化的依赖
-  const { changeCount, dependOnValues, outDependOnValues } = useFieldChange(props, securityConfig, dependOnWatchCb)
+  const { changeCount, dependOnValues, outDependOnValues, dependOldValues } = useFieldChange(props, securityConfig, dependOnWatchCb)
 
   return {
     changeCount, // model变化总计
     dependOnValues,
     outDependOnValues,
+    dependOldValues,
     runningConfig
   }
 }

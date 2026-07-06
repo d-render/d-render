@@ -1,5 +1,5 @@
 import { ref, computed, watch, toRef, Ref, ComputedRef } from 'vue'
-import { getFieldValue, IAnyObject, TFormConfig } from '@d-render/shared'
+import { getFieldValue, setFieldValue, IAnyObject, TFormConfig } from '@d-render/shared'
 import { getChangeIndex, getValuesByKeys, IKey } from '../util'
 import type { FormItemProps } from '../index'
 // 监听数据变化，处理变化的数据后再执行
@@ -7,11 +7,13 @@ export const useFieldChange = (props: FormItemProps,
   securityConfig: ComputedRef<TFormConfig>,
   dependOnWatchCb: (
     { changeKeys, changeOldValues }: {changeKeys: Array<IKey>, changeOldValues: Array<unknown> },
-    { values, outValues, executeChangeValueEffect }: {values: IAnyObject, outValues: IAnyObject, executeChangeValueEffect: boolean}
+    { values, outValues, executeChangeValueEffect, dependOldValues }: {values: IAnyObject, outValues: IAnyObject, executeChangeValueEffect: boolean, dependOldValues: IAnyObject}
   )=> void) => {
   const changeCount = ref(0)
   const dependOnValues:Ref<IAnyObject> = ref({})
   const outDependOnValues:Ref<IAnyObject> = ref({})
+  // dependOn各字段变化前的完整旧值快照，供changeValueByOld判断增减场景使用
+  const dependOldValues:Ref<IAnyObject> = ref({})
   const tableDependOnValues = toRef(props, 'tableDependOnValues') as Ref<IAnyObject>
   const parentDependOnValues = toRef(props, 'parentDependOnValues') as Ref<IAnyObject>
   const model = toRef(props, 'model')
@@ -53,6 +55,15 @@ export const useFieldChange = (props: FormItemProps,
     const changeKeys = changeIndex.map(index => depend[index]) // 此处depend为函数私有
     return { changeValue, changeOldValues, changeKeys }
   }
+  // 依据key列表与对应位置的值数组，还原出完整的{key: value}快照
+  const buildValuesByKeys = (keys: Array<IKey>, arr: Array<unknown>) => {
+    const result: IAnyObject = {}
+    keys.forEach((key, index) => {
+      const k = typeof key === 'object' ? key.key : key
+      setFieldValue(result, k as string, arr[index], true)
+    })
+    return result
+  }
   const collectDependInfo = () => {
     const values = getValuesByKeys(model.value, dependOn.value)
     // const outValues = getValuesByKeys(tableDependOnValues.value, outDependOn.value)
@@ -77,15 +88,19 @@ export const useFieldChange = (props: FormItemProps,
       const change = getChange(values, oldValues, depend)
       // 相同的对象 判断存在数据变化才触发依赖值更新
       collectDependInfo() // 此处需要获取所有的数据
+      // depend末尾可能追加了outDependOn(inTable/inParent场景)，这里只截取dependOn自身对应的旧值部分
+      const dependOnKeys = filterSelf(dependOn.value)
+      dependOldValues.value = buildValuesByKeys(dependOnKeys, oldValues.slice(0, dependOnKeys.length))
       dependOnWatchCb(change, {
         executeChangeValueEffect: securityConfig.value.immediateChangeValue || !firstChange,
         values: dependOnValues.value,
-        outValues: outDependOnValues.value
+        outValues: outDependOnValues.value,
+        dependOldValues: dependOldValues.value
       })
       firstChange = false
     }, { deep: true, immediate: true, flush: 'post' })
   }
   return {
-    changeCount, dependOnValues, outDependOnValues
+    changeCount, dependOnValues, outDependOnValues, dependOldValues
   }
 }

@@ -13,7 +13,7 @@ type TEffect = [
 ]
 
 export type IEffects = Array<TEffect>
-export type IExecutor = (values: IAnyObject, outValues: IAnyObject|undefined, effects: IEffects) => void | Promise<void>
+export type IExecutor = (values: IAnyObject, outValues: IAnyObject|undefined, effects: IEffects, dependOldValues?: IAnyObject) => void | Promise<void>
 
 interface IGlobalParam {
   values: IAnyObject
@@ -21,6 +21,7 @@ interface IGlobalParam {
   keys: Array<IKey>
   oldValues: Array<unknown>
   executeChangeValueEffect: boolean
+  dependOldValues?: IAnyObject
 }
 
 interface IEffectExecutorConfig {
@@ -50,6 +51,7 @@ export class EffectExecutor {
   executeChangeValueEffect?: boolean
   values?: IAnyObject
   outValues?: IAnyObject
+  dependOldValues?: IAnyObject
   effectsConfig?: IEffectConfig
   constructor (config: IEffectExecutorConfigs = {}) {
     this.config = config
@@ -152,6 +154,7 @@ export class EffectExecutor {
     this.executeChangeValueEffect = globalParam.executeChangeValueEffect
     this.values = globalParam.values
     this.outValues = globalParam.outValues
+    this.dependOldValues = globalParam.dependOldValues
     this.effectsConfig = this.getExecuteEffect(effectParams, config, globalParam)
   }
 
@@ -159,7 +162,7 @@ export class EffectExecutor {
     const condition = this.config[type].condition
     if (args[0].length > 0) {
       if (!condition || (condition && condition(...args))) {
-        this.config[type].executor(this.values!, this.outValues, args[0])
+        this.config[type].executor(this.values!, this.outValues, args[0], this.dependOldValues)
         console.log(`%c[d-render]%c执行%c${logKey}.${type}`, 'color: #e6a23c', 'color: normal', 'color: #67c23a')
       } else {
         console.log(`%c[d-render]%c不符合%c${logKey}.${type}%c执行条件`, 'color: #e6a23c', 'color: normal', 'color: red', 'color: normal', args[0])
