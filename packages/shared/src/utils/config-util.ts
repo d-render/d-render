@@ -42,7 +42,7 @@ export type TAsyncOptions = (
 ) => Promise<unknown[]>
 
 export type TChangeValueByOld = (
-  { key, oldValue }:{key:string, oldValue: unknown},
+  { key, oldValue, dependOldValues }:{key:string, oldValue: unknown, dependOldValues?: IAnyObject},
   values: IAnyObject, outValues: IAnyObject
 ) => { value: unknown, otherValue: unknown } | void
 
