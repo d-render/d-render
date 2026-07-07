@@ -1,5 +1,14 @@
 # d-render
 
+## 3.1.21
+
+### Patch Changes
+
+- ### Added
+
+  - **DrTable**：新增 `reserveSelection` 属性（默认 `false`），`selectType` 为 `checkbox` 时开启后，切换分页（`data` 变化）不再丢失已选中的行，需配合 `rowKey` 一起使用；未设置 `rowKey` 时会在控制台告警且不生效。
+  - **DrTable**：新增 `removeSelection(rows)` 暴露方法，用于在删除部分已选中数据后手动同步内部选中状态与 `update:selectColumns`，避免残留已删除行的选中引用。
+
 ## 3.1.20
 
 ### Patch Changes
