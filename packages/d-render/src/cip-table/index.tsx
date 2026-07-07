@@ -118,8 +118,26 @@ export default defineComponent({
     // 当前主要提供给cip-button-text使用
     provide(cipTableKey, cipTable)
 
+    // 移除部分选中项（配合 reserveSelection 使用），并同步 v-model:selectColumns
+    const removeSelection = (rows: IAnyObject | IAnyObject[]) => {
+      const table = cipTableRef.value
+      if (!table) return
+      const list: IAnyObject[] = Array.isArray(rows) ? rows : [rows]
+      const rowKey = props.rowKey as string | undefined
+      const currentSelection = table.getSelectionRows() as IAnyObject[]
+      list.forEach(target => {
+        // 优先按引用匹配；引用不一致时（如调用方重新构造了对象）按 rowKey 兜底匹配
+        const matched = currentSelection.includes(target)
+          ? target
+          : (rowKey && currentSelection.find(r => getFieldValue(r, rowKey) === getFieldValue(target, rowKey))) || target
+        table.toggleRowSelection(matched, false)
+      })
+      context.emit('update:selectColumns', table.getSelectionRows())
+    }
+
     context.expose({
-      cipTableRef
+      cipTableRef,
+      removeSelection
     })
 
     // table 数据更新 v-model:data
@@ -365,13 +383,20 @@ export default defineComponent({
       }
       // 复选框
       if (props.selectType === 'checkbox') {
-        const option: {type: 'selection', width: string, fixed: string, selectable?: (row:IAnyObject, index:number)=> boolean} = {
+        const option: {type: 'selection', width: string, fixed: string, selectable?: (row:IAnyObject, index:number)=> boolean, reserveSelection?: boolean} = {
           type: 'selection',
           width: transformWidth(45) as string,
           fixed: 'left'
         }
         if (isNotEmpty(props.selectable)) { // 选择
           option.selectable = (row, index) => props.selectable!(row || {}, index)
+        }
+        if (props.reserveSelection) { // 跨页保留选中，需配合rowKey使用
+          if (!props.rowKey) {
+            console.warn('[CipTable] reserveSelection 需要配合 rowKey 一起使用，否则跨页选中无法生效')
+          } else {
+            option.reserveSelection = true
+          }
         }
         const selectionColumn = h(ElTableColumn, option)
         slots.unshift(selectionColumn)

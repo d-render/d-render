@@ -198,6 +198,50 @@ const columns = generateFieldList({
 }
 ```
 
+### reserveSelection
+
+`selectType` 为 `checkbox` 时，切换分页（即 `data` 整体替换）默认会清空已选中的行。开启 `reserveSelection` 后，可以保留跨页选中的状态，**必须配合 `rowKey` 一起使用**。
+
+```vue
+<DrTable
+  v-model:data="pageData"
+  :columns="columns"
+  row-key="id"
+  select-type="checkbox"
+  reserve-selection
+  v-model:select-columns="selectedRows"
+/>
+```
+
+注意事项：
+
+- 未设置 `rowKey` 时，`reserveSelection` 不会生效，并会在控制台输出告警提示。
+- 开启后 `update:selectColumns`（`v-model:select-columns`）拿到的是**跨页累计的全部选中行**，而非仅当前页选中项，使用时需按此语义处理。
+- 表头「全选」勾选框仍然只全选**当前页**数据，不会触发跨页全选。
+- `reserveSelection` 是建表时的静态开关，不支持挂载后动态切换。
+
+#### 删除部分已选中项
+
+开启 `reserveSelection` 后，若删除了已选中的数据（无论删除的是当前页还是其他页的数据），表格内部的选中状态**不会自动清理**，需要显式同步，否则会残留已删除行的引用：
+
+```js
+// 局部删除：删除后调用 removeSelection 同步选中状态
+const handleDeletePart = async (rowsToDelete) => {
+  await api.batchDelete(rowsToDelete.map(r => r.id))
+  cipTableRef.value.removeSelection(rowsToDelete)
+  await reloadCurrentPage()
+}
+
+// 全部清空：直接调用 el-table 原生方法即可
+const handleDeleteAll = async () => {
+  await api.batchDelete(selectedRows.value.map(r => r.id))
+  cipTableRef.value.clearSelection()
+  await reloadCurrentPage()
+}
+```
+
+`removeSelection(rows)` 接收单行或数组，会通过 `rowKey` 兜底匹配后移除对应行的选中状态，并自动同步一次 `update:selectColumns`。
+
 ## 表格中的联动
 
 ### 依赖表格外字段

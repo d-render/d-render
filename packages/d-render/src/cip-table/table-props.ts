@@ -26,6 +26,7 @@ export const tableProps = {
     validate: (val: string) => ['checkbox', 'radio'].includes(val)
   },
   selectable: Function, // table 是否可复选 需要与selectType = checkbox 配合使用 function(row,index)
+  reserveSelection: { type: Boolean, default: false }, // selectType为checkbox时，切换分页(data变化)是否保留跨页选中状态，需配合rowKey使用，默认不开启
   selectRadio: [String, Number], // table为单选时的选中列的value
   selectLabel: String, // table为单选时的选中列的展示值
   selectColumns: Array, // ERROR ?? 似乎没什么用
