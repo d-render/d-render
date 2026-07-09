@@ -1,6 +1,7 @@
 import { computed, h, ref, defineComponent, PropType } from 'vue'
 import { ElDrawer, ElIcon } from 'element-plus'
 import { List } from '@element-plus/icons-vue'
+import { useLocale } from '../hooks/use-locale'
 export interface IDirConfig {
   [propname: string]: {label: string, level: number }
 }
@@ -16,6 +17,7 @@ export default defineComponent({
     }
   },
   setup (props) {
+    const { t } = useLocale()
     const drawerSwitch = ref(false)
     const openDrawer = () => {
       drawerSwitch.value = true
@@ -39,7 +41,7 @@ export default defineComponent({
           <List />
         </ElIcon>
       </div>
-      <ElDrawer custom-class={'form-directory__drawer'} v-model={drawerSwitch.value} title={'表单目录'}>
+      <ElDrawer custom-class={'form-directory__drawer'} v-model={drawerSwitch.value} title={t('dr.form.directory')}>
         <div class={'form-directory'}>
           {list.value.map(v => {
             return renderHead(v)

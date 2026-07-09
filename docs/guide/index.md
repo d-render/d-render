@@ -31,6 +31,7 @@
 - 📦 **开箱即用** - 基于 Element Plus 二次封装
 - 🎨 **自定义类型** - 轻松扩展自定义输入组件
 - 📱 **多端适配** - 支持 PC 和移动端
+- 🌐 **国际化** - 与 Element Plus 一致的 locale / ConfigProvider 方案（详见[国际化](/guide/i18n)）
 
 ## 核心理念
 

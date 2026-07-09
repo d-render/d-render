@@ -1,21 +1,13 @@
 // 可以转换的validateType
 import {
-  emailValidator,
-  identityCardValidator,
-  mobilePhoneValidator,
-  sqlSimpleValidator
-
+  createValidators
 } from './form-validator'
 import type { TValidator } from './form-validator'
 import type { IAnyObject, TFormConfig, IRenderConfig, ICustomValidator } from '@d-render/shared'
 import type { FormItemRule } from 'element-plus'
+import { defaultLocale, translate, type Translator } from '../locale'
 
-const validatorMap: Record<string, TValidator> = {
-  email: emailValidator,
-  identityCard: identityCardValidator,
-  mobilePhone: mobilePhoneValidator,
-  sql: sqlSimpleValidator
-}
+const fallbackT: Translator = (path, option) => translate(path, option, defaultLocale)
 
 const isInputType = (config: TFormConfig) => {
   if (config.triggerType === 'input') { return true }
@@ -30,11 +22,20 @@ export interface RequiredRule {
   [propname: string]: unknown
 }
 // 获取单字段规则
-export const getRulesByFieldConfig = (config: TFormConfig, otherValue: unknown, dependOnValues: IAnyObject, outDependOnValues: IAnyObject) => {
+export const getRulesByFieldConfig = (
+  config: TFormConfig,
+  otherValue: unknown,
+  dependOnValues: IAnyObject,
+  outDependOnValues: IAnyObject,
+  t: Translator = fallbackT
+) => {
   const rules = [] as FormItemRule[]
+  const validatorMap: Record<string, TValidator> = createValidators(t)
   if (config.required) { // 必填
-    const defaultPreText = isInputType(config) ? '请输入' : '请选择'
-    const requiredMessage = config.requiredErrorMessage || `${defaultPreText}${config.label}`
+    const defaultMessage = isInputType(config)
+      ? t('dr.form.requiredInput', { label: config.label ?? '' })
+      : t('dr.form.requiredSelect', { label: config.label ?? '' })
+    const requiredMessage = config.requiredErrorMessage || defaultMessage
     const requiredRule = { required: true, message: requiredMessage, ...config.requiredRuleConfig as IAnyObject } as FormItemRule
     if (config.requiredType) {
       requiredRule.type = config.requiredType
@@ -47,7 +48,7 @@ export const getRulesByFieldConfig = (config: TFormConfig, otherValue: unknown, 
           if (otherValue) {
             cb()
           } else {
-            cb(new Error(requiredMessage + '-结束时间'))
+            cb(new Error(t('dr.form.requiredEndTime', { message: requiredMessage })))
           }
         } else {
           cb()
@@ -86,7 +87,7 @@ export const getRulesByFieldConfig = (config: TFormConfig, otherValue: unknown, 
 
       const rule = {
         pattern: reg,
-        message: config.regexpValidateErrorMessage || `未能通过${reg.toString()}校验`,
+        message: config.regexpValidateErrorMessage || t('dr.form.regexpFail', { pattern: reg.toString() }),
         trigger: 'blur'
       }
       rules.push(rule)
@@ -98,7 +99,7 @@ export const getRulesByFieldConfig = (config: TFormConfig, otherValue: unknown, 
     const validator: TValidator = async (rule, value, callback) => {
       const { data } = await config.validateExistRemote!(value, dependOnValues, outDependOnValues)
       if (data) { // data 为真值是校验失败
-        callback(new Error(config.validateExistRemoteErrorMessage || rule.message as string || '已存在'))
+        callback(new Error(config.validateExistRemoteErrorMessage || rule.message as string || t('dr.form.alreadyExists')))
       } else {
         callback()
       }

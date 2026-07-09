@@ -13,6 +13,7 @@ import { useConfig, useComponentProps } from '@xdp/config'
 import CipFormItem from '../cip-form-item'
 import CipFormDirectory, { IDirConfig } from './form-directory'
 import CipFormLayout from '../cip-form-layout'
+import { useLocale } from '../hooks/use-locale'
 const dRender = new DRender()
 
 interface IInputProps {
@@ -71,6 +72,7 @@ export default defineComponent({
     // 下发属性
     const uploadQueue:Ref<Record<string, boolean>> = ref({})
     // const cipConfig = useCipConfig()
+    const { t } = useLocale()
     const xdpConfig = useConfig()
     const Message = computed(() => xdpConfig.message ?? ElMessage)
     const cipPageConfig = useCipPageConfig()
@@ -246,7 +248,7 @@ export default defineComponent({
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i]
           if (uploadQueue.value[key]) {
-            Message.value.error('请等待文件上传', '提示')
+            Message.value.error(t('dr.form.waitingUpload'), t('dr.form.tip'))
             resolve(false)
             break
           }
@@ -262,7 +264,7 @@ export default defineComponent({
       if (!isUpload) {
         // eslint-disable-next-line n/no-callback-literal
         cb(false)
-        throw new Error('请等待文件上传')
+        throw new Error(t('dr.form.waitingUpload'))
       } else {
         // const res = await cipFormRef.value.validate() // 此方式返回的res为 true or false
         return new Promise((resolve, reject) => {

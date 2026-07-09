@@ -14,6 +14,16 @@ export { default as CipFormRender, default as DrFormRender } from './cip-form-re
 export { default as CipFormInputTransform, default as DrFormInputTransform } from './cip-form-input-transform'
 export { default as CipTableRender, default as DrTableRender } from './cip-table-render'
 export { default as CipConfigProvider, default as DrConfigProvider } from './cip-config-provider'
+export { useLocale, buildLocaleContext, localeContextKey } from './hooks/use-locale'
+export type { LocaleContext } from './hooks/use-locale'
+export {
+  defaultLocale,
+  translate,
+  buildTranslator,
+  zhCn as localeZhCn,
+  en as localeEn
+} from './locale'
+export type { Language, Translator, TranslatorOption, TranslatePair } from './locale'
 export {
   isLayoutType
 } from './utils'

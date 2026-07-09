@@ -16,6 +16,7 @@ import { useFieldValue, useSteamUpdateValues } from './hooks/use-model-change'
 import { useRules } from './hooks/use-field-rules'
 import { isHideLabel, getLabelWidth, UpdateModelQueue } from './util'
 import { getInputComponent, getViewComponent, getH5InputComponent } from '../utils'
+import { useLocale } from '../hooks/use-locale'
 
 const formItemProps = {
   config: {
@@ -72,6 +73,7 @@ export default defineComponent({
     })
     // elForm组件实例
     const cipConfig = useCipConfig()
+    const { t } = useLocale()
     const elForm = useElFormInject()
     const cipForm = useFormInject()
     const equipment = computed(() => {
@@ -143,7 +145,7 @@ export default defineComponent({
     const { changeCount, dependOnValues, outDependOnValues, runningConfig } = useWatchFieldDepend(props, { updateModelValue, updateOtherValue, clearValues })
     const readonly = toRef(props, 'readonly')
     // rules
-    const { usingRules, rules } = useRules(formItemConfig, readonly, status, otherValue, dependOnValues, outDependOnValues)
+    const { usingRules, rules } = useRules(formItemConfig, readonly, status, otherValue, dependOnValues, outDependOnValues, t)
     // 使用rules的长度来判断是否一致
     watch(() => rules.value.length, (val, old) => {
       if (val !== old) {

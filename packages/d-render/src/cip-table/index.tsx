@@ -37,6 +37,7 @@ import {
   mergeTableFilterModel,
   tableFilteredValuesToModel
 } from './filter-util'
+import { useLocale } from '../hooks/use-locale'
 type TComponentSize = 'small' | 'default' | 'large'
 interface ITableRow {
   row: IAnyObject
@@ -51,6 +52,7 @@ export default defineComponent({
   setup (props: TTableProps, context) {
     const cipConfig = useCipConfig()
     const cipPageConfig = useCipPageConfig()
+    const { t } = useLocale()
     const cipTableRef = ref()
     // TODO: xdp 配置可控制更多的属性
     const tableUsingConfig = (key: string, defaultValue?: unknown) => {
@@ -371,7 +373,7 @@ export default defineComponent({
       // 序号渲染
       if (isNotEmpty(props.offset) && props.offset! > -1 && !props.hideIndex) {
         const indexColumn = h(ElTableColumn, {
-          label: props.seqLabel || '序号',
+          label: props.seqLabel || t('dr.table.index'),
           fixed: props.indexFixed ? 'left' : '',
           align: _defaultAlign.value,
           width: transformWidth(isEmpty(props.rowKey) ? 55 : 75)
@@ -425,7 +427,7 @@ export default defineComponent({
       if (props.withTableHandle && (context.slots._handler || context.slots.$handler)) {
         const handlerSlot = (context.slots._handler || context.slots.$handler) as Slot
         const handlerColumn = h(ElTableColumn, {
-          label: '操作',
+          label: t('dr.table.handler'),
           fixed: 'right',
           align: props.handlerAlign ?? _defaultAlign.value,
           headerAlign: props.handlerHeaderAlign,
@@ -470,7 +472,7 @@ export default defineComponent({
     const EmptyBlock = () => {
       return <div class='cip-table__empty'>
         <EmptyStatus class='cip-table__empty__svg'/>
-        <div class="cip-table__empty__text">暂无数据</div>
+        <div class="cip-table__empty__text">{t('dr.table.emptyText')}</div>
       </div>
     }
 

@@ -39,6 +39,14 @@
       "types": "./types/main.d.ts"
     },
     "./style": "./dist/index.css",
+    "./locale": {
+      "import": "./esm/locale/index.js",
+      "types": "./types/locale/index.d.ts"
+    },
+    "./locale/lang/*": {
+      "import": "./esm/locale/lang/*.js",
+      "types": "./types/locale/lang/*.d.ts"
+    },
     "./*.js": {
       "import": "./esm/*.js",
       "types": "./types/*.d.ts"

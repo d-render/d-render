@@ -78,7 +78,8 @@ export default defineConfig({
           items: [
             { text: '数据联动', link: '/guide/dependon' },
             { text: 'otherKey 详解', link: '/guide/otherkey' },
-            { text: '自定义 type', link: '/guide/custom-type' }
+            { text: '自定义 type', link: '/guide/custom-type' },
+            { text: '国际化', link: '/guide/i18n' }
           ]
         }
       ],
