@@ -1,5 +1,11 @@
 # d-render
 
+## 3.2.0
+
+### Minor Changes
+
+- feat(d-render): 支持国际化
+
 ## 3.1.21
 
 ### Patch Changes
