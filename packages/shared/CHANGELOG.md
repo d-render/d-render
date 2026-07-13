@@ -1,5 +1,12 @@
 # @d-render/shared
 
+## 2.1.18
+
+### Patch Changes
+
+- ### Fixed
+  - **useOptions**：按 `asyncOptions` 分离静态与异步选项的自动拉取逻辑；静态 `options` 统一监听 `config.options`（含 `immediate` 初始化），异步选项监听依赖值，避免仅配置 `dependOn` 的静态选项被误触发重复拉取。
+
 ## 2.1.17
 
 ### Patch Changes
