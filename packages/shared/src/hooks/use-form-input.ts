@@ -472,15 +472,12 @@ export const useOptions = (
   }
 
   if (autoGet) {
-    if (!(props.config.dependOn?.length) && !(props.config.outDependOn?.length)) {
-      getOptions() // .then(() => { console.log('[init]: getOptions') })
+    // 静态 options：监听 config.options；异步 options：监听依赖值
+    if (!props.config.asyncOptions) {
       // @ts-ignore
-      if (props.config.options) { // 动态表单设计时修改options需要触发此方法
-        // @ts-ignore
-        watch(() => props.config.options, () => {
-          getOptions() // .then(() => { console.log('[config.options change]: getOptions') })
-        })
-      }
+      watch(() => props.config.options, () => {
+        getOptions()
+      }, { immediate: true })
     } else {
       watch([() => props.dependOnValues, () => props.outDependOnValues], ([dependOnValues, outDependOnValues]) => {
         getOptions(dependOnValues || {}, outDependOnValues || {}) // .then(() => { console.log('[dependOn change]: getOptions') })
