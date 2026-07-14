@@ -1,5 +1,12 @@
 # d-render
 
+## 3.2.1
+
+### Patch Changes
+
+- ### Fixed
+  - **DrTable**：补齐 `v-model:selectColumns` 的双向绑定——`selectType` 为 `checkbox` 时，父组件修改选中行集合后当前页复选框会正确回显（对象引用优先匹配，其次按 `rowKey` 匹配，`rowKey` 同时支持 `string`/`function`）；显式赋值为 `null`/`[]` 会清空全部（含跨页保留的）选中；程序化回显内部不会再向父组件反向 emit，避免把已跨页累计的选中列表覆盖成仅当前页。未绑定该 v-model（值始终为 `undefined`）时行为保持不变。
+
 ## 3.2.0
 
 ### Minor Changes
