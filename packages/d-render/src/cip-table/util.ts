@@ -97,3 +97,11 @@ export {
   type TTableFilteredValues,
   type ITableFilterColumnMeta
 } from './filter-util'
+
+export {
+  resolveRowKeyGetter,
+  createRowMatcher,
+  flattenTreeRows,
+  type TRowKeyGetter,
+  type TRowMatcher
+} from './selection-util'

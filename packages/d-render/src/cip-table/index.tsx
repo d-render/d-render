@@ -1,6 +1,9 @@
 import {
   h,
   ref,
+  watch,
+  onMounted,
+  nextTick,
   defineComponent,
   computed,
   reactive,
@@ -37,6 +40,7 @@ import {
   mergeTableFilterModel,
   tableFilteredValuesToModel
 } from './filter-util'
+import { resolveRowKeyGetter, createRowMatcher, flattenTreeRows } from './selection-util'
 import { useLocale } from '../hooks/use-locale'
 type TComponentSize = 'small' | 'default' | 'large'
 interface ITableRow {
@@ -120,22 +124,79 @@ export default defineComponent({
     // 当前主要提供给cip-button-text使用
     provide(cipTableKey, cipTable)
 
+    // 记录最近一次向父组件 emit 的 selectColumns 引用/对应的 data 引用：
+    // 用户勾选触发的 emit 在标准 v-model 下会原样赋回 props.selectColumns（同一引用），
+    // 借此识别出这种「回声」并跳过整表重扫，避免每次点击都触发一次 O(pageSize) 的同步
+    const lastEmittedSelection = ref<unknown>(undefined)
+    const lastSyncedData = ref<unknown>(undefined)
+    const emitSelectColumns = (val: unknown) => {
+      lastEmittedSelection.value = val
+      context.emit('update:selectColumns', val)
+    }
+
     // 移除部分选中项（配合 reserveSelection 使用），并同步 v-model:selectColumns
     const removeSelection = (rows: IAnyObject | IAnyObject[]) => {
       const table = cipTableRef.value
       if (!table) return
       const list: IAnyObject[] = Array.isArray(rows) ? rows : [rows]
-      const rowKey = props.rowKey as string | undefined
+      const rowKeyGetter = resolveRowKeyGetter(props.rowKey)
       const currentSelection = table.getSelectionRows() as IAnyObject[]
       list.forEach(target => {
         // 优先按引用匹配；引用不一致时（如调用方重新构造了对象）按 rowKey 兜底匹配
         const matched = currentSelection.includes(target)
           ? target
-          : (rowKey && currentSelection.find(r => getFieldValue(r, rowKey) === getFieldValue(target, rowKey))) || target
+          : (rowKeyGetter && currentSelection.find(r => rowKeyGetter(r) === rowKeyGetter(target))) || target
         table.toggleRowSelection(matched, false)
       })
-      context.emit('update:selectColumns', table.getSelectionRows())
+      emitSelectColumns(table.getSelectionRows())
     }
+
+    // 程序化同步（prop -> UI）过程中置为 true，避免同步触发的原生 selection-change 反向覆盖父级 model
+    const isSyncingSelection = ref(false)
+
+    // 依据 v-model:selectColumns 对齐当前页（含树形子行）勾选状态
+    // 仅在 selectType 为 checkbox 且 selectColumns 已被显式绑定（非 undefined）时生效，
+    // 避免影响未使用该 v-model 的既有用法
+    const syncSelectionFromModel = () => {
+      if (props.selectType !== 'checkbox') return
+      if (props.selectColumns === undefined) return
+      // data 未变 且 selectColumns 恰好等于我们自己刚 emit 出去的引用 => 只是用户勾选的回声，
+      // 当前页勾选状态已经是正确的，跳过整表重扫（否则每次点击都会触发一次 O(pageSize) 同步）
+      const isOwnEcho = props.data === lastSyncedData.value && props.selectColumns === lastEmittedSelection.value
+      lastSyncedData.value = props.data
+      if (isOwnEcho) return
+      const table = cipTableRef.value
+      if (!table) return
+      const model = (props.selectColumns || []) as IAnyObject[]
+      isSyncingSelection.value = true
+      if (model.length === 0) {
+        // 显式赋空表示清空全部选中（含跨页保留的选中）
+        table.clearSelection()
+      } else {
+        const rowKeyGetter = resolveRowKeyGetter(props.rowKey)
+        const isMatched = createRowMatcher(model, rowKeyGetter)
+        const currentlySelected = new Set<IAnyObject>(table.getSelectionRows())
+        flattenTreeRows(props.data, props.treeProps).forEach(row => {
+          const shouldSelect = isMatched(row)
+          // 状态已一致时跳过，避免无意义的 toggleRowSelection 调用（内部仍会做一次线性查找）
+          if (shouldSelect === currentlySelected.has(row)) return
+          table.toggleRowSelection(row, shouldSelect)
+        })
+      }
+      nextTick(() => { isSyncingSelection.value = false })
+    }
+
+    // selectColumns 或 data（分页/刷新）变化后都需要重新对齐当前页勾选
+    // 在 onMounted 内注册（而非 setup 阶段）：此时 cipTableRef 已就绪，immediate 首次执行
+    // 才能拿到表格实例完成回显；否则挂载前就同步赋值好的 selectColumns + 静态 data 会因
+    // watch 不再重跑而丢失初始回显
+    onMounted(() => {
+      watch(
+        () => [props.selectColumns, props.data] as const,
+        syncSelectionFromModel,
+        { immediate: true, flush: 'post' }
+      )
+    })
 
     context.expose({
       cipTableRef,
@@ -172,9 +233,10 @@ export default defineComponent({
       }
       context.emit('filter-change', filters)
     }
-    // 触发列的选中改变事件
+    // 触发列的选中改变事件（程序化同步 model -> UI 期间跳过，避免反向覆盖父级 model）
     const onSelectionChange = (val: unknown) => {
-      context.emit('update:selectColumns', val)
+      if (isSyncingSelection.value) return
+      emitSelectColumns(val)
     }
     // 如果带上了border则所有列宽需要+1
     const addBorderWidth = computed(() => {

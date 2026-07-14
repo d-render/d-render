@@ -29,10 +29,14 @@ export const tableProps = {
   reserveSelection: { type: Boolean, default: false }, // selectType为checkbox时，切换分页(data变化)是否保留跨页选中状态，需配合rowKey使用，默认不开启
   selectRadio: [String, Number], // table为单选时的选中列的value
   selectLabel: String, // table为单选时的选中列的展示值
-  selectColumns: Array, // ERROR ?? 似乎没什么用
+  // table 为 checkbox 多选时的选中行集合（数组项类型为 IAnyObject，即 data 中的行对象），支持 v-model:selectColumns 双向绑定：
+  // 用户勾选/取消会自动 emit 更新该数组；父组件修改该数组也会驱动当前页勾选回显
+  // （对象引用优先匹配，其次按 rowKey 匹配，故程序化回显强烈建议配置 rowKey）
+  // 显式赋值为 null/[] 会清空全部（含跨页）选中；未绑定（undefined）时不触发回显同步，与旧版本行为一致
+  selectColumns: Array,
   tableHeaderLabel: String, // table所有列是否添加一个父title
   inForm: Boolean, // 是否为表单的输入或展示
-  rowKey: [String, Function] as PropType<string>, // 每一行的唯一主键 可为空 [建议写]
+  rowKey: [String, Function] as PropType<string | ((row: IAnyObject) => unknown)>, // 每一行的唯一主键 可为空 [建议写]，也可传函数 (row) => unknown 自定义取值
   treeProps: { // 树形table的配置 { children: 'children', hasChildren: 'hasChildren' }
     type: Object as PropType<{children: string, hasChildren?: string}>,
     default: () => ({})
