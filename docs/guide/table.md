@@ -242,6 +242,39 @@ const handleDeleteAll = async () => {
 
 `removeSelection(rows)` 接收单行或数组，会通过 `rowKey` 兜底匹配后移除对应行的选中状态，并自动同步一次 `update:selectColumns`。
 
+### 程序化设置选中（`v-model:selectColumns` 回显）
+
+`selectType` 为 `checkbox` 时，`v-model:selectColumns` 是**真正的双向绑定**：不仅用户勾选会同步更新该数组，父组件修改该数组后，当前页的勾选状态也会自动回显，无需再手动调用 el-table 的勾选 API。
+
+```vue
+<DrTable
+  ref="cipTableRef"
+  v-model:data="pageData"
+  :columns="columns"
+  row-key="id"
+  select-type="checkbox"
+  reserve-selection
+  v-model:select-columns="selectedRows"
+/>
+```
+
+```js
+// 父组件改 model，表格会自动勾上对应行（无需操作 ElTable API）
+const checkAll = () => {
+  selectedRows.value = pageData.value.slice()
+}
+```
+
+行为说明：
+
+- **匹配规则**：优先按对象引用匹配；引用不同时（如父组件重新构造了对象），会按 `rowKey` 兜底匹配同一行——因此**程序化回显强烈建议配置 `rowKey`**，未配置时只能匹配同一对象引用。
+- **只影响当前页**：赋值只会调整当前页数据对应的勾选状态；`selectedRows` 中不在当前页的行不会被清理，翻页时会按 model 重新对齐（见下）。
+- **清空全部选中**：将 `selectedRows` 显式赋值为 `null` / `[]`，会清空表格全部选中状态（含跨页保留的选中），等价于调用 `clearSelection()`。
+- **未使用该 v-model 时行为不变**：若从未给 `select-columns` 绑定过值（始终为 `undefined`），不会触发任何回显同步，等价于旧版本行为。
+- **不会覆盖跨页选中**：程序化回显在内部通过挂起 `update:selectColumns` 的方式实现，不会把已跨页累计的选中列表缩成仅当前页再回传给父组件。
+- **分页后自动对齐**：`data` 变化（翻页/刷新）后，只要 `selectedRows` 中包含新当前页的行（按引用或 `rowKey` 匹配），也会自动勾上，不需要重新赋值。
+- 跨页保留选中需要同时开启 `reserveSelection` 与 `rowKey`，二者缺一都无法生效。
+
 ## 表格中的联动
 
 ### 依赖表格外字段
