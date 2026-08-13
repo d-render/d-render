@@ -284,13 +284,13 @@ export default defineComponent({
       if (!tableColumnConfig.width) {
         // 兼容历史老代码
         if (config.type === 'date' && config.viewType === 'datetime') {
-          tableColumnConfig.width = dateColumnWidthMap[_size.value]
+          tableColumnConfig.width = transformWidth(dateColumnWidthMap[_size.value], { columnType: 'data' })
         }
       } else {
-        tableColumnConfig.width = transformWidth(tableColumnConfig.width)
+        tableColumnConfig.width = transformWidth(tableColumnConfig.width, { columnType: 'data' })
       }
       if (tableColumnConfig.minWidth) {
-        tableColumnConfig.minWidth = transformWidth(tableColumnConfig.minWidth)
+        tableColumnConfig.minWidth = transformWidth(tableColumnConfig.minWidth, { columnType: 'data' })
       }
       const headerSlots = ({ column, $index }: ITableRow) => {
         if (config.slots?.header) {
@@ -500,7 +500,7 @@ export default defineComponent({
           headerAlign: props.handlerHeaderAlign,
           width: props.handlerWidth
             ? transformWidth(props.handlerWidth)
-            : transformWidth(handleColumnWidthMap[_size.value] + addBorderWidth.value, { columnType: 'handler' })
+            : transformWidth(handleColumnWidthMap[_size.value], { columnType: 'handler' })
         }, {
           default: ({ row, $index }: ITableRow) => h(CipButtonCollapse, { limit: props.handlerLimit, row }, {
             default: () => handlerSlot({ row, $index })
