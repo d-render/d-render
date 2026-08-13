@@ -1,5 +1,12 @@
 # d-render
 
+## 3.2.3
+
+### Patch Changes
+
+- ### Added
+  - **DrTable**：新增 `indexAlign`（`'left' | 'center' | 'right'`），控制序号列对齐；未传时回退到 `defaultAlign`。
+
 ## 3.2.2
 
 ### Patch Changes
