@@ -442,7 +442,7 @@ export default defineComponent({
         const indexColumn = h(ElTableColumn, {
           label: props.seqLabel || t('dr.table.index'),
           fixed: props.indexFixed ? 'left' : '',
-          align: _defaultAlign.value,
+          align: props.indexAlign ?? _defaultAlign.value,
           width: transformWidth(isEmpty(props.rowKey) ? 55 : 75, { columnType: 'index' })
         },
         {

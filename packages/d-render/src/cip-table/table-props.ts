@@ -20,6 +20,7 @@ export const tableProps = {
   offset: Number, // table第一行数据的偏移量, 设置该值将在左侧添加一个序号列
   hideIndex: Boolean, // 补充控制序号列，优先级高于offset,即当offset存在但hideIndex为true时依然不渲染序号列
   indexFixed: Boolean, // 序号列左侧悬浮
+  indexAlign: String as PropType<'left'| 'center' | 'right'>,
   height: String, // table的高度 可使用css的calc方法
   selectType: { // table 是否可以选择
     type: String,
