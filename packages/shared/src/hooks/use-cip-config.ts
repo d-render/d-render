@@ -2,6 +2,10 @@ import { inject } from 'vue'
 import { IAnyObject } from '../utils'
 // !!IMPORTANT: cip-config-provide的注入功能，需要保持key为字符串不然就需要依赖cip组件
 
+export interface ITransformWidthOption {
+  columnType?: 'index' | 'selection' | 'radio' | 'expand' | 'handler'
+}
+
 interface CipTableConfig {
   size?: string
   sizeStandard?: string
@@ -11,7 +15,7 @@ interface CipTableConfig {
    * 接收列配置的原始 px 数值，返回实际渲染宽度（不含 border 补偿，内部会自动叠加）。
    * @example (px) => px * window.devicePixelRatio
    */
-  transformPx?: (px: number) => number
+  transformPx?: (px: number, option?: ITransformWidthOption) => number
   [key: string]: unknown
 }
 

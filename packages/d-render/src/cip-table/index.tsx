@@ -25,7 +25,10 @@ import {
   setFieldValue,
   cipTableKey,
   useCipConfig,
-  useCipPageConfig, type IAnyObject, type ITableColumnConfig
+  useCipPageConfig,
+  type IAnyObject,
+  type ITableColumnConfig,
+  type ITransformWidthOption
 } from '@d-render/shared'
 // @ts-ignore
 import { CipButtonCollapse, CipButtonText } from '@xdp/button'
@@ -48,6 +51,7 @@ interface ITableRow {
   $index: number
   column: IAnyObject
 }
+
 export default defineComponent({
   name: 'CipTable',
   inheritAttrs: false,
@@ -101,10 +105,10 @@ export default defineComponent({
       return modelToTableFilteredValues(props.filterModel, filterableColumns.value)
     })
 
-    const calculateCurrentWidthFn: ComputedRef<(width: number)=> number> = computed(() => {
+    const calculateCurrentWidthFn: ComputedRef<(width: number, option?: ITransformWidthOption)=> number> = computed(() => {
       const customTransform = cipConfig.table?.transformPx
       if (typeof customTransform === 'function') {
-        return (width) => customTransform(width) + addBorderWidth.value
+        return (width, option) => customTransform(width, option) + addBorderWidth.value
       }
       if (props.size) return (width) => width + addBorderWidth.value
       const { sizeStandard = 'default', size = 'default' } = (cipConfig.table || {}) as {
@@ -242,11 +246,12 @@ export default defineComponent({
     const addBorderWidth = computed(() => {
       return _border.value ? 1 : 0
     })
+
     // 原始的width 转换系数
-    const transformWidth = (widthStr: string | number) => {
+    const transformWidth = (widthStr: string | number, option?: ITransformWidthOption) => {
       const applyPx = calculateCurrentWidthFn.value
-      if (typeof widthStr === 'number') return Math.ceil(applyPx(widthStr))
-      if (widthStr.indexOf('px') > -1) return `${Math.ceil(applyPx(Number(widthStr.replace(/px$/, ''))))}px`
+      if (typeof widthStr === 'number') return Math.ceil(applyPx(widthStr, option))
+      if (widthStr.indexOf('px') > -1) return `${Math.ceil(applyPx(Number(widthStr.replace(/px$/, '')), option))}px`
       return widthStr
     }
     // 渲染table的单个数据列 注意此处为Column
@@ -438,7 +443,7 @@ export default defineComponent({
           label: props.seqLabel || t('dr.table.index'),
           fixed: props.indexFixed ? 'left' : '',
           align: _defaultAlign.value,
-          width: transformWidth(isEmpty(props.rowKey) ? 55 : 75)
+          width: transformWidth(isEmpty(props.rowKey) ? 55 : 75, { columnType: 'index' })
         },
         {
           default: ({ $index }: ITableRow) => `${$index + 1 + props.offset!}`
@@ -449,7 +454,7 @@ export default defineComponent({
       if (props.selectType === 'checkbox') {
         const option: {type: 'selection', width: string, fixed: string, selectable?: (row:IAnyObject, index:number)=> boolean, reserveSelection?: boolean} = {
           type: 'selection',
-          width: transformWidth(45) as string,
+          width: transformWidth(45, { columnType: 'selection' }) as string,
           fixed: 'left'
         }
         if (isNotEmpty(props.selectable)) { // 选择
@@ -467,7 +472,7 @@ export default defineComponent({
       }
       // 单选框
       if (props.selectType === 'radio') {
-        const selectionColumn = h(ElTableColumn, { width: transformWidth(45), fixed: 'left' }, {
+        const selectionColumn = h(ElTableColumn, { width: transformWidth(45, { columnType: 'selection' }), fixed: 'left' }, {
           default: ({ row }: ITableRow) => h(ElRadio, {
             label: ((props.selectLabel && row[props.selectLabel]) ?? row.id) as string | number,
             modelValue: props.selectRadio,
@@ -479,7 +484,7 @@ export default defineComponent({
       }
       // 展开
       if (context.slots.expand) {
-        const expendColumn = h(ElTableColumn, { type: 'expand', width: transformWidth(32), fixed: 'left' }, {
+        const expendColumn = h(ElTableColumn, { type: 'expand', width: transformWidth(32, { columnType: 'expand' }), fixed: 'left' }, {
           default: ({ row, index }: ITableRow & {index: number}) => context.slots.expand!({ row, index })
         })
         slots.unshift(expendColumn)
@@ -495,7 +500,7 @@ export default defineComponent({
           headerAlign: props.handlerHeaderAlign,
           width: props.handlerWidth
             ? transformWidth(props.handlerWidth)
-            : handleColumnWidthMap[_size.value] + addBorderWidth.value
+            : transformWidth(handleColumnWidthMap[_size.value] + addBorderWidth.value, { columnType: 'handler' })
         }, {
           default: ({ row, $index }: ITableRow) => h(CipButtonCollapse, { limit: props.handlerLimit, row }, {
             default: () => handlerSlot({ row, $index })
