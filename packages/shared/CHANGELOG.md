@@ -1,5 +1,18 @@
 # @d-render/shared
 
+## 2.1.19
+
+### Patch Changes
+
+- ### Added
+
+  - **CipTableConfig**（shared）：`transformPx` 增加可选第二参数 `option.columnType`，用于按列角色区分宽度换算；新增 `TTransformWidthColumnType`：`data`（业务数据列）/ `index`（序号列）/ `selection`（多选/单选列）/ `expand`（展开列）/ `handler`（操作列）。既有 `(px) => number` 签名仍兼容。
+  - **DrTable**（d-render）：内置列与数据列调用 `transformPx` 时传入对应 `columnType`；datetime 默认宽度纳入 `transformWidth` 换算。
+
+  ### Fixed
+
+  - **DrTable**：修复操作列默认宽度在 `border` 开启时重复叠加 1px 的问题。
+
 ## 2.1.18
 
 ### Patch Changes

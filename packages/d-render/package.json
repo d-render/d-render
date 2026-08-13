@@ -1,6 +1,6 @@
 {
   "name": "d-render",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "基于 Element Plus 二次封装的数据驱动渲染组件库 - 表单、搜索表单、表格配置化渲染",
   "main": "./esm/main.js",
   "module": "./esm/main.js",
@@ -74,13 +74,13 @@
     "type": "git"
   },
   "dependencies": {
-    "@d-render/shared": "workspace:>=2.1.17",
+    "@d-render/shared": "workspace:>=2.1.19",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": "^1.2.1",
     "@xdp/config": "^1.0.2"
   },
   "peerDependencies": {
-    "@d-render/shared": "workspace:>=2.1.17",
+    "@d-render/shared": "workspace:>=2.1.19",
     "@element-plus/icons-vue": "^2.1.0",
     "@xdp/button": ">= 1.0.1",
     "@xdp/config": ">= 1.0.1",
